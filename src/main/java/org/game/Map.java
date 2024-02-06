@@ -119,8 +119,6 @@ public class Map {
 
 
     private static int[][][] getTileArray(int size) {
-        //ta tablica jest do zapisania id kafelka na danym x y z
-        //środkowa kolumna to poziom mapy
         int[][][] verticesXYZ = new int[size][2][size];
         for (int z = 0; z < verticesXYZ.length; z++) {
             for (int x = 0; x < verticesXYZ.length; x++) {
@@ -203,7 +201,7 @@ public class Map {
         double height = 0;
         for (int i = 0; i < size; i++) {
             for (int i1 = 0; i1 < size; i1++) {
-                height = Math.sin(i); //wyliczam Y dla danego X
+                height = Math.sin(i);
                 models[i][i1] = getNewPart(new Vector3f(i, (float)height, i1));
             }
 
@@ -238,14 +236,14 @@ public class Map {
 
                 int randomHeight = random.nextInt(2)+6 ;
 
-                double height = Math.sin(x); //wyliczam Y dla danego X
-                double heightCos = 4*Math.cos(x/4.0f); //wyliczam Y dla danego X
+                double height = Math.sin(x);
+                double heightCos = 4*Math.cos(x/4.0f);
                 height += heightCos+5;
                 System.out.println((int)height);
                 for (int y = 0; y < (int)height; y++) {
                     map[x][y][z] = 1;
                 }
-                double heightZ = (Math.sin(z*(Math.PI/20))) + randomHeight; //wyliczam Y dla danego z
+                double heightZ = (Math.sin(z*(Math.PI/20))) + randomHeight;
                 System.out.println((int)Math.abs(heightZ));
                 for (int y = 0; y < (int)Math.abs(heightZ); y++) {
                     map[x][y][z] = 1;

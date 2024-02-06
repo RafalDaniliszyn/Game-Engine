@@ -172,8 +172,8 @@ public class GraphicsDisplay {
         glUniform1i(textureTypeUniformLocationAlpha, 0);
 
         double fpsLimit = 1.0 / 30.0;
-        double lastUpdateTime = 0;  // number of seconds since the last loop
-        double lastFrameTime = 0;   // number of seconds since the last frame
+        double lastUpdateTime = 0;
+        double lastFrameTime = 0;
 
         glEnable(GL_CULL_FACE);
 //        glFrontFace(GL_CCW);
@@ -229,11 +229,9 @@ public class GraphicsDisplay {
                 glfwSwapBuffers(displayID);
                 glfwPollEvents();
 
-                // only set lastFrameTime when you actually draw something
                 lastFrameTime = now;
             }
 
-            // set lastUpdateTime every iteration
             lastUpdateTime = now;
         }
 

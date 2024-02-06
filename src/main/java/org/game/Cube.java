@@ -19,10 +19,6 @@ public class Cube {
         return model;
     }
 
-    /**
-     *
-     * @return Cube in four parts LEFT, RIGHT, TOP, BOTTOM, FRONT, BACK.
-     */
     public static Map<Side, Model> getCubeParts(Vector3f position, float color, Vector3f scale, float size) {
         float[] vertices = getVertices(color, size);
         float[] front = Arrays.copyOfRange(vertices, 0, 36);
@@ -117,40 +113,40 @@ public class Cube {
         float sc = 0.7f;
         float vertices[] = {
                 //back
-                -1.0f,  1.0f, -1.0f,     sc, sc, sc, 1.0f,   0.0f, 1.0f,   // top right
-                -1.0f, -1.0f, -1.0f,     sc, sc, sc, 1.0f,   0.0f, 0.0f,   // bottom right
-                1.0f, -1.0f, -1.0f,     sc, sc, sc, 1.0f,    1.0f, 0.0f,   // bottom left
-                1.0f,  1.0f, -1.0f,     sc, sc, sc, 1.0f,    1.0f, 1.0f,   // top left ostatni index to 35 więc od 0 do 36
+                -1.0f,  1.0f, -1.0f,     sc, sc, sc, 1.0f,   0.0f, 1.0f,
+                -1.0f, -1.0f, -1.0f,     sc, sc, sc, 1.0f,   0.0f, 0.0f,
+                1.0f, -1.0f, -1.0f,     sc, sc, sc, 1.0f,    1.0f, 0.0f,
+                1.0f,  1.0f, -1.0f,     sc, sc, sc, 1.0f,    1.0f, 1.0f,
 
                 //left
-                -1.0f,  1.0f,  1.0f,   sc, sc, sc, 1.0f,   0.0f, 1.0f,   // top right
-                -1.0f, -1.0f,  1.0f,   sc, sc, sc, 1.0f,   0.0f, 0.0f,   // bottom right
-                -1.0f, -1.0f, -1.0f,   sc, sc, sc, 1.0f,   1.0f, 0.0f,   // bottom left
-                -1.0f,  1.0f, -1.0f,   sc, sc, sc, 1.0f,   1.0f, 1.0f,    // top left 72
+                -1.0f,  1.0f,  1.0f,   sc, sc, sc, 1.0f,   0.0f, 1.0f,
+                -1.0f, -1.0f,  1.0f,   sc, sc, sc, 1.0f,   0.0f, 0.0f,
+                -1.0f, -1.0f, -1.0f,   sc, sc, sc, 1.0f,   1.0f, 0.0f,
+                -1.0f,  1.0f, -1.0f,   sc, sc, sc, 1.0f,   1.0f, 1.0f,
 
                 //right
-                1.0f,  1.0f,  1.0f,    sc, sc, sc, 1.0f,   0.0f, 1.0f,   // top right
-                1.0f, -1.0f,  1.0f,    sc, sc, sc, 1.0f,   0.0f, 0.0f,   // bottom right
-                1.0f, -1.0f, -1.0f,    sc, sc, sc, 1.0f,   1.0f, 0.0f,   // bottom left
-                1.0f,  1.0f, -1.0f,    sc, sc, sc, 1.0f,   1.0f, 1.0f,    // top left
+                1.0f,  1.0f,  1.0f,    sc, sc, sc, 1.0f,   0.0f, 1.0f,
+                1.0f, -1.0f,  1.0f,    sc, sc, sc, 1.0f,   0.0f, 0.0f,
+                1.0f, -1.0f, -1.0f,    sc, sc, sc, 1.0f,   1.0f, 0.0f,
+                1.0f,  1.0f, -1.0f,    sc, sc, sc, 1.0f,   1.0f, 1.0f,
 
                 //front
-                1.0f,  1.0f,  1.0f,    sc, sc, sc, 1.0f,   0.0f, 1.0f,   // top right
-                1.0f, -1.0f,  1.0f,    sc, sc, sc, 1.0f,   0.0f, 0.0f,   // bottom right
-               -1.0f, -1.0f,  1.0f,    sc, sc, sc, 1.0f,   1.0f, 0.0f,   // bottom left
-               -1.0f,  1.0f,  1.0f,    sc, sc, sc, 1.0f,   1.0f, 1.0f,   // top left
+                1.0f,  1.0f,  1.0f,    sc, sc, sc, 1.0f,   0.0f, 1.0f,
+                1.0f, -1.0f,  1.0f,    sc, sc, sc, 1.0f,   0.0f, 0.0f,
+               -1.0f, -1.0f,  1.0f,    sc, sc, sc, 1.0f,   1.0f, 0.0f,
+               -1.0f,  1.0f,  1.0f,    sc, sc, sc, 1.0f,   1.0f, 1.0f,
 
                 //top
-               -1.0f,  1.0f,  1.0f,   sc, sc, sc, 1.0f,   0.0f, 1.0f,   // top right
-               -1.0f,  1.0f, -1.0f,   sc, sc, sc, 1.0f,   0.0f, 0.0f,   // bottom right
-                1.0f,  1.0f, -1.0f,   sc, sc, sc, 1.0f,   1.0f, 0.0f,   // bottom left
-                1.0f,  1.0f,  1.0f,   sc, sc, sc, 1.0f,   1.0f, 1.0f,   // top left
+               -1.0f,  1.0f,  1.0f,   sc, sc, sc, 1.0f,   0.0f, 1.0f,
+               -1.0f,  1.0f, -1.0f,   sc, sc, sc, 1.0f,   0.0f, 0.0f,
+                1.0f,  1.0f, -1.0f,   sc, sc, sc, 1.0f,   1.0f, 0.0f,
+                1.0f,  1.0f,  1.0f,   sc, sc, sc, 1.0f,   1.0f, 1.0f,
 
                 //bottom
-               -1.0f, -1.0f, -1.0f,    sc, sc, sc, 1.0f,   0.0f, 1.0f,   // top right    20
-               -1.0f, -1.0f,  1.0f,    sc, sc, sc, 1.0f,   0.0f, 0.0f,   // bottom right 21
-                1.0f, -1.0f,  1.0f,    sc, sc, sc, 1.0f,   1.0f, 0.0f,   // bottom left  22
-                1.0f, -1.0f, -1.0f,    sc, sc, sc, 1.0f,   1.0f, 1.0f   // top left      23
+               -1.0f, -1.0f, -1.0f,    sc, sc, sc, 1.0f,   0.0f, 1.0f,
+               -1.0f, -1.0f,  1.0f,    sc, sc, sc, 1.0f,   0.0f, 0.0f,
+                1.0f, -1.0f,  1.0f,    sc, sc, sc, 1.0f,   1.0f, 0.0f,
+                1.0f, -1.0f, -1.0f,    sc, sc, sc, 1.0f,   1.0f, 1.0f
         };
         return vertices;
     }

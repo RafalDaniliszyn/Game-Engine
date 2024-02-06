@@ -24,7 +24,7 @@ public class ShaderProgram {
         glAttachShader(programID, fragmentID);
         glLinkProgram(programID);
         glValidateProgram(programID);
-        glDeleteShader(vertexID);   //usuwanie chyba dlatego że shadery trafiły już do karty graficznej więc można je wywalić ze zmiennej
+        glDeleteShader(vertexID);
         glDeleteShader(fragmentID);
     }
 
@@ -36,13 +36,13 @@ public class ShaderProgram {
         glAttachShader(programID, fragmentID);
         glLinkProgram(programID);
         glValidateProgram(programID);
-        glDeleteShader(vertexID);   //usuwanie chyba dlatego że shadery trafiły już do karty graficznej więc można je wywalić ze zmiennej
+        glDeleteShader(vertexID);
         glDeleteShader(fragmentID);
     }
 
     public void delete() {
         stop();
-        glDetachShader(programID, vertexID);    //to już chyba usunięcie z karty graficznej
+        glDetachShader(programID, vertexID);
         glDetachShader(programID, fragmentID);
         glDeleteProgram(programID);
     }
