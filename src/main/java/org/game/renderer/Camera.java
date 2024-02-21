@@ -15,7 +15,7 @@ public class Camera {
     private static Vector3f cameraRotation = new Vector3f(40.0f, 180.0f, 0.0f);
 
     private static Matrix4f viewMatrix;
-    public static float distance = 15.0f;
+    public static float distance = 5.0f;
 
 
     public static Matrix4f getView() {
@@ -24,12 +24,9 @@ public class Camera {
         }
         Vector3f cameraPos = cameraPosition;
         Vector3f rotation = cameraRotation;
-
         viewMatrix.identity();
-
         viewMatrix.rotate((float)Math.toRadians(rotation.x), new Vector3f(1, 0, 0))
                 .rotate((float)Math.toRadians(-rotation.y), new Vector3f(0, 1, 0));
-
 
         viewMatrix.translate(-cameraPos.x, -cameraPos.y, -cameraPos.z);
         return viewMatrix;
@@ -48,17 +45,16 @@ public class Camera {
     }
 
     public static void moveRotation(float offsetX, float offsetY, float offsetZ) {
+        if (cameraRotation.y + offsetY > 360) {
+            offsetY = (cameraRotation.y + offsetY) - 360;
+            cameraRotation.y = 0;
+        } else if (cameraRotation.y + offsetY < 0) {
+            offsetY = cameraRotation.y + offsetY;
+            cameraRotation.y = 360;
+        }
         cameraRotation.x += offsetX;
         cameraRotation.y += offsetY;
         cameraRotation.z += offsetZ;
-    }
-
-    public static void setCamera(ShaderProgram shaderProgram) {
-        int uViewID = GL20.glGetUniformLocation(shaderProgram.getProgramID(), "uView");
-        Matrix4f uView = Camera.getView();
-        FloatBuffer viewMatrix = BufferUtils.createFloatBuffer(16);
-        uView.get(viewMatrix);
-        glUniformMatrix4fv(uViewID, false, viewMatrix);
     }
 
     public static Vector3f getCameraPosition() {

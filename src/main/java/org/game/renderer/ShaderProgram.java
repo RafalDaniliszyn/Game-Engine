@@ -9,7 +9,7 @@ import static org.lwjgl.opengl.GL20.*;
 public class ShaderProgram {
 
     private String vertexFile = "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\vertex.glsl";
-    private String fragmentFile = "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\fragment.glsl";
+    private String fragmentFile = "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\alphaFragment.glsl";
 
     public int programID, vertexID, fragmentID;
 

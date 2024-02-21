@@ -10,11 +10,12 @@ import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL20;
-
 import java.nio.FloatBuffer;
+import java.util.List;
 
+import static org.game.GraphicsDisplay.HEIGHT;
+import static org.game.GraphicsDisplay.WIDTH;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
-import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 import static org.lwjgl.opengl.GL11.GL_UNSIGNED_INT;
 import static org.lwjgl.opengl.GL11.glBindTexture;
 import static org.lwjgl.opengl.GL11.glDrawElements;
@@ -34,28 +35,33 @@ public class RenderSystem extends BaseSystem {
     @Override
     public void update(float deltaTime) {
         getGameData().getEntities(MeshComponent.class, PositionComponent.class).forEach(((id, entity) -> {
-            MeshComponent mesh = entity.getComponent(MeshComponent.class);
-            PositionComponent pos = entity.getComponent(PositionComponent.class);
-            setMvp(getGameData().getProjection(), getGameData().getShaderProgram(), pos);
-            setTextureType(mesh);
-            render(mesh);
+            List<MeshComponent> meshList = entity.getComponents(MeshComponent.class);
+            meshList.forEach(mesh -> {
+                PositionComponent pos = entity.getComponent(PositionComponent.class);
+                setMvp(projectionMatrix(), getGameData().getShaderProgram(), pos);
+                setTextureType(mesh);
+                render(mesh);
+            });
         }));
     }
 
     @Override
     public void delete() {
         getGameData().getEntities(MeshComponent.class).forEach(((id, entity) -> {
-            MeshComponent mesh = entity.getComponent(MeshComponent.class);
-            remove(mesh);
+            List<MeshComponent> meshList = entity.getComponents(MeshComponent.class);
+            meshList.forEach(this::remove);
         }));
     }
 
     @Override
     public void init() {
-
+        getGameData().getShaderProgram().use();
     }
 
     private void remove(MeshComponent mesh) {
+        ShaderProgram shaderProgram = getGameData().getShaderProgram();
+        shaderProgram.stop();
+        shaderProgram.delete();
         glDeleteBuffers(mesh.getVboID());
         glDeleteBuffers(mesh.getIboID());
         glDeleteBuffers(mesh.getTextureID());
@@ -93,6 +99,15 @@ public class RenderSystem extends BaseSystem {
         glVertexAttribPointer(2, 2, GL_FLOAT, false, 9 * Float.BYTES, 7 * Float.BYTES);
     }
 
+    private Matrix4f projectionMatrix() {
+        float windowAspect = (float) WIDTH / (float) HEIGHT;
+        float near = 0.1f;
+        float far = 1000.0f;
+        Matrix4f projection = new Matrix4f();
+        projection.perspective(Math.toRadians(80.0f), windowAspect, near, far);
+        return projection;
+    }
+
     private void render(MeshComponent mesh) {
         glBindVertexArray(mesh.getVaoID());
         glBindBuffer(GL_ARRAY_BUFFER, mesh.getVboID());
@@ -109,7 +124,7 @@ public class RenderSystem extends BaseSystem {
         glEnableVertexAttribArray(2);
         setPointers();
 
-        glDrawElements(GL_TRIANGLES, mesh.getIndexCount(), GL_UNSIGNED_INT, 0);
+        glDrawElements(mesh.getRenderMode(), mesh.getIndexCount(), GL_UNSIGNED_INT, 0);
 
         glDisableVertexAttribArray(0);
         glDisableVertexAttribArray(1);

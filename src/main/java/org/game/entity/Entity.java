@@ -35,6 +35,25 @@ public abstract class Entity {
         }
     }
 
+    public <T extends Component> void removeComponent(Class<T> toRemove) {
+        for (int i = 0; i < componentList.size(); i++) {
+            if (toRemove.isAssignableFrom(componentList.get(i).getClass())) {
+                componentList.remove(i);
+                return;
+            }
+        }
+    }
+
+    public <T extends Component> List<T> getComponents(Class<T> componentClass) {
+        List<T> components = new ArrayList<>();
+        for (Component component : componentList) {
+            if (componentClass.isAssignableFrom(component.getClass())) {
+                components.add(componentClass.cast(component));
+            }
+        }
+        return components;
+    }
+
     public <T extends Component> T getComponent(Class<T> componentClass) {
         for (Component component : componentList) {
             if (componentClass.isAssignableFrom(component.getClass())) {

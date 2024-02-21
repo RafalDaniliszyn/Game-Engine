@@ -4,7 +4,6 @@ import org.game.MeshData;
 import org.game.renderer.ShaderProgram;
 import org.joml.Vector3f;
 import org.lwjgl.BufferUtils;
-
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
@@ -26,8 +25,10 @@ public class MeshComponent extends Component {
     private float rotationZ;
     private Vector3f scale;
     private int vaoID, vboID, iboID;
+    private int renderMode;
 
     public MeshComponent(float[] vertices, int[] indices, Vector3f position, Vector3f scale) {
+        super();
         this.vaoID = glGenVertexArrays();
         this.vertices = vertices;
         this.indices = indices;
@@ -40,6 +41,7 @@ public class MeshComponent extends Component {
     }
 
     public MeshComponent(float[] vertices, int[] indices, Vector3f position, Vector3f scale, int textureID) {
+        super();
         this.vaoID = glGenVertexArrays();
         this.vertices = vertices;
         this.indices = indices;
@@ -49,19 +51,8 @@ public class MeshComponent extends Component {
         this.rotationZ = 0.0f;
         this.scale = scale;
         this.textureID = textureID;
+        this.renderMode = GL_TRIANGLES;
         this.create();
-    }
-
-    public void reCreate(MeshData meshData) {
-        glDeleteBuffers(vboID);
-        glDeleteBuffers(iboID);
-        glDeleteBuffers(textureID);
-        glDeleteVertexArrays(vaoID);
-        this.vaoID = glGenVertexArrays();
-        setVertices(meshData.getVertices());
-        setIndices(meshData.getIndices());
-        setTextureID(meshData.getTextureID());
-        create();
     }
 
     public void create() {
@@ -164,5 +155,13 @@ public class MeshComponent extends Component {
 
     public void setIndices(int[] indices) {
         this.indices = indices;
+    }
+
+    public int getRenderMode() {
+        return renderMode;
+    }
+
+    public void setRenderMode(int renderMode) {
+        this.renderMode = renderMode;
     }
 }

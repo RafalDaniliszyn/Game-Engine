@@ -2,6 +2,8 @@ package org.game.system;
 
 import org.game.GameData;
 import org.game.Key;
+import org.game.MeshLoader;
+import org.game.MouseInput;
 import org.game.component.MoveComponent;
 import org.game.component.PositionComponent;
 import org.game.renderer.Camera;
@@ -19,6 +21,8 @@ public class MoveSystem extends BaseSystem {
     private boolean KEY_S;
     private boolean KEY_D;
     private boolean KEY_SPACE;
+    private boolean WHEEL_UP;
+    private boolean WHEEL_DOWN;
 
     public MoveSystem(GameData gameData) {
         super(gameData);
@@ -43,12 +47,12 @@ public class MoveSystem extends BaseSystem {
     private void move(float dt) {
         getGameData().getEntities(PositionComponent.class, MoveComponent.class).forEach((id, entity)-> {
             PositionComponent meshPos = entity.getComponent(PositionComponent.class);
-            jump(dt, meshPos);
+            //jump(dt, meshPos);
+            up(dt, meshPos);
             MoveComponent move = entity.getComponent(MoveComponent.class);
             Vector3f moveVector = move.getMoveVector();
             float speed = move.getSpeed();
             Vector3f newPos = meshPos.getPosition();
-
 
             Vector3f camRotation = Camera.getCameraRotation();
             Vector3f meshPosition = meshPos.getPosition();
@@ -56,6 +60,7 @@ public class MoveSystem extends BaseSystem {
             if (KEY_W) {
                 moveVector.x = (float) Math.sin(Math.toRadians(camRotation.y));
                 moveVector.z = (float) Math.cos(Math.toRadians(camRotation.y));
+                meshPos.setLastMoveVector(moveVector);
             } else {
                 moveVector.z = 0.0f;
                 moveVector.x = 0.0f;
@@ -64,17 +69,19 @@ public class MoveSystem extends BaseSystem {
             if (moveVector.x != 0.0f || moveVector.z != 0.0f) {
                 newPos.x -= moveVector.x * speed * dt;
                 newPos.z -= moveVector.z * speed * dt;
+                newPos.y = MeshLoader.getPositionY(getGameData().getMapVert(), newPos.x, newPos.z);
             }
 
             float horizontalDist = (float) (Camera.distance * Math.cos(Math.toRadians(camRotation.x)));
             float verticalDist = (float) (Camera.distance * Math.sin(Math.toRadians(camRotation.x)));
 
+            float verticalHeight = 2.0f;
             Camera.cameraPosition.x = meshPosition.x + (float) (horizontalDist * Math.sin(Math.toRadians(camRotation.y)));
             Camera.cameraPosition.z = meshPosition.z + (float) (horizontalDist * Math.cos(Math.toRadians(camRotation.y)));
-            Camera.cameraPosition.y = 10.0f + meshPosition.y + (float) (verticalDist * Math.sin(Math.toRadians(camRotation.x)));
+            Camera.cameraPosition.y = verticalHeight + meshPosition.y + (float) (verticalDist * Math.sin(Math.toRadians(camRotation.x)));
 
-
-            meshPos.setLastPosition(meshPos.getPosition());
+            meshPos.setRotationY(camRotation.y);
+            meshPos.rotateY(-90.0f);
             meshPos.setPosition(newPos);
         });
     }
@@ -96,12 +103,28 @@ public class MoveSystem extends BaseSystem {
            KEY_SPACE = true;
            jump = true;
         }
+        if (MouseInput.WHEEL_UP) {
+            Camera.distance -= 0.1f;
+        }
+        if (MouseInput.WHEEL_DOWN) {
+            Camera.distance += 0.1f;
+        }
         if (Key.action == GLFW_RELEASE) {
             KEY_W = false;
             KEY_S = false;
             KEY_A = false;
             KEY_D = false;
             KEY_SPACE = false;
+            MouseInput.WHEEL_UP = false;
+            MouseInput.WHEEL_DOWN = false;
+        }
+    }
+
+    private void up(float dt, PositionComponent position) {
+        if (KEY_SPACE) {
+            Vector3f newPos = position.getPosition();
+            newPos.y += 5 * dt;
+            position.setPosition(newPos);
         }
     }
 
@@ -134,7 +157,6 @@ public class MoveSystem extends BaseSystem {
                 jump = false;
             }
         }
-
     }
 
     private void randomMove(MoveComponent move) {

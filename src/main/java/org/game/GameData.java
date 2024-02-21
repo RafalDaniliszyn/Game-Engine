@@ -1,17 +1,16 @@
 package org.game;
 
+import org.game.component.CollisionComponent;
 import org.game.component.Component;
+import org.game.component.PositionComponent;
 import org.game.entity.Entity;
 import org.game.entity.PlayerEntity;
 import org.game.entity.StaticObjectEntity;
-import org.game.entity.TreeEntity;
 import org.game.renderer.ShaderProgram;
-import org.game.renderer.TextureEnum;
 import org.game.renderer.TextureManager;
+import org.game.settingsWindow.Panel;
 import org.game.system.*;
-import org.joml.Matrix4f;
 import org.joml.Vector3f;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,56 +18,33 @@ import java.util.Random;
 
 public class GameData {
 
-    Map<Component, String> components = new HashMap<>();
-    Map<Long, Entity> entities = new HashMap<>();
-    Map<String, BaseSystem> systems = new HashMap<>();
-    MeshManager meshManager;
-    TextureManager textureManager;
-    ShaderProgram shaderProgram;
-    Matrix4f projection;
-    float deltaTime;
+    private Map<Component, String> components = new HashMap<>();
+    private Map<Long, Entity> entities = new HashMap<>();
+    private Map<String, BaseSystem> systems = new HashMap<>();
+    private MeshManager meshManager;
+    private TextureManager textureManager;
+    private ShaderProgram shaderProgram;
+    private float deltaTime;
+    private float[] mapVert;
+    private long playerId;
 
-
-    public GameData(ShaderProgram shaderProgram, Matrix4f projection) {
+    public GameData(ShaderProgram shaderProgram) {
         this.shaderProgram = shaderProgram;
-        this.projection = projection;
         textureManager = new TextureManager();
-        int treeTextureID = textureManager.getTextures().get(TextureEnum.TREE_COLORS);
         meshManager = new MeshManager(textureManager);
-        Random random = new Random();
-        for (int i = 0; i < 50; i++) {
-            for (int j = 0; j < 50; j++) {
-                TreeEntity tree = new TreeEntity(treeTextureID, random.nextInt(1000)-500, random.nextInt(1000)-500);
-                entities.put(tree.getId(), tree);
-            }
-        }
 
-//        TreeEntity tree = new TreeEntity(IdGenerator.getNextId(), treeID, 0.0f, 0.0f);
-//        tree.addComponent(new GrowthComponent(1, 1000.0f, 5));
-//        entities.put(tree.getId(), tree);
+        prepareTestData();
+        StaticObjectEntity groundMap = new StaticObjectEntity(meshManager, "baseMap", new Vector3f(0.0f, 0.0f, 0.0f),
+                new Vector3f(0.0f, 0.0f, 0.0f), new Vector3f(1.0f, 1.0f, 1.0f), false);
+        entities.put(groundMap.getId(), groundMap);
 
+        StaticObjectEntity sky = new StaticObjectEntity(meshManager, "background", new Vector3f(0.0f, 0.0f, -140.0f),
+                new Vector3f(0.0f, 0.0f, 0.0f), new Vector3f(10.0f, 10.0f, 10.0f), false);
+        sky.removeComponent(CollisionComponent.class);
+        entities.put(sky.getId(), sky);
 
-            StaticObjectEntity tower = new StaticObjectEntity(meshManager, 6L, new Vector3f(0.0f, 0.0f, 0.0f),
-                    new Vector3f(0.0f, 0.0f, 0.0f), new Vector3f(1.0f, 1.0f, 1.0f));
-            entities.put(tower.getId(), tower);
-
-//        for (int i = 0; i < 50; i++) {
-//            StaticObjectEntity tower = new StaticObjectEntity(meshManager, 1L, new Vector3f(750.0f, 0.0f, i*15),
-//                    new Vector3f(0.0f, 0.0f, 0.0f), new Vector3f(1.0f, 1.0f, 1.0f));
-//            entities.put(tower.getId(), tower);
-//        }
-//        for (int i = 0; i < 50; i++) {
-//            StaticObjectEntity tower = new StaticObjectEntity(meshManager, 1L, new Vector3f(0.0f, 0.0f, i*15),
-//                    new Vector3f(0.0f, 0.0f, 0.0f), new Vector3f(1.0f, 1.0f, 1.0f));
-//            entities.put(tower.getId(), tower);
-//        }
-//        for (int i = 0; i < 50; i++) {
-//            StaticObjectEntity tower = new StaticObjectEntity(meshManager, 1L, new Vector3f(i*15, 0.0f, 750.0f),
-//                    new Vector3f(0.0f, 0.0f, 0.0f), new Vector3f(1.0f, 1.0f, 1.0f));
-//            entities.put(tower.getId(), tower);
-//        }
-
-        PlayerEntity player = new PlayerEntity(meshManager);
+        PlayerEntity player = new PlayerEntity(meshManager, true);
+        playerId = player.getId();
         entities.put(player.getId(), player);
 
         //Growth
@@ -91,6 +67,7 @@ public class GameData {
         });
     }
     public void update(float deltaTime) {
+        updateSettings();
         systems.forEach((s, system) -> {
             system.update(deltaTime);
         });
@@ -101,30 +78,6 @@ public class GameData {
             systems.delete();
         });
     }
-
-    //    public GameData() {
-//        Random random = new Random();
-//        for (int i = 0; i < 100; i++) {
-//            for (int j = 0; j < 100; j++) {
-//                float x = random.nextInt(1000)-500;
-//                float z = random.nextInt(1000)-500;
-//                while ((x > 100.0f && x < 200.0f) && (z > 100.0f && z < 200.0f)) {
-//                    x = random.nextInt(1000)-500;
-//                    z = random.nextInt(1000)-500;
-//                }
-//                TreeEntity treeEntity = new TreeEntity(1, new PositionComponent(new Vector3f(x, 0.0f, z),
-//                        0.0f, (float)random.nextInt(180), 0.0f,
-//                        new Vector3f(1.0f + random.nextFloat(), 1.0f + random.nextFloat(), 1.0f + random.nextFloat())));
-//                components.put(treeEntity, "tree");
-//            }
-//        }
-//    }
-
-//    public void render(Renderer renderer, ShaderProgram shaderProgram, int textureUniformType, Matrix4f uView, Matrix4f uProjection) {
-//        components.forEach(((component, s) -> {
-//            component.render(gameModels.getModel(s), shaderProgram, renderer, textureUniformType, uView, uProjection);
-//        }));
-//    }
 
     public Map<Component, String> getComponents() {
         return components;
@@ -144,12 +97,12 @@ public class GameData {
         return result;
     }
 
-    public ShaderProgram getShaderProgram() {
-        return shaderProgram;
+    public Entity getEntity(Long id) {
+        return entities.get(id);
     }
 
-    public Matrix4f getProjection() {
-        return projection;
+    public ShaderProgram getShaderProgram() {
+        return shaderProgram;
     }
 
     public float getDeltaTime() {
@@ -162,5 +115,82 @@ public class GameData {
 
     public TextureManager getTextureManager() {
         return textureManager;
+    }
+
+    public float[] getMapVert() {
+        return mapVert;
+    }
+
+    private void updateSettings() {
+        Panel.ROTATION = getEntity(playerId).getComponent(PositionComponent.class).getRotationY();
+    }
+
+    private void prepareTestData() {
+        MeshData groundMeshData = meshManager.getMeshData("baseMap");
+        mapVert = groundMeshData.getVertices();
+        StaticObjectEntity houseTest = new StaticObjectEntity(meshManager, "housetest", new Vector3f(0, 0, -140),
+                new Vector3f(0.0f, 0.0f, 0.0f), new Vector3f(1.0f, 1.0f, 1.0f), true);
+        entities.put(houseTest.getId(), houseTest);
+
+        Random random = new Random();
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                float scale = random.nextFloat();
+                float rotationY = random.nextInt(360);
+                int offset = random.nextInt(60);
+                StaticObjectEntity grass = new StaticObjectEntity(meshManager, "grass1", new Vector3f(((i*20)-100)+offset, 0, -((j*20))+offset),
+                        new Vector3f(0.0f, rotationY, 0.0f), new Vector3f(0.9f, 0.6f+scale, 0.9f), false);
+                grass.removeComponent(CollisionComponent.class);
+                entities.put(grass.getId(), grass);
+            }
+        }
+        for (int i = 0; i < 15; i++) {
+            for (int j = 0; j < 15; j++) {
+                float scale = random.nextFloat();
+                float rotationY = random.nextInt(360);
+                int offset = random.nextInt(60);
+                StaticObjectEntity oak = new StaticObjectEntity(meshManager, "oak", new Vector3f(((i*30)-100)+offset, 0, -((j*30))+offset),
+                        new Vector3f(0.0f, rotationY, 0.0f), new Vector3f(0.8f+scale, 0.8f+scale, 0.8f+scale), false);
+                entities.put(oak.getId(), oak);
+            }
+        }
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 5; j++) {
+                float x = random.nextInt(1300)-1150;
+                float z = random.nextInt(1300)-1300;
+                float y = 0.0f;
+                StaticObjectEntity tree2 = new StaticObjectEntity(meshManager, "tree2", new Vector3f(x, y, z),
+                        new Vector3f(0.0f, 0.0f, 0.0f), new Vector3f(1.0f, 1.0f, 1.0f), true);
+                entities.put(tree2.getId(), tree2);
+            }
+        }
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 5; j++) {
+                float x = random.nextInt(100)-50;
+                float z = random.nextInt(100)-50;
+                float y = MeshLoader.getPositionY(groundMeshData.getVertices(), x, z);
+                StaticObjectEntity stone = new StaticObjectEntity(meshManager, "stones", new Vector3f(x, y, z),
+                        new Vector3f(0.0f, random.nextInt(360), 0.0f), new Vector3f(1.0f, 1.0f, 1.0f), true);
+                entities.put(stone.getId(), stone);
+            }
+        }
+
+        StaticObjectEntity fence = new StaticObjectEntity(meshManager, "fence", new Vector3f(2.0f, 0.0f, -4.0f),
+                new Vector3f(0.0f, 0.0f, 0.0f), new Vector3f(1.0f, 1.0f, 1.0f), true);
+        entities.put(fence.getId(), fence);
+
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 5; j++) {
+                float x = random.nextInt(1000)-500;
+                float z = random.nextInt(1000)-500;
+                float y = MeshLoader.getPositionY(groundMeshData.getVertices(), x, -z);
+                StaticObjectEntity flower = new StaticObjectEntity(meshManager, "flower", new Vector3f(x, y, z),
+                        new Vector3f(0.0f, 0.0f, 0.0f), new Vector3f(1.0f, 1.0f, 1.0f), true);
+                entities.put(flower.getId(), flower);
+            }
+        }
+        StaticObjectEntity tower = new StaticObjectEntity(meshManager, "tower", new Vector3f(0.0f, 0.0f, 0.0f),
+                new Vector3f(0.0f, 0.0f, 0.0f), new Vector3f(1.0f, 1.0f, 1.0f), true);
+        entities.put(tower.getId(), tower);
     }
 }

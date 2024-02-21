@@ -1,10 +1,13 @@
 package org.game;
 
 import org.game.renderer.ShaderProgram;
+import org.game.renderer.TextureEnum;
 import org.joml.Vector3f;
 
 public class MeshData {
 
+    private String name;
+    private TextureEnum texture;
     private int textureID;
     private int textureType = 0;
     private int textureTypeUniformLocation;
@@ -56,5 +59,21 @@ public class MeshData {
 
     public void setTextureID(int textureID) {
         this.textureID = textureID;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public TextureEnum getTexture() {
+        return texture;
+    }
+
+    public void setTexture(TextureEnum texture) {
+        this.texture = texture;
     }
 }

@@ -8,21 +8,26 @@ public class PositionComponent extends Component {
     private float rotationY;
     private float rotationZ;
     private Vector3f scale;
-    private Vector3f lastPosition;
+    private Vector3f lastMoveVector;
 
     public PositionComponent(Vector3f position, float rotationX, float rotationY, float rotationZ, Vector3f scale) {
         this.position = position;
         this.rotationX = rotationX;
         this.rotationY = rotationY;
         this.rotationZ = rotationZ;
+        this.lastMoveVector = new Vector3f(0.0f, 0.0f, 0.0f);
         this.scale = scale;
     }
 
-    public void increaseRotationY() {
-        this.rotationY += 1;
-        if (this.rotationY > 360) {
-            this.rotationY = 0;
+    public void rotateY(float offsetY) {
+        if (rotationY + offsetY > 360) {
+            offsetY = (rotationY + offsetY) - 360;
+            rotationY = 0;
+        } else if (rotationY + offsetY < 0) {
+            offsetY = rotationY + offsetY;
+            rotationY = 360;
         }
+        rotationY += offsetY;
     }
 
     public Vector3f getPosition() {
@@ -65,11 +70,11 @@ public class PositionComponent extends Component {
         this.scale = scale;
     }
 
-    public Vector3f getLastPosition() {
-        return lastPosition;
+    public Vector3f getLastMoveVector() {
+        return lastMoveVector;
     }
 
-    public void setLastPosition(Vector3f lastPosition) {
-        this.lastPosition = lastPosition;
+    public void setLastMoveVector(Vector3f lastMoveVector) {
+        this.lastMoveVector = lastMoveVector;
     }
 }

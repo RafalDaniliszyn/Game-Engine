@@ -62,14 +62,14 @@ public class GrowthSystem extends BaseSystem {
                     growth.setPassedTime(0.0f);
                     growth.setStage(growth.getStage() + 1);
                     growth.setLastUpdate(now);
-                    long meshId = growth.getMeshId(growth.getStage());
+                    Long meshId = growth.getMeshId(growth.getStage());
                     MeshComponent meshComponent = getGameData().getMeshManager().getMeshComponent(meshId);
                     entity.changeComponent(meshComponent, MeshComponent.class);
-                    Vector3f scale = positionComponent.getScale();
-                    scale.x += 0.5f;
-                    scale.y += 0.5f;
-                    scale.z += 0.5f;
-                    positionComponent.setScale(scale);
+//                    Vector3f scale = positionComponent.getScale();
+//                    scale.x += 0.5f;
+//                    scale.y += 0.5f;
+//                    scale.z += 0.5f;
+//                    positionComponent.setScale(scale);
                 } else {
                     growth.setPassedTime(growth.getPassedTime() + elapsedTime);
                 }
