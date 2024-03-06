@@ -18,11 +18,14 @@ public class MeshManager {
     private final Map<Long, MeshData> meshDataMap;
     private final Map<String, List<MeshData>> meshDataMapByName;
     private final TextureManager textureManager;
+    private final List<String> skipBaseLightList;
 
     public MeshManager(TextureManager textureManager) {
         this.textureManager = textureManager;
         this.meshDataMap = new HashMap<>();
         this.meshDataMapByName = new HashMap<>();
+        this.skipBaseLightList = new ArrayList<>();
+        setSkipBaseLight();
         load();
     }
 
@@ -35,6 +38,18 @@ public class MeshManager {
         List<MeshData> meshData = meshDataMapByName.get(name);
         List<MeshComponent> meshComponents = new ArrayList<>();
         meshData.forEach(mesh -> {
+            meshComponents.add(new MeshComponent(mesh.getVertices(), mesh.getIndices(), mesh.getPosition(), mesh.getScale(), mesh.getTextureID()));
+        });
+        return meshComponents;
+    }
+
+    public List<MeshComponent> getMeshComponent(String name, float rotationY) {
+        List<MeshData> meshData = meshDataMapByName.get(name);
+        List<MeshComponent> meshComponents = new ArrayList<>();
+        meshData.forEach(mesh -> {
+            if (!skipBaseLightList.contains(name)) {
+                MeshLoader.setLightColors(mesh, rotationY);
+            }
             meshComponents.add(new MeshComponent(mesh.getVertices(), mesh.getIndices(), mesh.getPosition(), mesh.getScale(), mesh.getTextureID()));
         });
         return meshComponents;
@@ -151,5 +166,9 @@ public class MeshManager {
             });
             meshDataMapByName.put(mesh.get(0).getName(), mesh);
         });
+    }
+
+    private void setSkipBaseLight() {
+        skipBaseLightList.add("background");
     }
 }

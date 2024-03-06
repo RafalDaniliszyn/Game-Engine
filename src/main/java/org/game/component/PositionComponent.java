@@ -1,5 +1,6 @@
 package org.game.component;
 
+import org.game.MeshLoader;
 import org.joml.Vector3f;
 
 public class PositionComponent extends Component {
@@ -11,6 +12,16 @@ public class PositionComponent extends Component {
     private Vector3f lastMoveVector;
 
     public PositionComponent(Vector3f position, float rotationX, float rotationY, float rotationZ, Vector3f scale) {
+        this.position = position;
+        this.rotationX = rotationX;
+        this.rotationY = rotationY;
+        this.rotationZ = rotationZ;
+        this.lastMoveVector = new Vector3f(0.0f, 0.0f, 0.0f);
+        this.scale = scale;
+    }
+
+    public PositionComponent(float[] mapVert, Vector3f position, float rotationX, float rotationY, float rotationZ, Vector3f scale) {
+        position.y =  MeshLoader.getPositionY(mapVert, position.x, position.z);
         this.position = position;
         this.rotationX = rotationX;
         this.rotationY = rotationY;

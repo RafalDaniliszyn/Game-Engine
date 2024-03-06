@@ -1,6 +1,5 @@
 package org.game.component;
 
-import org.game.MeshData;
 import org.game.renderer.ShaderProgram;
 import org.joml.Vector3f;
 import org.lwjgl.BufferUtils;
@@ -26,6 +25,8 @@ public class MeshComponent extends Component {
     private Vector3f scale;
     private int vaoID, vboID, iboID;
     private int renderMode;
+    private boolean cullFace;
+    private boolean settings;
 
     public MeshComponent(float[] vertices, int[] indices, Vector3f position, Vector3f scale) {
         super();
@@ -37,6 +38,7 @@ public class MeshComponent extends Component {
         this.rotationY = 0.0f;
         this.rotationZ = 0.0f;
         this.scale = scale;
+        this.cullFace = true;
         this.create();
     }
 
@@ -52,6 +54,7 @@ public class MeshComponent extends Component {
         this.scale = scale;
         this.textureID = textureID;
         this.renderMode = GL_TRIANGLES;
+        this.cullFace = true;
         this.create();
     }
 
@@ -163,5 +166,21 @@ public class MeshComponent extends Component {
 
     public void setRenderMode(int renderMode) {
         this.renderMode = renderMode;
+    }
+
+    public boolean isCullFace() {
+        return cullFace;
+    }
+
+    public void setCullFace(boolean cullFace) {
+        this.cullFace = cullFace;
+    }
+
+    public boolean isSettings() {
+        return settings;
+    }
+
+    public void setSettings(boolean settings) {
+        this.settings = settings;
     }
 }

@@ -1,12 +1,7 @@
 package org.game.renderer;
 
-import java.nio.FloatBuffer;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
-import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.GL20;
-
-import static org.lwjgl.opengl.GL20.glUniformMatrix4fv;
 
 public class Camera {
 
@@ -15,7 +10,7 @@ public class Camera {
     private static Vector3f cameraRotation = new Vector3f(40.0f, 180.0f, 0.0f);
 
     private static Matrix4f viewMatrix;
-    public static float distance = 5.0f;
+    public static float distance = 0.0f;
 
 
     public static Matrix4f getView() {

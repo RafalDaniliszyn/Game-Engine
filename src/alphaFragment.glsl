@@ -13,5 +13,5 @@ void main() {
     if (texture(ourTexture, passTexture).a < 0.1) {
         discard;
     }
-    FragColor = texture(ourTexture, passTexture)*passColor;
+    FragColor = texture(ourTexture, passTexture) * passColor;
 }

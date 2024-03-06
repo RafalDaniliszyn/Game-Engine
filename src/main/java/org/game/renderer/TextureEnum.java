@@ -9,12 +9,6 @@ public enum TextureEnum {
     GRASS_COLOR(TextureEnum.root + "grassColor.png", GL_MIRRORED_REPEAT, 1, 0, "grassColor.png"),
     STONES(TextureEnum.root + "stones.png", GL_REPEAT, 0, 0, "stones.png"),
     WOOD(TextureEnum.root + "wall.png", GL_MIRRORED_REPEAT, 0, 0, "name"),
-    SKY_TOP(TextureEnum.root + "background\\sunny\\top.bmp", GL_CLAMP_TO_EDGE, 0, 0, "name"),
-    SKY_LEFT(TextureEnum.root + "background\\sunny\\left.bmp", GL_CLAMP_TO_EDGE, 0, 0, "name"),
-    SKY_RIGHT(TextureEnum.root + "background\\sunny\\right.bmp", GL_CLAMP_TO_EDGE, 0, 0, "name"),
-    SKY_FRONT(TextureEnum.root + "background\\sunny\\front.bmp", GL_CLAMP_TO_EDGE, 0, 0, "name"),
-    SKY_BACK(TextureEnum.root + "background\\sunny\\back.bmp", GL_CLAMP_TO_EDGE, 0, 0, "name"),
-    SKY_BOTTOM(TextureEnum.root + "background\\sunny\\bottom.bmp", GL_CLAMP_TO_EDGE, 0, 0, "bottom.bmp"),
     DRY_GRASS(TextureEnum.root + "trawa.png", GL_REPEAT, 1, 1, "trawa.png"),
     TREES(TextureEnum.root + "forestt.png", GL_MIRRORED_REPEAT, 0, 0, "forestt.png"),
     OAK_LEAF(TextureEnum.root + "leaf2.png", GL_MIRRORED_REPEAT, 1, 1, "leaf2.png"),
@@ -28,6 +22,11 @@ public enum TextureEnum {
     BASE_COLOR(TextureEnum.root + "baseColor.png", GL_CLAMP_TO_EDGE, 0, 0, "baseColor.png"),
     FENCE_PALETTE(TextureEnum.root + "palette.png", GL_CLAMP_TO_EDGE, 1, 0, "palette.png"),
     SKY(TextureEnum.root + "background\\sky.png", GL_CLAMP_TO_EDGE, 1, 1, "sky.png"),
+    GROUND(TextureEnum.root + "ground.png", GL_CLAMP_TO_EDGE, 1, 1, "ground.png"),
+    GROUND_2(TextureEnum.root + "ground2.png", GL_CLAMP_TO_EDGE, 1, 1, "ground2.png"),
+    BASE_STONE(TextureEnum.root + "baseStone.png", GL_CLAMP_TO_EDGE, 1, 1, "baseStone.png"),
+    BUTTON(TextureEnum.root + "button.png", GL_CLAMP_TO_EDGE, 1, 1, "button.png"),
+    OLD_HOUSE(TextureEnum.root + "oldhouse.png", GL_CLAMP_TO_EDGE, 1, 1, "oldhouse.png"),
     STONE_GROUP(TextureEnum.root + "grey.png", GL_CLAMP_TO_EDGE, 0, 0, "grey.png");
 
 

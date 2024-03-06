@@ -52,7 +52,7 @@ public class MoveSystem extends BaseSystem {
             MoveComponent move = entity.getComponent(MoveComponent.class);
             Vector3f moveVector = move.getMoveVector();
             float speed = move.getSpeed();
-            Vector3f newPos = meshPos.getPosition();
+            Vector3f newPos = new Vector3f(meshPos.getPosition());
 
             Vector3f camRotation = Camera.getCameraRotation();
             Vector3f meshPosition = meshPos.getPosition();
@@ -65,12 +65,23 @@ public class MoveSystem extends BaseSystem {
                 moveVector.z = 0.0f;
                 moveVector.x = 0.0f;
             }
-
             if (moveVector.x != 0.0f || moveVector.z != 0.0f) {
                 newPos.x -= moveVector.x * speed * dt;
                 newPos.z -= moveVector.z * speed * dt;
-                newPos.y = MeshLoader.getPositionY(getGameData().getMapVert(), newPos.x, newPos.z);
+                if (newPos.x <= 0.0f || newPos.z <= 0.0f) {
+                    return;
+                }
+                try {
+                    newPos.y = MeshLoader.getPositionY(getGameData().getHeightMap(), newPos.x, newPos.z, 6.25f, 6.25f);
+                } catch (IndexOutOfBoundsException exception){
+                    return;
+                }
+
+                float x = moveVector.x * speed * dt;
+                float z = moveVector.z * speed * dt;
+                getGameData().updateSkyPos(x, z);
             }
+
 
             float horizontalDist = (float) (Camera.distance * Math.cos(Math.toRadians(camRotation.x)));
             float verticalDist = (float) (Camera.distance * Math.sin(Math.toRadians(camRotation.x)));

@@ -30,6 +30,8 @@ public class Mouse {
         glfwSetCursorPosCallback(displayID, (windowHandle, xpos, ypos) -> {
             currentPos.x = xpos;
             currentPos.y = ypos;
+            MouseInput.x = xpos;
+            MouseInput.y = ypos;
         });
         glfwSetCursorEnterCallback(displayID, (windowHandle, entered) -> {
             inWindow = entered;

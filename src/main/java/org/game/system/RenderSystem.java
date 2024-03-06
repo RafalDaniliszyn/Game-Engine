@@ -38,7 +38,11 @@ public class RenderSystem extends BaseSystem {
             List<MeshComponent> meshList = entity.getComponents(MeshComponent.class);
             meshList.forEach(mesh -> {
                 PositionComponent pos = entity.getComponent(PositionComponent.class);
-                setMvp(projectionMatrix(), getGameData().getShaderProgram(), pos);
+                if (mesh.isSettings()) {
+                    setMvpForSettings(getGameData().getShaderProgram(), pos);
+                } else {
+                    setMvp(projectionMatrix(), getGameData().getShaderProgram(), pos);
+                }
                 setTextureType(mesh);
                 render(mesh);
             });
@@ -77,6 +81,16 @@ public class RenderSystem extends BaseSystem {
         glUniformMatrix4fv(uMvpID, false, MVPmatrix);
     }
 
+    private void setMvpForSettings(ShaderProgram shaderProgram, PositionComponent pos) {
+        int uMvpID = GL20.glGetUniformLocation(shaderProgram.getProgramID(), "MVP");
+        Matrix4f MVP = new Matrix4f();
+
+        MVP.set(projectionMatrixOrtho()).mul(transformation(pos.getScale(), pos.getPosition(), pos.getRotationX(), pos.getRotationY(), pos.getRotationZ()));
+        FloatBuffer MVPmatrix = BufferUtils.createFloatBuffer(16);
+        MVP.get(MVPmatrix);
+        glUniformMatrix4fv(uMvpID, false, MVPmatrix);
+    }
+
     private Matrix4f transformation(Vector3f scale, Vector3f position, float rotationX, float rotationY, float rotationZ) {
         Matrix4f transform = new Matrix4f();
         transform.identity()
@@ -102,9 +116,17 @@ public class RenderSystem extends BaseSystem {
     private Matrix4f projectionMatrix() {
         float windowAspect = (float) WIDTH / (float) HEIGHT;
         float near = 0.1f;
-        float far = 1000.0f;
+        float far = 1500.0f;
         Matrix4f projection = new Matrix4f();
         projection.perspective(Math.toRadians(80.0f), windowAspect, near, far);
+        return projection;
+    }
+
+    private Matrix4f projectionMatrixOrtho() {
+        float near = 0.1f;
+        float far = 100.0f;
+        Matrix4f projection = new Matrix4f();
+        projection.ortho(-10, 10, -10, 10, near, far);
         return projection;
     }
 
@@ -124,7 +146,13 @@ public class RenderSystem extends BaseSystem {
         glEnableVertexAttribArray(2);
         setPointers();
 
-        glDrawElements(mesh.getRenderMode(), mesh.getIndexCount(), GL_UNSIGNED_INT, 0);
+        if (!mesh.isCullFace()) {
+            glDisable(GL_CULL_FACE);
+            glDrawElements(mesh.getRenderMode(), mesh.getIndexCount(), GL_UNSIGNED_INT, 0);
+            glEnable(GL_CULL_FACE);
+        } else {
+            glDrawElements(mesh.getRenderMode(), mesh.getIndexCount(), GL_UNSIGNED_INT, 0);
+        }
 
         glDisableVertexAttribArray(0);
         glDisableVertexAttribArray(1);

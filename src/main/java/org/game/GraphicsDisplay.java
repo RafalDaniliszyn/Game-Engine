@@ -3,7 +3,8 @@ package org.game;
 import org.game.renderer.*;
 import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.opengl.GL;
-
+import javax.swing.*;
+import java.awt.*;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.glClearColor;
 import static org.lwjgl.opengl.GL30.*;
@@ -12,7 +13,6 @@ public class GraphicsDisplay {
     private static long displayID;
     private static GraphicsDisplay instance = null;
     private ShaderProgram shaderProgram;
-    //private int vaoID;
     private Mouse mouse;
     private float deltaTimeGlobal = 0.0f;
     public static int WIDTH = 1920;
@@ -43,6 +43,11 @@ public class GraphicsDisplay {
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
         glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
         displayID = glfwCreateWindow(WIDTH, HEIGHT, "Barney's Studio", 0, 0);
+
+        Canvas canvas = new Canvas();
+        canvas.setBounds(0, 0, 1920, 1080);
+        JPanel panel = new JPanel();
+        panel.add(canvas);
 
         glfwSetKeyCallback(displayID, new GLFWKeyCallback() {
             @Override
@@ -79,13 +84,17 @@ public class GraphicsDisplay {
     private void loop() {
         GameData gameData = new GameData(shaderProgram);
         gameData.init();
+        gameData.setActive(true);
+
+        GameData settings = new GameData(shaderProgram, gameData.getTextureManager());
+        settings.init();
 
         glEnable(GL_DEPTH_TEST);
         glViewport(0, 0, 1920, 1080);
         glBlendFunc(GL_SRC0_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glEnable(GL_CULL_FACE);
 
-        double fpsLimit = 1.0 / 25.0;
+        double fpsLimit = 1.0 / 40.0;
         double lastUpdateTime = 0;
         double lastFrameTime = 0;
         while (!glfwWindowShouldClose(displayID)) {
@@ -98,6 +107,8 @@ public class GraphicsDisplay {
                 glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
                 mouse.update();
+
+                //settings.update(deltaTimeGlobal);
                 gameData.update(deltaTimeGlobal);
 
                 glfwSwapBuffers(displayID);
@@ -108,6 +119,7 @@ public class GraphicsDisplay {
 
             lastUpdateTime = now;
         }
+        settings.delete();
         gameData.delete();
     }
 }

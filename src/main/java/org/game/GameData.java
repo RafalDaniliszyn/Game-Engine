@@ -1,20 +1,16 @@
 package org.game;
 
-import org.game.component.CollisionComponent;
-import org.game.component.Component;
-import org.game.component.PositionComponent;
+import org.game.component.*;
 import org.game.entity.Entity;
 import org.game.entity.PlayerEntity;
 import org.game.entity.StaticObjectEntity;
 import org.game.renderer.ShaderProgram;
 import org.game.renderer.TextureManager;
-import org.game.settingsWindow.Panel;
+import org.game.settingsWindow.SettingsEntity;
 import org.game.system.*;
 import org.joml.Vector3f;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+
+import java.util.*;
 
 public class GameData {
 
@@ -27,26 +23,66 @@ public class GameData {
     private float deltaTime;
     private float[] mapVert;
     private long playerId;
+    private float[][] heightMap;
+    private Long skyId;
+
+    private boolean active;
+
+
+    public GameData(ShaderProgram shaderProgram, TextureManager textureManager) {
+        this.shaderProgram = shaderProgram;
+        active = true;
+        meshManager = new MeshManager(textureManager);
+
+        SettingsEntity settingsEntity = new SettingsEntity(meshManager);
+        entities.put(settingsEntity.getId(), settingsEntity);
+
+        InterfaceSystem interfaceSystem = new InterfaceSystem(this);
+        systems.put("interfaceSystem", interfaceSystem);
+
+        RenderSystem renderSystem = new RenderSystem(this);
+        systems.put("render", renderSystem);
+    }
 
     public GameData(ShaderProgram shaderProgram) {
+        active = false;
         this.shaderProgram = shaderProgram;
         textureManager = new TextureManager();
         meshManager = new MeshManager(textureManager);
 
-        prepareTestData();
-        StaticObjectEntity groundMap = new StaticObjectEntity(meshManager, "baseMap", new Vector3f(0.0f, 0.0f, 0.0f),
+        //prepareTestData();
+        StaticObjectEntity groundMap = new StaticObjectEntity(meshManager, "baseMap3", new Vector3f(0.0f, 0.0f, 0.0f),
                 new Vector3f(0.0f, 0.0f, 0.0f), new Vector3f(1.0f, 1.0f, 1.0f), false);
         entities.put(groundMap.getId(), groundMap);
+        groundMap.removeComponent(CollisionComponent.class);
+
+        MeshData groundMeshData = meshManager.getMeshData("baseMap3");
+        mapVert = groundMeshData.getVertices();
+
+        heightMap = MeshLoader.getHeightMap(mapVert);
 
         StaticObjectEntity sky = new StaticObjectEntity(meshManager, "background", new Vector3f(0.0f, 0.0f, -140.0f),
                 new Vector3f(0.0f, 0.0f, 0.0f), new Vector3f(10.0f, 10.0f, 10.0f), false);
         sky.removeComponent(CollisionComponent.class);
+        skyId = sky.getId();
         entities.put(sky.getId(), sky);
 
-        PlayerEntity player = new PlayerEntity(meshManager, true);
+        StaticObjectEntity oldHouse = new StaticObjectEntity(mapVert, meshManager, "oldhouse", new Vector3f(2.0f, 0.0f, 4.0f),
+                new Vector3f(0.0f, 0.0f, 0.0f), new Vector3f(1.0f, 1.0f, 1.0f), false);
+        entities.put(oldHouse.getId(), oldHouse);
+
+        PlayerEntity player = new PlayerEntity(meshManager, false);
         playerId = player.getId();
         entities.put(player.getId(), player);
 
+        SettingsEntity settingsEntity = new SettingsEntity(meshManager);
+        entities.put(settingsEntity.getId(), settingsEntity);
+
+        InterfaceSystem interfaceSystem = new InterfaceSystem(this);
+        systems.put("interfaceSystem", interfaceSystem);
+        //Wind
+        WindSystem windSystem = new WindSystem(this);
+        systems.put("windSystem", windSystem);
         //Growth
         GrowthSystem growthSystem = new GrowthSystem(this);
         systems.put("growthSystem", growthSystem);
@@ -66,8 +102,12 @@ public class GameData {
             systems.init();
         });
     }
+
     public void update(float deltaTime) {
-        updateSettings();
+        if (!active) {
+            System.out.println("dsda");
+            return;
+        }
         systems.forEach((s, system) -> {
             system.update(deltaTime);
         });
@@ -121,76 +161,92 @@ public class GameData {
         return mapVert;
     }
 
-    private void updateSettings() {
-        Panel.ROTATION = getEntity(playerId).getComponent(PositionComponent.class).getRotationY();
+    public float[][] getHeightMap() {
+        return heightMap;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+
+    public void updateSkyPos(float x, float z) {
+        Entity sky = getEntity(skyId);
+        sky.getComponent(PositionComponent.class).getPosition().x -= x;
+        sky.getComponent(PositionComponent.class).getPosition().z -= z;
     }
 
     private void prepareTestData() {
-        MeshData groundMeshData = meshManager.getMeshData("baseMap");
+        MeshData groundMeshData = meshManager.getMeshData("baseMap3");
         mapVert = groundMeshData.getVertices();
-        StaticObjectEntity houseTest = new StaticObjectEntity(meshManager, "housetest", new Vector3f(0, 0, -140),
-                new Vector3f(0.0f, 0.0f, 0.0f), new Vector3f(1.0f, 1.0f, 1.0f), true);
-        entities.put(houseTest.getId(), houseTest);
 
         Random random = new Random();
+        for (int i = 0; i < 100; i++) {
+            for (int j = 0; j < 100; j++) {
+                float scale = random.nextFloat();
+                float rotationY = random.nextInt(360);
+                int offset = random.nextInt(60);
+                StaticObjectEntity grass = new StaticObjectEntity(mapVert, meshManager, "grass2", new Vector3f(((i*2)+400)+offset, 0, ((j*2)+300)+offset),
+                        new Vector3f(0.0f, rotationY, 0.0f), new Vector3f(0.9f, 0.6f+scale, 0.9f), false);
+                grass.getComponents(MeshComponent.class).forEach(mesh -> {
+                    mesh.setCullFace(false);
+                });
+                grass.addComponent(new WindComponent());
+                grass.removeComponent(CollisionComponent.class);
+                entities.put(grass.getId(), grass);
+            }
+        }
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
                 float scale = random.nextFloat();
                 float rotationY = random.nextInt(360);
                 int offset = random.nextInt(60);
-                StaticObjectEntity grass = new StaticObjectEntity(meshManager, "grass1", new Vector3f(((i*20)-100)+offset, 0, -((j*20))+offset),
-                        new Vector3f(0.0f, rotationY, 0.0f), new Vector3f(0.9f, 0.6f+scale, 0.9f), false);
-                grass.removeComponent(CollisionComponent.class);
-                entities.put(grass.getId(), grass);
-            }
-        }
-        for (int i = 0; i < 15; i++) {
-            for (int j = 0; j < 15; j++) {
-                float scale = random.nextFloat();
-                float rotationY = random.nextInt(360);
-                int offset = random.nextInt(60);
-                StaticObjectEntity oak = new StaticObjectEntity(meshManager, "oak", new Vector3f(((i*30)-100)+offset, 0, -((j*30))+offset),
+                StaticObjectEntity oak = new StaticObjectEntity(mapVert, meshManager, "oak", new Vector3f(((i*50)+300)+offset, 0, ((j*40)+400)+offset),
                         new Vector3f(0.0f, rotationY, 0.0f), new Vector3f(0.8f+scale, 0.8f+scale, 0.8f+scale), false);
+                oak.getComponents(MeshComponent.class).forEach(mesh -> {
+                    mesh.setCullFace(false);
+                });
                 entities.put(oak.getId(), oak);
             }
         }
-        for (int i = 0; i < 5; i++) {
-            for (int j = 0; j < 5; j++) {
-                float x = random.nextInt(1300)-1150;
-                float z = random.nextInt(1300)-1300;
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                float x = random.nextInt(500);
+                float z = random.nextInt(500);
                 float y = 0.0f;
-                StaticObjectEntity tree2 = new StaticObjectEntity(meshManager, "tree2", new Vector3f(x, y, z),
-                        new Vector3f(0.0f, 0.0f, 0.0f), new Vector3f(1.0f, 1.0f, 1.0f), true);
+                StaticObjectEntity tree2 = new StaticObjectEntity(mapVert, meshManager, "tree2", new Vector3f(x, y, z),
+                        new Vector3f(0.0f, 0.0f, 0.0f), new Vector3f(1.0f, 1.0f, 1.0f), false);
                 entities.put(tree2.getId(), tree2);
             }
         }
-        for (int i = 0; i < 5; i++) {
-            for (int j = 0; j < 5; j++) {
-                float x = random.nextInt(100)-50;
-                float z = random.nextInt(100)-50;
-                float y = MeshLoader.getPositionY(groundMeshData.getVertices(), x, z);
-                StaticObjectEntity stone = new StaticObjectEntity(meshManager, "stones", new Vector3f(x, y, z),
-                        new Vector3f(0.0f, random.nextInt(360), 0.0f), new Vector3f(1.0f, 1.0f, 1.0f), true);
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                float x = random.nextInt(500);
+                float z = random.nextInt(500);
+                float y = MeshLoader.getPositionY(mapVert, x, z);
+                StaticObjectEntity stone = new StaticObjectEntity(mapVert, meshManager, "stones", new Vector3f(x, y, z),
+                        new Vector3f(0.0f, random.nextInt(360), 0.0f), new Vector3f(1.0f, 1.0f, 1.0f), false);
                 entities.put(stone.getId(), stone);
             }
         }
 
-        StaticObjectEntity fence = new StaticObjectEntity(meshManager, "fence", new Vector3f(2.0f, 0.0f, -4.0f),
-                new Vector3f(0.0f, 0.0f, 0.0f), new Vector3f(1.0f, 1.0f, 1.0f), true);
+        StaticObjectEntity fence = new StaticObjectEntity(mapVert, meshManager, "fence", new Vector3f(2.0f, 0.0f, -4.0f),
+                new Vector3f(0.0f, 0.0f, 0.0f), new Vector3f(1.0f, 1.0f, 1.0f), false);
         entities.put(fence.getId(), fence);
 
-        for (int i = 0; i < 5; i++) {
-            for (int j = 0; j < 5; j++) {
+        for (int i = 0; i < 15; i++) {
+            for (int j = 0; j < 15; j++) {
                 float x = random.nextInt(1000)-500;
                 float z = random.nextInt(1000)-500;
-                float y = MeshLoader.getPositionY(groundMeshData.getVertices(), x, -z);
-                StaticObjectEntity flower = new StaticObjectEntity(meshManager, "flower", new Vector3f(x, y, z),
-                        new Vector3f(0.0f, 0.0f, 0.0f), new Vector3f(1.0f, 1.0f, 1.0f), true);
+                float y = MeshLoader.getPositionY(mapVert, x, -z);
+                StaticObjectEntity flower = new StaticObjectEntity(mapVert, meshManager, "flower", new Vector3f(x, y, z),
+                        new Vector3f(0.0f, 0.0f, 0.0f), new Vector3f(1.0f, 1.0f, 1.0f), false);
                 entities.put(flower.getId(), flower);
             }
         }
-        StaticObjectEntity tower = new StaticObjectEntity(meshManager, "tower", new Vector3f(0.0f, 0.0f, 0.0f),
-                new Vector3f(0.0f, 0.0f, 0.0f), new Vector3f(1.0f, 1.0f, 1.0f), true);
-        entities.put(tower.getId(), tower);
     }
 }

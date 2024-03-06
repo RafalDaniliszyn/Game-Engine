@@ -76,4 +76,8 @@ public class MeshData {
     public void setTexture(TextureEnum texture) {
         this.texture = texture;
     }
+
+    public void setVertices(float[] vertices) {
+        this.vertices = vertices;
+    }
 }
