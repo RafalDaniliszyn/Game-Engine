@@ -1,10 +1,10 @@
-package org.game.system;
+package org.game.system.renderer;
 
 import org.game.GameData;
-import org.game.component.MeshComponent;
+import org.game.component.mesh.MeshComponent;
 import org.game.component.PositionComponent;
-import org.game.renderer.Camera;
-import org.game.renderer.ShaderProgram;
+import org.game.Camera;
+import org.game.system.BaseSystem;
 import org.joml.Math;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
@@ -118,15 +118,15 @@ public class RenderSystem extends BaseSystem {
         float near = 0.1f;
         float far = 1500.0f;
         Matrix4f projection = new Matrix4f();
-        projection.perspective(Math.toRadians(80.0f), windowAspect, near, far);
+        projection.perspective(Math.toRadians(70.0f), windowAspect, near, far);
         return projection;
     }
 
     private Matrix4f projectionMatrixOrtho() {
         float near = 0.1f;
-        float far = 100.0f;
+        float far = 2.0f;
         Matrix4f projection = new Matrix4f();
-        projection.ortho(-10, 10, -10, 10, near, far);
+        projection.ortho(0.0f, WIDTH, 0, HEIGHT, near, far);
         return projection;
     }
 

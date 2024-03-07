@@ -1,6 +1,6 @@
 package org.game.component;
 
-import org.game.IdGenerator;
+import org.game.helper.IdGenerator;
 
 public abstract class Component {
     private long id;

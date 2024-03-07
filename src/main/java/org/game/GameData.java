@@ -1,48 +1,45 @@
 package org.game;
 
-import org.game.component.*;
+import org.game.component.CollisionComponent;
+import org.game.component.Component;
+import org.game.component.PositionComponent;
+import org.game.component.WindComponent;
+import org.game.component.mesh.MeshComponent;
+import org.game.component.mesh.MeshData;
+import org.game.component.mesh.MeshManager;
 import org.game.entity.Entity;
 import org.game.entity.PlayerEntity;
 import org.game.entity.StaticObjectEntity;
-import org.game.renderer.ShaderProgram;
-import org.game.renderer.TextureManager;
-import org.game.settingsWindow.SettingsEntity;
-import org.game.system.*;
+import org.game.helper.MapHelper;
+import org.game.helper.PositionHelper;
+import org.game.component.mesh.texture.TextureManager;
+import org.game.ui.SettingsEntity;
+import org.game.system.BaseSystem;
+import org.game.system.CollisionSystem;
+import org.game.system.GrowthSystem;
+import org.game.system.InterfaceSystem;
+import org.game.system.MoveSystem;
+import org.game.system.WindSystem;
+import org.game.system.renderer.RenderSystem;
+import org.game.system.renderer.ShaderProgram;
 import org.joml.Vector3f;
-
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
 
 public class GameData {
-
-    private Map<Component, String> components = new HashMap<>();
-    private Map<Long, Entity> entities = new HashMap<>();
-    private Map<String, BaseSystem> systems = new HashMap<>();
-    private MeshManager meshManager;
-    private TextureManager textureManager;
-    private ShaderProgram shaderProgram;
-    private float deltaTime;
+    private final Map<Component, String> components = new HashMap<>();
+    private final Map<Long, Entity> entities = new HashMap<>();
+    private final Map<String, BaseSystem> systems = new HashMap<>();
+    private final MeshManager meshManager;
+    private final TextureManager textureManager;
+    private final ShaderProgram shaderProgram;
     private float[] mapVert;
     private long playerId;
-    private float[][] heightMap;
-    private Long skyId;
-
+    private final float[][] heightMap;
+    private final Long skyId;
     private boolean active;
-
-
-    public GameData(ShaderProgram shaderProgram, TextureManager textureManager) {
-        this.shaderProgram = shaderProgram;
-        active = true;
-        meshManager = new MeshManager(textureManager);
-
-        SettingsEntity settingsEntity = new SettingsEntity(meshManager);
-        entities.put(settingsEntity.getId(), settingsEntity);
-
-        InterfaceSystem interfaceSystem = new InterfaceSystem(this);
-        systems.put("interfaceSystem", interfaceSystem);
-
-        RenderSystem renderSystem = new RenderSystem(this);
-        systems.put("render", renderSystem);
-    }
 
     public GameData(ShaderProgram shaderProgram) {
         active = false;
@@ -59,7 +56,7 @@ public class GameData {
         MeshData groundMeshData = meshManager.getMeshData("baseMap3");
         mapVert = groundMeshData.getVertices();
 
-        heightMap = MeshLoader.getHeightMap(mapVert);
+        heightMap = MapHelper.getHeightMap(mapVert);
 
         StaticObjectEntity sky = new StaticObjectEntity(meshManager, "background", new Vector3f(0.0f, 0.0f, -140.0f),
                 new Vector3f(0.0f, 0.0f, 0.0f), new Vector3f(10.0f, 10.0f, 10.0f), false);
@@ -145,10 +142,6 @@ public class GameData {
         return shaderProgram;
     }
 
-    public float getDeltaTime() {
-        return deltaTime;
-    }
-
     public MeshManager getMeshManager() {
         return meshManager;
     }
@@ -227,7 +220,7 @@ public class GameData {
             for (int j = 0; j < 10; j++) {
                 float x = random.nextInt(500);
                 float z = random.nextInt(500);
-                float y = MeshLoader.getPositionY(mapVert, x, z);
+                float y = PositionHelper.getPositionY(mapVert, x, z);
                 StaticObjectEntity stone = new StaticObjectEntity(mapVert, meshManager, "stones", new Vector3f(x, y, z),
                         new Vector3f(0.0f, random.nextInt(360), 0.0f), new Vector3f(1.0f, 1.0f, 1.0f), false);
                 entities.put(stone.getId(), stone);
@@ -242,7 +235,7 @@ public class GameData {
             for (int j = 0; j < 15; j++) {
                 float x = random.nextInt(1000)-500;
                 float z = random.nextInt(1000)-500;
-                float y = MeshLoader.getPositionY(mapVert, x, -z);
+                float y = PositionHelper.getPositionY(mapVert, x, -z);
                 StaticObjectEntity flower = new StaticObjectEntity(mapVert, meshManager, "flower", new Vector3f(x, y, z),
                         new Vector3f(0.0f, 0.0f, 0.0f), new Vector3f(1.0f, 1.0f, 1.0f), false);
                 entities.put(flower.getId(), flower);

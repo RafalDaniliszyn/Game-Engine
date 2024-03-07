@@ -1,6 +1,6 @@
-package org.game.renderer;
+package org.game.component.mesh.texture;
 
-import org.game.IdGenerator;
+import org.game.helper.IdGenerator;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.stb.STBImage;
 import java.nio.ByteBuffer;

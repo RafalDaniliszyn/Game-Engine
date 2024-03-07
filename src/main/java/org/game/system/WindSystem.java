@@ -1,7 +1,7 @@
 package org.game.system;
 
 import org.game.GameData;
-import org.game.component.MeshComponent;
+import org.game.component.mesh.MeshComponent;
 import org.game.component.PositionComponent;
 import org.game.component.WindComponent;
 

@@ -1,6 +1,7 @@
 package org.game;
 
-import org.game.renderer.*;
+import org.game.mouse.Mouse;
+import org.game.system.renderer.ShaderProgram;
 import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.opengl.GL;
 import javax.swing.*;
@@ -86,9 +87,6 @@ public class GraphicsDisplay {
         gameData.init();
         gameData.setActive(true);
 
-        GameData settings = new GameData(shaderProgram, gameData.getTextureManager());
-        settings.init();
-
         glEnable(GL_DEPTH_TEST);
         glViewport(0, 0, 1920, 1080);
         glBlendFunc(GL_SRC0_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -107,8 +105,6 @@ public class GraphicsDisplay {
                 glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
                 mouse.update();
-
-                //settings.update(deltaTimeGlobal);
                 gameData.update(deltaTimeGlobal);
 
                 glfwSwapBuffers(displayID);
@@ -119,7 +115,6 @@ public class GraphicsDisplay {
 
             lastUpdateTime = now;
         }
-        settings.delete();
         gameData.delete();
     }
 }

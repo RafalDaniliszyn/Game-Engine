@@ -1,14 +1,14 @@
 package org.game.component;
 
-import org.game.IdGenerator;
+import org.game.helper.IdGenerator;
 
 import java.util.*;
 
 public class CollisionComponent extends Component {
 
-    private Map<Long, Float[]> shapes;
-    private Set<Long> shapeCollisions;
-    private Set<Long> entityCollisions;
+    private final Map<Long, Float[]> shapes;
+    private final Set<Long> shapeCollisions;
+    private final Set<Long> entityCollisions;
 
     public CollisionComponent() {
         shapeCollisions = new HashSet<>();

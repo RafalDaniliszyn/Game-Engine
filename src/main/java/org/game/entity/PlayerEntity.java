@@ -1,8 +1,8 @@
 package org.game.entity;
 
-import org.game.MeshManager;
+import org.game.component.mesh.MeshManager;
 import org.game.component.CollisionComponent;
-import org.game.component.MeshComponent;
+import org.game.component.mesh.MeshComponent;
 import org.game.component.MoveComponent;
 import org.game.component.PositionComponent;
 import org.joml.Vector3f;

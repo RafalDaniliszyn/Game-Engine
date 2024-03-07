@@ -1,9 +1,9 @@
-package org.game;
+package org.game.component.mesh;
 
-import org.game.component.MeshComponent;
 import org.game.component.PositionComponent;
-import org.game.renderer.TextureEnum;
-import org.game.renderer.TextureManager;
+import org.game.helper.MeshHelper;
+import org.game.component.mesh.texture.TextureEnum;
+import org.game.component.mesh.texture.TextureManager;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -48,7 +48,7 @@ public class MeshManager {
         List<MeshComponent> meshComponents = new ArrayList<>();
         meshData.forEach(mesh -> {
             if (!skipBaseLightList.contains(name)) {
-                MeshLoader.setLightColors(mesh, rotationY);
+                MeshHelper.setLightColors(mesh, rotationY);
             }
             meshComponents.add(new MeshComponent(mesh.getVertices(), mesh.getIndices(), mesh.getPosition(), mesh.getScale(), mesh.getTextureID()));
         });
@@ -127,7 +127,6 @@ public class MeshManager {
                 maxZ = vertices[i+2];
             }
         }
-
         return new float[]{
                 minX, minY, minZ,
                 maxX, maxY, maxZ

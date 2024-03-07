@@ -2,9 +2,8 @@ package org.game.system;
 
 import org.game.GameData;
 import org.game.component.GrowthComponent;
-import org.game.component.MeshComponent;
+import org.game.component.mesh.MeshComponent;
 import org.game.component.PositionComponent;
-import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;
 
 public class GrowthSystem extends BaseSystem {

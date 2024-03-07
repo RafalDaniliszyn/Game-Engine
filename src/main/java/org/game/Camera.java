@@ -1,4 +1,4 @@
-package org.game.renderer;
+package org.game;
 
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
@@ -6,12 +6,9 @@ import org.joml.Vector3f;
 public class Camera {
 
     public static Vector3f cameraPosition = new Vector3f(0.0f, 0.0f, 0.0f);
-
-    private static Vector3f cameraRotation = new Vector3f(40.0f, 180.0f, 0.0f);
-
-    private static Matrix4f viewMatrix;
     public static float distance = 0.0f;
-
+    private static Vector3f cameraRotation = new Vector3f(40.0f, 180.0f, 0.0f);
+    private static Matrix4f viewMatrix;
 
     public static Matrix4f getView() {
         if (viewMatrix == null) {

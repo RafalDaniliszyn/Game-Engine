@@ -1,6 +1,6 @@
 package org.game.component;
 
-import org.game.settingsWindow.Clickable;
+import org.game.ui.Clickable;
 
 public class ButtonComponent extends Component {
     private boolean clicked;

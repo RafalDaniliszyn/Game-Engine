@@ -1,7 +1,7 @@
 package org.game.system;
 
 import org.game.GameData;
-import org.game.MouseInput;
+import org.game.mouse.MouseInput;
 import org.game.component.ButtonComponent;
 
 public class InterfaceSystem extends BaseSystem {

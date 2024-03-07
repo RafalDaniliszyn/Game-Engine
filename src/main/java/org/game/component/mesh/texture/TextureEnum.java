@@ -1,4 +1,4 @@
-package org.game.renderer;
+package org.game.component.mesh.texture;
 
 import static org.lwjgl.opengl.GL11.GL_REPEAT;
 import static org.lwjgl.opengl.GL12.GL_CLAMP_TO_EDGE;

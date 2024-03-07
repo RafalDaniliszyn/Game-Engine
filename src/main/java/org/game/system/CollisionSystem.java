@@ -1,9 +1,9 @@
 package org.game.system;
 
 import org.game.GameData;
-import org.game.MeshManager;
+import org.game.component.mesh.MeshManager;
 import org.game.component.CollisionComponent;
-import org.game.component.MeshComponent;
+import org.game.component.mesh.MeshComponent;
 import org.game.component.MoveComponent;
 import org.game.component.PositionComponent;
 import org.game.entity.Entity;
@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.stream.Collectors;
 
 public class CollisionSystem extends BaseSystem {
 

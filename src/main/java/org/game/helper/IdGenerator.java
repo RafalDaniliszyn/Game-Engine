@@ -1,4 +1,4 @@
-package org.game;
+package org.game.helper;
 
 public class IdGenerator {
     private static Long currentId;

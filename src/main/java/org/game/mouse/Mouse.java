@@ -1,6 +1,6 @@
-package org.game.renderer;
+package org.game.mouse;
 
-import org.game.MouseInput;
+import org.game.Camera;
 import org.joml.Vector2d;
 import org.joml.Vector2f;
 

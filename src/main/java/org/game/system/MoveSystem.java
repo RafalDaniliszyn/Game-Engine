@@ -2,11 +2,11 @@ package org.game.system;
 
 import org.game.GameData;
 import org.game.Key;
-import org.game.MeshLoader;
-import org.game.MouseInput;
+import org.game.mouse.MouseInput;
 import org.game.component.MoveComponent;
 import org.game.component.PositionComponent;
-import org.game.renderer.Camera;
+import org.game.helper.PositionHelper;
+import org.game.Camera;
 import org.joml.*;
 
 import java.lang.Math;
@@ -72,7 +72,7 @@ public class MoveSystem extends BaseSystem {
                     return;
                 }
                 try {
-                    newPos.y = MeshLoader.getPositionY(getGameData().getHeightMap(), newPos.x, newPos.z, 6.25f, 6.25f);
+                    newPos.y = PositionHelper.getPositionY(getGameData().getHeightMap(), newPos.x, newPos.z, 6.25f, 6.25f);
                 } catch (IndexOutOfBoundsException exception){
                     return;
                 }

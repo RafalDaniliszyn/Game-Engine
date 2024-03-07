@@ -1,7 +1,7 @@
 package org.game.entity;
 
 
-import org.game.IdGenerator;
+import org.game.helper.IdGenerator;
 import org.game.component.Component;
 
 import java.util.ArrayList;

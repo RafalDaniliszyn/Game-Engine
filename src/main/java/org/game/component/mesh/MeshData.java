@@ -1,7 +1,7 @@
-package org.game;
+package org.game.component.mesh;
 
-import org.game.renderer.ShaderProgram;
-import org.game.renderer.TextureEnum;
+import org.game.system.renderer.ShaderProgram;
+import org.game.component.mesh.texture.TextureEnum;
 import org.joml.Vector3f;
 
 public class MeshData {

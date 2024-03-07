@@ -1,6 +1,6 @@
 package org.game.entity;
 
-import org.game.MeshManager;
+import org.game.component.mesh.MeshManager;
 import org.game.component.*;
 import org.joml.Vector3f;
 import java.util.Random;

@@ -1,6 +1,7 @@
-package org.game.component;
+package org.game.component.mesh;
 
-import org.game.renderer.ShaderProgram;
+import org.game.system.renderer.ShaderProgram;
+import org.game.component.Component;
 import org.joml.Vector3f;
 import org.lwjgl.BufferUtils;
 import java.nio.FloatBuffer;
