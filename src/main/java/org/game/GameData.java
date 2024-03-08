@@ -10,18 +10,21 @@ import org.game.component.mesh.MeshManager;
 import org.game.entity.Entity;
 import org.game.entity.PlayerEntity;
 import org.game.entity.StaticObjectEntity;
+import org.game.event.EquipmentEventManager;
 import org.game.helper.MapHelper;
 import org.game.helper.PositionHelper;
 import org.game.component.mesh.texture.TextureManager;
-import org.game.ui.SettingsEntity;
+import org.game.ui.entity.EquipmentEntity;
 import org.game.system.BaseSystem;
 import org.game.system.CollisionSystem;
 import org.game.system.GrowthSystem;
-import org.game.system.InterfaceSystem;
+import org.game.system.UiSystem;
 import org.game.system.MoveSystem;
 import org.game.system.WindSystem;
 import org.game.system.renderer.RenderSystem;
 import org.game.system.renderer.ShaderProgram;
+import org.game.event.EventManager;
+import org.game.event.EventObserver;
 import org.joml.Vector3f;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -32,6 +35,7 @@ public class GameData {
     private final Map<Component, String> components = new HashMap<>();
     private final Map<Long, Entity> entities = new HashMap<>();
     private final Map<String, BaseSystem> systems = new HashMap<>();
+    private final Map<String, EventManager> eventManagers = new HashMap<>();
     private final MeshManager meshManager;
     private final TextureManager textureManager;
     private final ShaderProgram shaderProgram;
@@ -47,7 +51,7 @@ public class GameData {
         textureManager = new TextureManager();
         meshManager = new MeshManager(textureManager);
 
-        //prepareTestData();
+        prepareTestData();
         StaticObjectEntity groundMap = new StaticObjectEntity(meshManager, "baseMap3", new Vector3f(0.0f, 0.0f, 0.0f),
                 new Vector3f(0.0f, 0.0f, 0.0f), new Vector3f(1.0f, 1.0f, 1.0f), false);
         entities.put(groundMap.getId(), groundMap);
@@ -64,19 +68,27 @@ public class GameData {
         skyId = sky.getId();
         entities.put(sky.getId(), sky);
 
-        StaticObjectEntity oldHouse = new StaticObjectEntity(mapVert, meshManager, "oldhouse", new Vector3f(2.0f, 0.0f, 4.0f),
+        StaticObjectEntity oldHouse = new StaticObjectEntity(meshManager, "oldhouse", new Vector3f(2.0f, 0.01f, 4.0f),
                 new Vector3f(0.0f, 0.0f, 0.0f), new Vector3f(1.0f, 1.0f, 1.0f), false);
         entities.put(oldHouse.getId(), oldHouse);
+
+        EquipmentEntity equipmentEntity = new EquipmentEntity(meshManager, 1L, 100.0f, 200.0f);
+        entities.put(equipmentEntity.getId(), equipmentEntity);
+
+        EquipmentEntity equipmentEntity1 = new EquipmentEntity(meshManager, 2L, 300.0f, 200.0f);
+        entities.put(equipmentEntity1.getId(), equipmentEntity1);
+
+        //Equipment event manager
+        eventManagers.put("equipmentEntity", equipmentEntity.getEventManager());
+        eventManagers.put("equipmentEntity1", equipmentEntity1.getEventManager());
 
         PlayerEntity player = new PlayerEntity(meshManager, false);
         playerId = player.getId();
         entities.put(player.getId(), player);
+        addEventManagerObserver(EquipmentEventManager.class, player);
 
-        SettingsEntity settingsEntity = new SettingsEntity(meshManager);
-        entities.put(settingsEntity.getId(), settingsEntity);
-
-        InterfaceSystem interfaceSystem = new InterfaceSystem(this);
-        systems.put("interfaceSystem", interfaceSystem);
+        UiSystem uiSystem = new UiSystem(this);
+        systems.put("interfaceSystem", uiSystem);
         //Wind
         WindSystem windSystem = new WindSystem(this);
         systems.put("windSystem", windSystem);
@@ -102,9 +114,11 @@ public class GameData {
 
     public void update(float deltaTime) {
         if (!active) {
-            System.out.println("dsda");
             return;
         }
+        eventManagers.forEach((s, eventManager) -> {
+            eventManager.notifyObservers();
+        });
         systems.forEach((s, system) -> {
             system.update(deltaTime);
         });
@@ -132,6 +146,14 @@ public class GameData {
             }
         });
         return result;
+    }
+
+    public void addEventManagerObserver(Class<? extends EventManager> eventManager, EventObserver eventObserver) {
+        eventManagers.forEach((s, manager) -> {
+            if (manager.getClass().isAssignableFrom(eventManager)) {
+                manager.addObserver(eventObserver);
+            }
+        });
     }
 
     public Entity getEntity(Long id) {
@@ -178,12 +200,12 @@ public class GameData {
         mapVert = groundMeshData.getVertices();
 
         Random random = new Random();
-        for (int i = 0; i < 100; i++) {
-            for (int j = 0; j < 100; j++) {
+        for (int i = 0; i < 20; i++) {
+            for (int j = 0; j < 20; j++) {
                 float scale = random.nextFloat();
                 float rotationY = random.nextInt(360);
                 int offset = random.nextInt(60);
-                StaticObjectEntity grass = new StaticObjectEntity(mapVert, meshManager, "grass2", new Vector3f(((i*2)+400)+offset, 0, ((j*2)+300)+offset),
+                StaticObjectEntity grass = new StaticObjectEntity(mapVert, meshManager, "grass2", new Vector3f(((i))+offset, 0, ((j))+offset),
                         new Vector3f(0.0f, rotationY, 0.0f), new Vector3f(0.9f, 0.6f+scale, 0.9f), false);
                 grass.getComponents(MeshComponent.class).forEach(mesh -> {
                     mesh.setCullFace(false);
@@ -194,11 +216,11 @@ public class GameData {
             }
         }
         for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; j++) {
+            for (int j = 0; j < 5; j++) {
                 float scale = random.nextFloat();
                 float rotationY = random.nextInt(360);
                 int offset = random.nextInt(60);
-                StaticObjectEntity oak = new StaticObjectEntity(mapVert, meshManager, "oak", new Vector3f(((i*50)+300)+offset, 0, ((j*40)+400)+offset),
+                StaticObjectEntity oak = new StaticObjectEntity(mapVert, meshManager, "oak", new Vector3f(((i*50))+offset, 0, ((j*40))+offset),
                         new Vector3f(0.0f, rotationY, 0.0f), new Vector3f(0.8f+scale, 0.8f+scale, 0.8f+scale), false);
                 oak.getComponents(MeshComponent.class).forEach(mesh -> {
                     mesh.setCullFace(false);
@@ -207,7 +229,7 @@ public class GameData {
             }
         }
         for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; j++) {
+            for (int j = 0; j < 5; j++) {
                 float x = random.nextInt(500);
                 float z = random.nextInt(500);
                 float y = 0.0f;

@@ -7,12 +7,16 @@ import org.game.component.MoveComponent;
 import org.game.component.PositionComponent;
 import org.game.helper.PositionHelper;
 import org.game.Camera;
-import org.joml.*;
-
+import org.joml.Vector3f;
 import java.lang.Math;
 import java.util.Random;
 
-import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_A;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_D;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_S;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_SPACE;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_W;
+import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
 
 public class MoveSystem extends BaseSystem {
 
@@ -47,9 +51,11 @@ public class MoveSystem extends BaseSystem {
     private void move(float dt) {
         getGameData().getEntities(PositionComponent.class, MoveComponent.class).forEach((id, entity)-> {
             PositionComponent meshPos = entity.getComponent(PositionComponent.class);
-            //jump(dt, meshPos);
             up(dt, meshPos);
             MoveComponent move = entity.getComponent(MoveComponent.class);
+            if (move.isJump()) {
+                jump(dt, meshPos, move);
+            }
             Vector3f moveVector = move.getMoveVector();
             float speed = move.getSpeed();
             Vector3f newPos = new Vector3f(meshPos.getPosition());
@@ -112,7 +118,6 @@ public class MoveSystem extends BaseSystem {
         }
         if (Key.key == GLFW_KEY_SPACE) {
            KEY_SPACE = true;
-           jump = true;
         }
         if (MouseInput.WHEEL_UP) {
             Camera.distance -= 0.1f;
@@ -140,34 +145,30 @@ public class MoveSystem extends BaseSystem {
     }
 
     float forceUp = 0.0f;
-    boolean jump;
-    private void jump(float dt, PositionComponent position) {
-        if (jump) {
+    private void jump(float dt, PositionComponent position, MoveComponent move) {
             Vector3f newPos = position.getPosition();
             if (newPos.y < 0.0f) {
                 newPos.y = 0.0f;
                 position.setPosition(newPos);
-                jump = false;
                 return;
             }
-            if (forceUp < 1.0f) {
-                newPos.y += 5 * dt;
-            } else {
-                newPos.y -= 5 * dt;
-            }
+            if (move.isJump()) {
+                if (forceUp < 1.0f) {
+                    newPos.y += 5 * dt;
+                } else {
+                    newPos.y -= 5 * dt;
+                }
 
-            if (forceUp < 2.0f) {
-                forceUp += 0.1f;
-            }else {
-                forceUp = 0.0f;
-                jump = false;
+                if (forceUp < 2.0f ) {
+                    forceUp += 0.1f;
+                }else {
+                    forceUp = 0.0f;
+                    move.setJump(false);
+                }
+                if (newPos.y > 0.0f) {
+                    position.setPosition(newPos);
+                }
             }
-            if (newPos.y > 0.0f) {
-                position.setPosition(newPos);
-            } else {
-                jump = false;
-            }
-        }
     }
 
     private void randomMove(MoveComponent move) {

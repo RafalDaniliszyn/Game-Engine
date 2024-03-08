@@ -5,11 +5,13 @@ import org.game.component.CollisionComponent;
 import org.game.component.mesh.MeshComponent;
 import org.game.component.MoveComponent;
 import org.game.component.PositionComponent;
+import org.game.event.EquipmentEvent;
+import org.game.event.Event;
+import org.game.event.EventObserver;
 import org.joml.Vector3f;
-
 import java.util.List;
 
-public class PlayerEntity extends Entity {
+public class PlayerEntity extends Entity implements EventObserver {
 
     boolean attachedCamera;
 
@@ -30,4 +32,22 @@ public class PlayerEntity extends Entity {
         addComponent(new CollisionComponent());
         this.attachedCamera = true;
     }
+
+    @Override
+    public void notify(List<Event> event) {
+        event.forEach(e -> {
+            if (e.getClass().isAssignableFrom(EquipmentEvent.class)) {
+                EquipmentEvent equipmentEvent = (EquipmentEvent) e;
+                System.out.println("event: "+ e.getEventEnum().name() + ", item id: " + equipmentEvent.getItemId());
+                MoveComponent moveComponent = getComponent(MoveComponent.class);
+                if (equipmentEvent.getItemId() == 2L) {
+                    moveComponent.setSpeed(5.0f);
+                }
+                if (equipmentEvent.getItemId() == 1L) {
+                    moveComponent.setSpeed(20.0f);
+                }
+            }
+        });
+    }
+
 }

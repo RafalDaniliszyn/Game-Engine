@@ -5,6 +5,7 @@ import org.joml.Vector3f;
 public class MoveComponent extends Component{
     private Vector3f moveVector;
     private float speed;
+    private boolean jump;
 
     public MoveComponent() {
         this.moveVector = new Vector3f(0.0f, 0.0f, 0.0f);
@@ -30,5 +31,13 @@ public class MoveComponent extends Component{
 
     public float getSpeed() {
         return speed;
+    }
+
+    public boolean isJump() {
+        return jump;
+    }
+
+    public void setJump(boolean jump) {
+        this.jump = jump;
     }
 }

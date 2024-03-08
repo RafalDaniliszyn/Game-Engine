@@ -39,6 +39,8 @@ public class Mouse {
         glfwSetMouseButtonCallback(displayID, (windowHandle, button, action, mode) -> {
             LEFT = button == GLFW_MOUSE_BUTTON_1 && action == GLFW_PRESS;
             RIGHT = button == GLFW_MOUSE_BUTTON_2 && action == GLFW_PRESS;
+            MouseInput.LEFT_CLICK = LEFT;
+            MouseInput.RIGHT_CLICK = RIGHT;
         });
         glfwSetScrollCallback(displayID, (windowHandle, xoffset, yoffset) -> {
             MouseInput.WHEEL_UP = yoffset > 0.0;
