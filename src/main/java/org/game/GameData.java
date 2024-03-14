@@ -8,28 +8,29 @@ import org.game.component.mesh.MeshComponent;
 import org.game.component.mesh.MeshData;
 import org.game.component.mesh.MeshManager;
 import org.game.entity.Entity;
+import org.game.entity.EntityProperties;
+import org.game.entity.LightSourceEntity;
+import org.game.entity.MultipleObjectsEntity;
 import org.game.entity.PlayerEntity;
 import org.game.entity.StaticObjectEntity;
 import org.game.event.EquipmentEventManager;
 import org.game.helper.MapHelper;
 import org.game.helper.PositionHelper;
 import org.game.component.mesh.texture.TextureManager;
+import org.game.system.renderer.ShaderEnum;
+import org.game.system.renderer.ShaderManager;
 import org.game.ui.entity.EquipmentEntity;
 import org.game.system.BaseSystem;
 import org.game.system.CollisionSystem;
 import org.game.system.GrowthSystem;
 import org.game.system.UiSystem;
 import org.game.system.MoveSystem;
-import org.game.system.WindSystem;
 import org.game.system.renderer.RenderSystem;
-import org.game.system.renderer.ShaderProgram;
 import org.game.event.EventManager;
 import org.game.event.EventObserver;
 import org.joml.Vector3f;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+
+import java.util.*;
 
 public class GameData {
     private final Map<Component, String> components = new HashMap<>();
@@ -38,20 +39,20 @@ public class GameData {
     private final Map<String, EventManager> eventManagers = new HashMap<>();
     private final MeshManager meshManager;
     private final TextureManager textureManager;
-    private final ShaderProgram shaderProgram;
     private float[] mapVert;
     private long playerId;
+    private ShaderManager shaderManager;
     private final float[][] heightMap;
     private final Long skyId;
     private boolean active;
 
-    public GameData(ShaderProgram shaderProgram) {
+    public GameData() {
         active = false;
-        this.shaderProgram = shaderProgram;
         textureManager = new TextureManager();
         meshManager = new MeshManager(textureManager);
+        shaderManager = new ShaderManager();
 
-        prepareTestData();
+        //prepareTestData();
         StaticObjectEntity groundMap = new StaticObjectEntity(meshManager, "baseMap3", new Vector3f(0.0f, 0.0f, 0.0f),
                 new Vector3f(0.0f, 0.0f, 0.0f), new Vector3f(1.0f, 1.0f, 1.0f), false);
         entities.put(groundMap.getId(), groundMap);
@@ -62,8 +63,8 @@ public class GameData {
 
         heightMap = MapHelper.getHeightMap(mapVert);
 
-        StaticObjectEntity sky = new StaticObjectEntity(meshManager, "background", new Vector3f(0.0f, 0.0f, -140.0f),
-                new Vector3f(0.0f, 0.0f, 0.0f), new Vector3f(10.0f, 10.0f, 10.0f), false);
+        StaticObjectEntity sky = new StaticObjectEntity(meshManager, "background", new Vector3f(0.0f, 0.0f, 0.0f),
+                new Vector3f(0.0f, 0.0f, 0.0f), new Vector3f(1.0f, 1.0f, 1.0f), false);
         sky.removeComponent(CollisionComponent.class);
         skyId = sky.getId();
         entities.put(sky.getId(), sky);
@@ -71,6 +72,31 @@ public class GameData {
         StaticObjectEntity oldHouse = new StaticObjectEntity(meshManager, "oldhouse", new Vector3f(2.0f, 0.01f, 4.0f),
                 new Vector3f(0.0f, 0.0f, 0.0f), new Vector3f(1.0f, 1.0f, 1.0f), false);
         entities.put(oldHouse.getId(), oldHouse);
+
+        StaticObjectEntity palace = new StaticObjectEntity(meshManager, "palace", new Vector3f(15.0f, 0.0f, 14.0f),
+                new Vector3f(0.0f, 0.0f, 0.0f), new Vector3f(1.0f, 1.0f, 1.0f), false);
+        entities.put(palace.getId(), palace);
+
+        StaticObjectEntity water = new StaticObjectEntity(meshManager, "water", new Vector3f(0.0f, 0.0f, 0.0f),
+                new Vector3f(0.0f, 0.0f, 0.0f), new Vector3f(1.0f, 1.0f, 1.0f), false, new EntityProperties(ShaderEnum.WATER));
+        entities.put(water.getId(), water);
+
+        MultipleObjectsEntity grass = new MultipleObjectsEntity(mapVert, meshManager, "grass2",
+                new Vector3f(0.0f, 0.0f, 0.0f), new Vector3f(1.0f, 1.0f, 1.0f), 250, false, false);
+        entities.put(grass.getId(), grass);
+
+
+        MultipleObjectsEntity oak = new MultipleObjectsEntity(mapVert, meshManager, "tree2",
+                new Vector3f(0.0f, 0.0f, 0.0f), new Vector3f(1.0f, 1.0f, 1.0f), 700, false, true);
+        entities.put(oak.getId(), oak);
+
+        MultipleObjectsEntity stones = new MultipleObjectsEntity(mapVert, meshManager, "stones",
+                new Vector3f(0.0f, 0.0f, 0.0f), new Vector3f(1.0f, 1.0f, 1.0f), 30, false, true);
+        entities.put(stones.getId(), stones);
+
+        LightSourceEntity sun = new LightSourceEntity(meshManager, "sun", new Vector3f(-300.0f, 400.0f, 300.0f),
+                new Vector3f(0.0f, 0.0f, 0.0f), new Vector3f(1.0f, 1.0f, 1.0f), false, new Vector3f(1.0f, 1.0f, 1.0f));
+        entities.put(sun.getId(), sun);
 
         EquipmentEntity equipmentEntity = new EquipmentEntity(meshManager, 1L, 100.0f, 200.0f);
         entities.put(equipmentEntity.getId(), equipmentEntity);
@@ -89,9 +115,9 @@ public class GameData {
 
         UiSystem uiSystem = new UiSystem(this);
         systems.put("interfaceSystem", uiSystem);
-        //Wind
-        WindSystem windSystem = new WindSystem(this);
-        systems.put("windSystem", windSystem);
+//        //Wind
+//        WindSystem windSystem = new WindSystem(this);
+//        systems.put("windSystem", windSystem);
         //Growth
         GrowthSystem growthSystem = new GrowthSystem(this);
         systems.put("growthSystem", growthSystem);
@@ -160,10 +186,6 @@ public class GameData {
         return entities.get(id);
     }
 
-    public ShaderProgram getShaderProgram() {
-        return shaderProgram;
-    }
-
     public MeshManager getMeshManager() {
         return meshManager;
     }
@@ -188,6 +210,9 @@ public class GameData {
         this.active = active;
     }
 
+    public ShaderManager getShaderManager() {
+        return shaderManager;
+    }
 
     public void updateSkyPos(float x, float z) {
         Entity sky = getEntity(skyId);

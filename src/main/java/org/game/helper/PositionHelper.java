@@ -3,7 +3,6 @@ package org.game.helper;
 import org.joml.Interpolationf;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,8 +26,9 @@ public class PositionHelper {
     }
 
     public static List<Vector3f> getXyzPositionList(float[] vertices) {
+        int STRIDE = 12;
         List<Vector3f> vertList = new ArrayList<>();
-        for (int i = 0; i < vertices.length; i+=9) {
+        for (int i = 0; i < vertices.length; i+=STRIDE) {
             vertList.add(new Vector3f(vertices[i], vertices[i+1], vertices[i+2]));
         }
         return vertList;

@@ -1,20 +1,26 @@
 package org.game.entity;
 
-
 import org.game.helper.IdGenerator;
 import org.game.component.Component;
-
+import org.game.system.renderer.ShaderEnum;
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Entity {
     private final long id;
     private List<Component> componentList;
-
+    private EntityProperties properties;
 
     public Entity() {
         this.componentList = new ArrayList<>();
         this.id = IdGenerator.getNextId();
+        this.properties = new EntityProperties(ShaderEnum.DEFAULT);
+    }
+
+    public Entity(EntityProperties properties) {
+        this.componentList = new ArrayList<>();
+        this.id = IdGenerator.getNextId();
+        this.properties = properties;
     }
 
     public void addComponent(List<? extends Component> component) {
@@ -69,5 +75,17 @@ public abstract class Entity {
 
     public List<Component> getComponentList() {
         return componentList;
+    }
+
+    public void setComponentList(List<Component> componentList) {
+        this.componentList = componentList;
+    }
+
+    public EntityProperties getProperties() {
+        return properties;
+    }
+
+    public void setProperties(EntityProperties properties) {
+        this.properties = properties;
     }
 }

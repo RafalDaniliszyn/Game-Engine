@@ -14,9 +14,11 @@ out vec3 toLightVector;
 uniform mat4 MVP;
 uniform mat4 transformationMatrix;
 uniform vec3 lightPosition;
+uniform float time;
 
 void main() {
-    gl_Position = MVP * vec4(position, 1.0);
+    vec3 pos = vec3(position.x + (sin(position.y * time))*0.03, position.y, position.z + (cos(position.y * time)*0.03));
+    gl_Position = MVP * vec4(pos, 1.0);
 
     vec4 worldPosition = transformationMatrix * vec4(position, 1.0);
     surfaceNormal = (transformationMatrix * vec4(normal, 0.0)).xyz;

@@ -1,17 +1,20 @@
 package org.game.component;
 
 import org.game.helper.IdGenerator;
-
-import java.util.*;
+import org.joml.Vector3f;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 public class CollisionComponent extends Component {
 
     private final Map<Long, Float[]> shapes;
-    private final Set<Long> shapeCollisions;
+    private final Map<Long, Vector3f> shapeCollisions;
     private final Set<Long> entityCollisions;
 
     public CollisionComponent() {
-        shapeCollisions = new HashSet<>();
+        shapeCollisions = new HashMap<>();
         shapes = new HashMap<>();
         entityCollisions = new HashSet<>();
     }
@@ -32,18 +35,20 @@ public class CollisionComponent extends Component {
         entityCollisions.remove(entityId);
     }
 
-    public void setShapeCollisions(Long id) {
-        shapeCollisions.add(id);
+    public void setShapeCollisions(Long id, Vector3f position) {
+        shapeCollisions.put(id, position);
     }
     public void removeCollision(Set<Long> ids) {
-        shapeCollisions.removeAll(ids);
+        for (Long id : ids) {
+            shapeCollisions.remove(id);
+        }
     }
 
     public boolean anyCollision() {
         return !shapeCollisions.isEmpty();
     }
 
-    public Set<Long> getShapeCollisions() {
+    public Map<Long, Vector3f> getShapeCollisions() {
         return shapeCollisions;
     }
 

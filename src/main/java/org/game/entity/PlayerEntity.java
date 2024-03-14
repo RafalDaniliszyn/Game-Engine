@@ -18,7 +18,7 @@ public class PlayerEntity extends Entity implements EventObserver {
     public PlayerEntity(MeshManager meshManager, boolean lines) {
         super();
         PositionComponent positionComponent = new PositionComponent(
-                new Vector3f(4.0f, 0.0f, 4.0f), 0.0f, 0.0f, 0.0f, new Vector3f(1.0f, 1.0f, 1.0f));
+                new Vector3f(700.0f, 0.0f, 10.0f), 0.0f, 0.0f, 0.0f, new Vector3f(1.0f, 1.0f, 1.0f));
         addComponent(positionComponent);
         List<MeshComponent> meshComponent = meshManager.getMeshComponent("player");
         addComponent(new MoveComponent(new Vector3f(0.0f, 0.0f, 0.0f), 5.0f));
@@ -28,7 +28,7 @@ public class PlayerEntity extends Entity implements EventObserver {
                 addComponent(meshManager.getCollisionLines(mesh.getVertices(), positionComponent));
             });
         }
-        //addComponent(meshComponent.get(0));
+        addComponent(meshComponent.get(0));
         addComponent(new CollisionComponent());
         this.attachedCamera = true;
     }
@@ -44,7 +44,7 @@ public class PlayerEntity extends Entity implements EventObserver {
                     moveComponent.setSpeed(5.0f);
                 }
                 if (equipmentEvent.getItemId() == 1L) {
-                    moveComponent.setSpeed(20.0f);
+                    moveComponent.setSpeed(40.0f);
                 }
             }
         });

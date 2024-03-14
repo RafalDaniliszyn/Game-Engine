@@ -8,8 +8,7 @@ import org.game.component.MoveComponent;
 import org.game.component.PositionComponent;
 import org.game.entity.Entity;
 import org.joml.Vector3f;
-
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -49,20 +48,21 @@ public class CollisionSystem extends BaseSystem {
                 MoveComponent moveComponent = entity.getComponent(MoveComponent.class);
 
                 Set<Long> collisionSet = collisionComponent.getEntityCollisions();
-                Set<Long> shapeCollisions = collisionComponent.getShapeCollisions();
-
-                Entity entity1 = getGameData().getEntity(collisionSet.stream().findFirst().get());
+                Map<Long, Vector3f> shapeCollisions = collisionComponent.getShapeCollisions();
+                Entity entity1 = getGameData().getEntity(collisionSet.stream().findFirst().orElse(null));
+                if (entity1 == null) {
+                    return;
+                }
                 CollisionComponent entity1CollisionComponent = entity1.getComponent(CollisionComponent.class);
-                PositionComponent entity1PositionComponent = entity1.getComponent(PositionComponent.class);
-                List<Float[]> shapes = new ArrayList<>();
+                Map<Float[], Vector3f> shapes = new HashMap<>();
                 entity1CollisionComponent.getShapes().forEach((shapeId, shape) -> {
-                    if (shapeCollisions.contains(shapeId)) {
-                        shapes.add(shape);
+                    if (shapeCollisions.containsKey(shapeId)) {
+                        shapes.put(shape, shapeCollisions.get(shapeId));
                     }
                 });
 
-                Float[] shape = shapes.get(0);
-                Vector3f position1 = entity1PositionComponent.getPosition();
+                Float[] shape = shapes.entrySet().stream().findFirst().get().getKey();
+                Vector3f position1 = shapes.entrySet().stream().findFirst().get().getValue();
                 float aMinX = position1.x + shape[0];
                 float aMaxX = position1.x + shape[3];
 
@@ -79,7 +79,7 @@ public class CollisionSystem extends BaseSystem {
                 Vector3f positionTemp = new Vector3f(position);
                 positionTemp.x -= lastMoveVector.x * moveComponent.getSpeed() * dt;
                 positionTemp.z -= lastMoveVector.z * moveComponent.getSpeed() * dt;
-                if (checkCollision(entity, positionTemp, entity1)) {
+                if (checkCollision(entity, positionTemp, entity1, position1)) {
                     lastMoveVector.rotateY(-(float) Math.toRadians(rotationY));
                 }
                 position.x -= lastMoveVector.x * moveComponent.getSpeed() * dt;
@@ -89,12 +89,10 @@ public class CollisionSystem extends BaseSystem {
         });
     }
 
-    private boolean checkCollision(Entity entity, Vector3f position, Entity entityToCheckCollision) {
+    private boolean checkCollision(Entity entity, Vector3f position, Entity entityToCheckCollision, Vector3f position1) {
             Map<Long, Float[]> shapes = entity.getComponent(CollisionComponent.class).getShapes();
             AtomicBoolean anyCollision = new AtomicBoolean(false);
-
                 if (entity.getId() != entityToCheckCollision.getId()) {
-                    Vector3f position1 = entityToCheckCollision.getComponent(PositionComponent.class).getPosition();
                     Map<Long, Float[]> shapes1 = entityToCheckCollision.getComponent(CollisionComponent.class).getShapes();
                     shapes.forEach((id, shape) -> {
                         shapes1.forEach((id1, shape1) -> {
@@ -129,11 +127,13 @@ public class CollisionSystem extends BaseSystem {
     private void checkCollisions(Map<Long, Entity> entities, Map<Long, Entity> entitiesToCheckCollision) {
         entities.forEach((id, entity) -> {
             Vector3f position = entity.getComponent(PositionComponent.class).getPosition();
-            Map<Long, Float[]> shapes = entity.getComponent(CollisionComponent.class).getShapes();
+            CollisionComponent collisionComponent = entity.getComponent(CollisionComponent.class);
+            Map<Long, Float[]> shapes = collisionComponent.getShapes();
             entitiesToCheckCollision.forEach((id1, entity1) -> {
                 if (entity.getId() != entity1.getId()) {
-                    Vector3f position1 = entity1.getComponent(PositionComponent.class).getPosition();
-                    Map<Long, Float[]> shapes1 = entity1.getComponent(CollisionComponent.class).getShapes();
+                    List<PositionComponent> positionComponentList = entity1.getComponents(PositionComponent.class);
+                    CollisionComponent collisionComponent1 = entity1.getComponent(CollisionComponent.class);
+                    Map<Long, Float[]> shapes1 = collisionComponent1.getShapes();
                     AtomicBoolean anyCollision = new AtomicBoolean(false);
                     shapes.forEach((shapeId, shape) -> {
                         shapes1.forEach((shape1Id, shape1) -> {
@@ -144,29 +144,30 @@ public class CollisionSystem extends BaseSystem {
                             float aMaxY = position.y + shape[4];
                             float aMaxZ = position.z + shape[5];
 
-                            float bMinX = position1.x + shape1[0];
-                            float bMinY = position1.y + shape1[1];
-                            float bMinZ = position1.z + shape1[2];
-                            float bMaxX = position1.x + shape1[3];
-                            float bMaxY = position1.y + shape1[4];
-                            float bMaxZ = position1.z + shape1[5];
+                            for (int i = 0; i < positionComponentList.size(); i++) {
+                                Vector3f position1 = positionComponentList.get(i).getPosition();
+                                float bMinX = position1.x + shape1[0];
+                                float bMinY = position1.y + shape1[1];
+                                float bMinZ = position1.z + shape1[2];
+                                float bMaxX = position1.x + shape1[3];
+                                float bMaxY = position1.y + shape1[4];
+                                float bMaxZ = position1.z + shape1[5];
 
-                            if (aMinX <= bMaxX  &&
-                                aMaxX >= bMinX  &&
-                                aMinY <= bMaxY  &&
-                                aMaxY >= bMinY  &&
-                                aMinZ <= bMaxZ  &&
-                                aMaxZ >= bMinZ) {
-                                CollisionComponent collisionComponent = entity.getComponent(CollisionComponent.class);
-                                collisionComponent.setShapeCollisions(shape1Id);
-                                collisionComponent.setEntityCollision(entity1.getId());
-                                anyCollision.set(true);
+                                if (aMinX <= bMaxX  &&
+                                        aMaxX >= bMinX  &&
+                                        aMinY <= bMaxY  &&
+                                        aMaxY >= bMinY  &&
+                                        aMinZ <= bMaxZ  &&
+                                        aMaxZ >= bMinZ) {
+                                    collisionComponent.setShapeCollisions(shape1Id, position1);
+                                    collisionComponent.setEntityCollision(entity1.getId());
+                                    anyCollision.set(true);
+                                }
                             }
                         });
                     });
                     if (!anyCollision.get()) {
-                        Set<Long> shapesId = entity1.getComponent(CollisionComponent.class).getShapesId();
-                        CollisionComponent collisionComponent = entity.getComponent(CollisionComponent.class);
+                        Set<Long> shapesId = collisionComponent1.getShapesId();
                         collisionComponent.removeCollision(shapesId);
                         collisionComponent.removeEntityCollision(entity1.getId());
                     }

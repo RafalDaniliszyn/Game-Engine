@@ -1,6 +1,5 @@
 package org.game.component.mesh;
 
-import org.game.system.renderer.ShaderProgram;
 import org.game.component.Component;
 import org.joml.Vector3f;
 import org.lwjgl.BufferUtils;
@@ -16,7 +15,6 @@ public class MeshComponent extends Component {
     private int textureID;
     private int textureType = 0;
     private int textureTypeUniformLocation;
-    private ShaderProgram shaderProgram;
     private float[] vertices;
     private int[] indices;
     private Vector3f position;

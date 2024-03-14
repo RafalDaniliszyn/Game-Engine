@@ -16,13 +16,14 @@ public class MeshData {
     private int[] indices;
     private Vector3f position;
     private Vector3f scale;
+    private boolean hasNormal;
 
-    public MeshData(float[] vertices, int[] indices, Vector3f position, Vector3f scale) {
+    public MeshData(float[] vertices, int[] indices, Vector3f position, Vector3f scale, boolean hasNormal) {
         this.vertices = vertices;
         this.indices = indices;
         this.position = position;
         this.scale = scale;
-
+        this.hasNormal = hasNormal;
     }
 
     public int getTextureID() {
@@ -79,5 +80,9 @@ public class MeshData {
 
     public void setVertices(float[] vertices) {
         this.vertices = vertices;
+    }
+
+    public boolean hasNormal() {
+        return hasNormal;
     }
 }

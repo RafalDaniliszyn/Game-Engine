@@ -78,7 +78,7 @@ public class MoveSystem extends BaseSystem {
                     return;
                 }
                 try {
-                    newPos.y = PositionHelper.getPositionY(getGameData().getHeightMap(), newPos.x, newPos.z, 6.25f, 6.25f);
+                    newPos.y = PositionHelper.getPositionY(getGameData().getHeightMap(), newPos.x, newPos.z, 7.8125005f, 7.8125005f);
                 } catch (IndexOutOfBoundsException exception){
                     return;
                 }

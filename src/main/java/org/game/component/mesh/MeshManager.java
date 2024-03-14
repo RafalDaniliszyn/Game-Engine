@@ -1,9 +1,9 @@
 package org.game.component.mesh;
 
 import org.game.component.PositionComponent;
-import org.game.helper.MeshHelper;
 import org.game.component.mesh.texture.TextureEnum;
 import org.game.component.mesh.texture.TextureManager;
+import org.game.helper.MeshHelper;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -48,7 +48,9 @@ public class MeshManager {
         List<MeshComponent> meshComponents = new ArrayList<>();
         meshData.forEach(mesh -> {
             if (!skipBaseLightList.contains(name)) {
-                MeshHelper.setLightColors(mesh, rotationY);
+                if (!mesh.hasNormal()) {
+                    MeshHelper.calculateNormal(mesh, rotationY);
+                }
             }
             meshComponents.add(new MeshComponent(mesh.getVertices(), mesh.getIndices(), mesh.getPosition(), mesh.getScale(), mesh.getTextureID()));
         });
@@ -99,13 +101,14 @@ public class MeshManager {
     }
 
     public static float[] getShapeLength(float[] vertices) {
+        int STRIDE = 12;
         float minX = vertices[0];
         float minY = vertices[1];
         float minZ = vertices[2];
         float maxX = vertices[0];
         float maxY = vertices[1];
         float maxZ = vertices[2];
-        for (int i = 0; i < vertices.length; i+=9) {
+        for (int i = 0; i < vertices.length; i+=STRIDE) {
             //min
             if (vertices[i] < minX) {
                 minX = vertices[i];

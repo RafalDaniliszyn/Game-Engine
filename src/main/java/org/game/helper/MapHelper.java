@@ -1,10 +1,11 @@
 package org.game.helper;
 
 import org.joml.Vector3f;
-
 import java.util.List;
 
 public class MapHelper {
+    public static float X_SIDE = 1.0f;
+    public static float Z_SIDE = 1.0f;
     public static float[][] getHeightMap(float[] vertices) {
         List<Vector3f> verticesList = PositionHelper.getXyzPositionList(vertices);
         int size = (int) Math.sqrt(verticesList.size());
@@ -31,6 +32,9 @@ public class MapHelper {
         }
         float xSide = highestX / (size-1);
         float zSide = highestZ / (size-1);
+        X_SIDE = xSide;
+        Z_SIDE = zSide;
+
 
         System.out.println(xSide);
         System.out.println(zSide);

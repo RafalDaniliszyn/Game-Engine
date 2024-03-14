@@ -4,11 +4,41 @@ import org.game.mouse.Mouse;
 import org.game.system.renderer.ShaderProgram;
 import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.opengl.GL;
-import javax.swing.*;
-import java.awt.*;
-import static org.lwjgl.glfw.GLFW.*;
+import javax.swing.JPanel;
+import java.awt.Canvas;
+
+import static org.lwjgl.glfw.GLFW.GLFW_CONTEXT_VERSION_MAJOR;
+import static org.lwjgl.glfw.GLFW.GLFW_CONTEXT_VERSION_MINOR;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_LEFT_SHIFT;
+import static org.lwjgl.glfw.GLFW.GLFW_OPENGL_CORE_PROFILE;
+import static org.lwjgl.glfw.GLFW.GLFW_OPENGL_FORWARD_COMPAT;
+import static org.lwjgl.glfw.GLFW.GLFW_OPENGL_PROFILE;
+import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
+import static org.lwjgl.glfw.GLFW.GLFW_TRUE;
+import static org.lwjgl.glfw.GLFW.glfwCreateWindow;
+import static org.lwjgl.glfw.GLFW.glfwDefaultWindowHints;
+import static org.lwjgl.glfw.GLFW.glfwGetTime;
+import static org.lwjgl.glfw.GLFW.glfwInit;
+import static org.lwjgl.glfw.GLFW.glfwMakeContextCurrent;
+import static org.lwjgl.glfw.GLFW.glfwPollEvents;
+import static org.lwjgl.glfw.GLFW.glfwSetKeyCallback;
+import static org.lwjgl.glfw.GLFW.glfwSetWindowShouldClose;
+import static org.lwjgl.glfw.GLFW.glfwShowWindow;
+import static org.lwjgl.glfw.GLFW.glfwSwapBuffers;
+import static org.lwjgl.glfw.GLFW.glfwWindowHint;
+import static org.lwjgl.glfw.GLFW.glfwWindowShouldClose;
 import static org.lwjgl.opengl.GL11.glClearColor;
-import static org.lwjgl.opengl.GL30.*;
+import static org.lwjgl.opengl.GL30.GL_COLOR_BUFFER_BIT;
+import static org.lwjgl.opengl.GL30.GL_CULL_FACE;
+import static org.lwjgl.opengl.GL30.GL_DEPTH_BUFFER_BIT;
+import static org.lwjgl.opengl.GL30.GL_DEPTH_TEST;
+import static org.lwjgl.opengl.GL30.GL_DST_COLOR;
+import static org.lwjgl.opengl.GL30.GL_ONE;
+import static org.lwjgl.opengl.GL30.glBlendFunc;
+import static org.lwjgl.opengl.GL30.glClear;
+import static org.lwjgl.opengl.GL30.glEnable;
+import static org.lwjgl.opengl.GL30.glViewport;
 
 public class GraphicsDisplay {
     private static long displayID;
@@ -76,23 +106,21 @@ public class GraphicsDisplay {
         glfwMakeContextCurrent(displayID);
         GL.createCapabilities();
 
-        shaderProgram = new ShaderProgram();
-        shaderProgram.create();
-
         glfwShowWindow(displayID);
     }
 
     private void loop() {
-        GameData gameData = new GameData(shaderProgram);
+        GameData gameData = new GameData();
         gameData.init();
         gameData.setActive(true);
 
         glEnable(GL_DEPTH_TEST);
         glViewport(0, 0, 1920, 1080);
-        glBlendFunc(GL_SRC0_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glBlendFunc(GL_DST_COLOR, GL_ONE);
+        glEnable(GL_DST_COLOR);
         glEnable(GL_CULL_FACE);
 
-        double fpsLimit = 1.0 / 40.0;
+        double fpsLimit = 1.0 / 25.0;
         double lastUpdateTime = 0;
         double lastFrameTime = 0;
         while (!glfwWindowShouldClose(displayID)) {

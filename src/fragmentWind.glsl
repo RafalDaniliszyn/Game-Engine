@@ -19,7 +19,7 @@ void main() {
     }
     vec3 unitNormal = normalize(surfaceNormal);
     vec3 unitLightVector = normalize(toLightVector);
-    float nDot1 = dot(unitNormal, unitLightVector)+(unitNormal.x/unitNormal.z);
+    float nDot1 = dot(unitNormal, unitLightVector);
     float brightness = max(nDot1, 0.1);
     vec3 diffuse = brightness * lightColor;
     FragColor = vec4(diffuse, 1.0) * texture(ourTexture, passTexture);

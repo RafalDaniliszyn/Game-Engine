@@ -18,29 +18,19 @@ import static org.lwjgl.opengl.GL20.glShaderSource;
 import static org.lwjgl.opengl.GL20.glUseProgram;
 import static org.lwjgl.opengl.GL20.glValidateProgram;
 
-public class ShaderProgram {
+public abstract class ShaderProgram {
 
-    private String vertexFile = "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\vertex.glsl";
-    private String fragmentFile = "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\alphaFragment.glsl";
+    private String vertexFile;
+    private String fragmentFile;
 
     public int programID, vertexID, fragmentID;
 
-    public ShaderProgram() {
+    public ShaderProgram(String vertexFile, String fragmentFile) {
+        this.vertexFile = vertexFile;
+        this.fragmentFile = fragmentFile;
     }
 
     public void create() {
-        programID = glCreateProgram();
-        vertexID = loadShader(GL_VERTEX_SHADER, vertexFile);
-        fragmentID = loadShader(GL_FRAGMENT_SHADER, fragmentFile);
-        glAttachShader(programID, vertexID);
-        glAttachShader(programID, fragmentID);
-        glLinkProgram(programID);
-        glValidateProgram(programID);
-        glDeleteShader(vertexID);
-        glDeleteShader(fragmentID);
-    }
-
-    public void create(String vertexFile, String fragmentFile) {
         programID = glCreateProgram();
         vertexID = loadShader(GL_VERTEX_SHADER, vertexFile);
         fragmentID = loadShader(GL_FRAGMENT_SHADER, fragmentFile);
@@ -59,9 +49,8 @@ public class ShaderProgram {
         glDeleteProgram(programID);
     }
 
-    public void use() {
-        glUseProgram(programID);
-    }
+    public abstract void use();
+
 
     public void stop() {
         glUseProgram(0);
