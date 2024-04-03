@@ -1,5 +1,6 @@
-package org.game.system.renderer;
+package org.game.system.shader;
 
+import org.game.ui.system.UiShader;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,6 +47,12 @@ public class ShaderManager {
                 "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\fragmentWater.glsl");
         waterShader.create();
         shaderProgramMap.put(ShaderEnum.WATER, waterShader);
+
+        UiShader uiShader = new UiShader(
+                "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\vertexUI.glsl",
+                "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\fragmentUI.glsl");
+        uiShader.create();
+        shaderProgramMap.put(ShaderEnum.UI, uiShader);
     }
 
 }

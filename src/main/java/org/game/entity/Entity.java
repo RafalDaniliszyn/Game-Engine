@@ -2,7 +2,7 @@ package org.game.entity;
 
 import org.game.helper.IdGenerator;
 import org.game.component.Component;
-import org.game.system.renderer.ShaderEnum;
+import org.game.system.shader.ShaderEnum;
 import java.util.ArrayList;
 import java.util.List;
 

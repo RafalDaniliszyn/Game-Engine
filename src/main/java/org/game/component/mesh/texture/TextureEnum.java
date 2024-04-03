@@ -5,7 +5,7 @@ import static org.lwjgl.opengl.GL12.GL_CLAMP_TO_EDGE;
 import static org.lwjgl.opengl.GL14.GL_MIRRORED_REPEAT;
 
 public enum TextureEnum {
-    GRASS(TextureEnum.root + "grass.png", GL_MIRRORED_REPEAT, 0, 0, "grass.png"),
+    GRASS(TextureEnum.root + "grass.png", GL_MIRRORED_REPEAT, 1, 0, "grass.png"),
     GRASS_COLOR(TextureEnum.root + "grassColor.png", GL_MIRRORED_REPEAT, 1, 0, "grassColor.png"),
     STONES(TextureEnum.root + "stones.png", GL_REPEAT, 0, 0, "stones.png"),
     WOOD(TextureEnum.root + "wall.png", GL_MIRRORED_REPEAT, 0, 0, "name"),
@@ -26,10 +26,14 @@ public enum TextureEnum {
     GROUND_2(TextureEnum.root + "ground2.png", GL_CLAMP_TO_EDGE, 1, 1, "ground2.png"),
     WATER(TextureEnum.root + "water.png", GL_CLAMP_TO_EDGE, 1, 1, "water.png"),
     BASE_STONE(TextureEnum.root + "baseStone.png", GL_CLAMP_TO_EDGE, 1, 1, "baseStone.png"),
-    BUTTON(TextureEnum.root + "button.png", GL_CLAMP_TO_EDGE, 1, 1, "button.png"),
+    BUTTON(TextureEnum.root + "guiBox.png", GL_CLAMP_TO_EDGE, 1, 1, "guiBox.png"),
     OLD_HOUSE(TextureEnum.root + "oldhouse.png", GL_CLAMP_TO_EDGE, 1, 1, "oldhouse.png"),
     PALACE(TextureEnum.root + "test.png", GL_CLAMP_TO_EDGE, 1, 0, "test.png"),
     SUN(TextureEnum.root + "sun.png", GL_CLAMP_TO_EDGE, 1, 1, "sun.png"),
+    CUBE(TextureEnum.root + "cube.png", GL_CLAMP_TO_EDGE, 1, 0, "cube.png"),
+    BUILDING(TextureEnum.root + "building.png", GL_CLAMP_TO_EDGE, 1, 1, "building.png"),
+    GRASS_TILE(TextureEnum.root + "grassTile.png", GL_CLAMP_TO_EDGE, 1, 1, "grassTile.png"),
+    TEST2D(TextureEnum.root + "2dtest.png", GL_CLAMP_TO_EDGE, 1, 1, "2dtest.png"),
     STONE_GROUP(TextureEnum.root + "grey.png", GL_CLAMP_TO_EDGE, 0, 0, "grey.png");
 
 

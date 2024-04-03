@@ -17,8 +17,7 @@ uniform vec3 lightPosition;
 uniform float time;
 
 void main() {
-
-    vec3 pos = vec3(position.x , position.y * (cos(position.x - (time * position.z)))*0.07, position.z );
+    vec3 pos = vec3(position.x + ((0.5 * cos(time))+0.5) , position.y + ((0.5 * cos(time))+0.5), position.z + ((0.5 * cos(time))+0.5));
     gl_Position = MVP * vec4(pos, 1.0);
 
     vec4 worldPosition = transformationMatrix * vec4(pos, 1.0);

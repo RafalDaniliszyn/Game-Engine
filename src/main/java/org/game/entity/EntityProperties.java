@@ -1,6 +1,6 @@
 package org.game.entity;
 
-import org.game.system.renderer.ShaderEnum;
+import org.game.system.shader.ShaderEnum;
 
 public class EntityProperties {
 

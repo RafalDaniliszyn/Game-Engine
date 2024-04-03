@@ -1,4 +1,4 @@
-package org.game.system.renderer;
+package org.game.system.shader;
 
 import static org.lwjgl.opengl.GL20.glUseProgram;
 

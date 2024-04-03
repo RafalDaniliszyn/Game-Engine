@@ -18,7 +18,7 @@ public class PlayerEntity extends Entity implements EventObserver {
     public PlayerEntity(MeshManager meshManager, boolean lines) {
         super();
         PositionComponent positionComponent = new PositionComponent(
-                new Vector3f(700.0f, 0.0f, 10.0f), 0.0f, 0.0f, 0.0f, new Vector3f(1.0f, 1.0f, 1.0f));
+                new Vector3f(20.0f, 0.0f, 10.0f), 0.0f, 0.0f, 0.0f, new Vector3f(1.0f, 1.0f, 1.0f));
         addComponent(positionComponent);
         List<MeshComponent> meshComponent = meshManager.getMeshComponent("player");
         addComponent(new MoveComponent(new Vector3f(0.0f, 0.0f, 0.0f), 5.0f));

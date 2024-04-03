@@ -1,6 +1,6 @@
 package org.game.component.mesh;
 
-import org.game.system.renderer.ShaderProgram;
+import org.game.system.shader.ShaderProgram;
 import org.game.component.mesh.texture.TextureEnum;
 import org.joml.Vector3f;
 

@@ -1,4 +1,4 @@
-package org.game.system.renderer;
+package org.game.system.shader;
 
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL20;
@@ -6,9 +6,9 @@ import org.lwjgl.opengl.GL20;
 import static org.lwjgl.opengl.GL20.glUniform1f;
 import static org.lwjgl.opengl.GL20.glUseProgram;
 
-public class WindShader extends ShaderProgram {
+public class WaterShader extends ShaderProgram {
 
-    public WindShader(String vertexFile, String fragmentFile) {
+    public WaterShader(String vertexFile, String fragmentFile) {
         super(vertexFile, fragmentFile);
     }
 

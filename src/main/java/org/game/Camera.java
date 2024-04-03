@@ -6,8 +6,8 @@ import org.joml.Vector3f;
 public class Camera {
 
     public static Vector3f cameraPosition = new Vector3f(0.0f, 0.0f, 0.0f);
-    public static float distance = 3.0f;
-    private static Vector3f cameraRotation = new Vector3f(40.0f, 180.0f, 0.0f);
+    public static float distance = 15.0f;
+    private static Vector3f cameraRotation = new Vector3f(45.0f, 180.0f, 0.0f);
     private static Matrix4f viewMatrix;
 
     public static Matrix4f getView() {

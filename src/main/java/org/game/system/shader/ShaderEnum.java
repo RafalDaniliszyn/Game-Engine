@@ -1,7 +1,8 @@
-package org.game.system.renderer;
+package org.game.system.shader;
 
 public enum ShaderEnum {
     DEFAULT,
     WIND,
-    WATER
+    WATER,
+    UI
 }

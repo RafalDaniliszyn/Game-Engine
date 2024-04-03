@@ -17,10 +17,11 @@ void main() {
     if (texture(ourTexture, passTexture).a < 0.1) {
         discard;
     }
+    float ambient = 2.0f;
     vec3 unitNormal = normalize(surfaceNormal);
     vec3 unitLightVector = normalize(toLightVector);
-    float nDot1 = dot(unitNormal, unitLightVector)+(unitNormal.x/unitNormal.z);
-    float brightness = max(nDot1, 0.1);
-    vec3 diffuse = brightness * lightColor;
+    float nDot1 = dot(unitNormal, unitLightVector);
+    float brightness = max(nDot1, 0.2);
+    vec3 diffuse = brightness * lightColor * ambient;
     FragColor = vec4(diffuse, 1.0) * texture(ourTexture, passTexture);
 }

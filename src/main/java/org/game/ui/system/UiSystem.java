@@ -1,7 +1,8 @@
-package org.game.system;
+package org.game.ui.system;
 
 import org.game.GameData;
 import org.game.mouse.MouseInput;
+import org.game.system.BaseSystem;
 import org.game.ui.component.UiComponent;
 
 public class UiSystem extends BaseSystem {

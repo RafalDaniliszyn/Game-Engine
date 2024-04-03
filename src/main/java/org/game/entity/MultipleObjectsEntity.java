@@ -2,10 +2,9 @@ package org.game.entity;
 
 import org.game.component.CollisionComponent;
 import org.game.component.PositionComponent;
-import org.game.component.WindComponent;
 import org.game.component.mesh.MeshComponent;
 import org.game.component.mesh.MeshManager;
-import org.game.system.renderer.ShaderEnum;
+import org.game.system.shader.ShaderEnum;
 import org.joml.Vector3f;
 import java.util.List;
 import java.util.Random;
@@ -19,7 +18,7 @@ public class MultipleObjectsEntity extends Entity {
         Random random = new Random();
         for (int i = 0; i < positionComponent.length; i++) {
             positionComponent[i] = new PositionComponent(
-                    mapVertices, new Vector3f(random.nextInt(500), 0.0f,
+                    mapVertices, new Vector3f(random.nextInt(500)+400, 0.0f,
                     random.nextInt(500)), rotation.x, rotation.y, rotation.z, new Vector3f(random.nextFloat() + 1, random.nextFloat() + 1, random.nextFloat() + 1));
             addComponent(positionComponent[i]);
         }
@@ -37,8 +36,6 @@ public class MultipleObjectsEntity extends Entity {
         if (collision) {
             addComponent(collisionComponent);
         }
-        addComponent(new WindComponent());
     }
-
 
 }

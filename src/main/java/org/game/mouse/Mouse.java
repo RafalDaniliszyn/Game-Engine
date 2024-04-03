@@ -4,7 +4,14 @@ import org.game.Camera;
 import org.joml.Vector2d;
 import org.joml.Vector2f;
 
-import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_1;
+import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_2;
+import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
+import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
+import static org.lwjgl.glfw.GLFW.glfwSetCursorEnterCallback;
+import static org.lwjgl.glfw.GLFW.glfwSetCursorPosCallback;
+import static org.lwjgl.glfw.GLFW.glfwSetMouseButtonCallback;
+import static org.lwjgl.glfw.GLFW.glfwSetScrollCallback;
 
 public class Mouse {
 
@@ -39,6 +46,12 @@ public class Mouse {
         glfwSetMouseButtonCallback(displayID, (windowHandle, button, action, mode) -> {
             LEFT = button == GLFW_MOUSE_BUTTON_1 && action == GLFW_PRESS;
             RIGHT = button == GLFW_MOUSE_BUTTON_2 && action == GLFW_PRESS;
+            if (action == GLFW_PRESS) {
+                MouseInput.RELEASE = false;
+            }
+            if (action == GLFW_RELEASE) {
+                MouseInput.RELEASE = true;
+            }
             MouseInput.LEFT_CLICK = LEFT;
             MouseInput.RIGHT_CLICK = RIGHT;
         });

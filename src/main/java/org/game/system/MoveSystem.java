@@ -78,7 +78,7 @@ public class MoveSystem extends BaseSystem {
                     return;
                 }
                 try {
-                    newPos.y = PositionHelper.getPositionY(getGameData().getHeightMap(), newPos.x, newPos.z, 7.8125005f, 7.8125005f);
+                    newPos.y = PositionHelper.getPositionY(getGameData().getHeightMap(), newPos.x, newPos.z, 0.3277311f, 0.3277311f);
                 } catch (IndexOutOfBoundsException exception){
                     return;
                 }
@@ -88,11 +88,10 @@ public class MoveSystem extends BaseSystem {
                 getGameData().updateSkyPos(x, z);
             }
 
-
             float horizontalDist = (float) (Camera.distance * Math.cos(Math.toRadians(camRotation.x)));
             float verticalDist = (float) (Camera.distance * Math.sin(Math.toRadians(camRotation.x)));
 
-            float verticalHeight = 2.0f;
+            float verticalHeight = 3.0f;
             Camera.cameraPosition.x = meshPosition.x + (float) (horizontalDist * Math.sin(Math.toRadians(camRotation.y)));
             Camera.cameraPosition.z = meshPosition.z + (float) (horizontalDist * Math.cos(Math.toRadians(camRotation.y)));
             Camera.cameraPosition.y = verticalHeight + meshPosition.y + (float) (verticalDist * Math.sin(Math.toRadians(camRotation.x)));

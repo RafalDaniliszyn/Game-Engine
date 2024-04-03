@@ -6,9 +6,16 @@ import org.lwjgl.BufferUtils;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
-import static org.lwjgl.opengl.GL15.*;
+import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
+import static org.lwjgl.opengl.GL15.GL_DYNAMIC_DRAW;
+import static org.lwjgl.opengl.GL15.GL_ELEMENT_ARRAY_BUFFER;
 import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
-import static org.lwjgl.opengl.GL30.*;
+import static org.lwjgl.opengl.GL15.GL_TRIANGLES;
+import static org.lwjgl.opengl.GL15.glBindBuffer;
+import static org.lwjgl.opengl.GL15.glBufferData;
+import static org.lwjgl.opengl.GL15.glGenBuffers;
+import static org.lwjgl.opengl.GL30.glBindVertexArray;
+import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 
 public class MeshComponent extends Component {
 
@@ -26,6 +33,7 @@ public class MeshComponent extends Component {
     private int renderMode;
     private boolean cullFace;
     private boolean settings;
+    private static final int STRIDE = 12;
 
     public MeshComponent(float[] vertices, int[] indices, Vector3f position, Vector3f scale) {
         super();
@@ -62,13 +70,17 @@ public class MeshComponent extends Component {
         glBindBuffer(GL_ARRAY_BUFFER, vboID);
         FloatBuffer vertexBuffer = BufferUtils.createFloatBuffer(vertices.length);
         vertexBuffer.put(vertices).flip();
-        glBufferData(GL_ARRAY_BUFFER, vertices, GL_DYNAMIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, vertexBuffer, GL_DYNAMIC_DRAW);
 
         iboID = glGenBuffers();
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iboID);
         IntBuffer indexBuffer = BufferUtils.createIntBuffer(indices.length);
         indexBuffer.put(indices).flip();
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexBuffer, GL_STATIC_DRAW);
+
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+        glBindVertexArray(0);
     }
 
     public void setTexture(int textureID) {
@@ -105,6 +117,10 @@ public class MeshComponent extends Component {
 
     public void setTextureTypeUniformLocation(int textureTypeUniformLocation) {
         this.textureTypeUniformLocation = textureTypeUniformLocation;
+    }
+
+    public int getVertexCount() {
+        return vertices.length / STRIDE;
     }
 
     public int getVboID() {

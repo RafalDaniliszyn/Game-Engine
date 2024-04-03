@@ -1,4 +1,4 @@
-package org.game.system.renderer;
+package org.game.system.shader;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -50,7 +50,6 @@ public abstract class ShaderProgram {
     }
 
     public abstract void use();
-
 
     public void stop() {
         glUseProgram(0);

@@ -16,6 +16,10 @@ public abstract class EventManager {
         destroyEvents();
     }
 
+    public boolean hasEvent(Event event) {
+        return events.contains(event);
+    }
+
     public void publishEvent(Event event) {
         events.add(event);
     }

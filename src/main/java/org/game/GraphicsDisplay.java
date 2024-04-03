@@ -1,11 +1,9 @@
 package org.game;
 
 import org.game.mouse.Mouse;
-import org.game.system.renderer.ShaderProgram;
+import org.game.system.shader.ShaderProgram;
 import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.opengl.GL;
-import javax.swing.JPanel;
-import java.awt.Canvas;
 
 import static org.lwjgl.glfw.GLFW.GLFW_CONTEXT_VERSION_MAJOR;
 import static org.lwjgl.glfw.GLFW.GLFW_CONTEXT_VERSION_MINOR;
@@ -33,9 +31,6 @@ import static org.lwjgl.opengl.GL30.GL_COLOR_BUFFER_BIT;
 import static org.lwjgl.opengl.GL30.GL_CULL_FACE;
 import static org.lwjgl.opengl.GL30.GL_DEPTH_BUFFER_BIT;
 import static org.lwjgl.opengl.GL30.GL_DEPTH_TEST;
-import static org.lwjgl.opengl.GL30.GL_DST_COLOR;
-import static org.lwjgl.opengl.GL30.GL_ONE;
-import static org.lwjgl.opengl.GL30.glBlendFunc;
 import static org.lwjgl.opengl.GL30.glClear;
 import static org.lwjgl.opengl.GL30.glEnable;
 import static org.lwjgl.opengl.GL30.glViewport;
@@ -75,11 +70,6 @@ public class GraphicsDisplay {
         glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
         displayID = glfwCreateWindow(WIDTH, HEIGHT, "Barney's Studio", 0, 0);
 
-        Canvas canvas = new Canvas();
-        canvas.setBounds(0, 0, 1920, 1080);
-        JPanel panel = new JPanel();
-        panel.add(canvas);
-
         glfwSetKeyCallback(displayID, new GLFWKeyCallback() {
             @Override
             public void invoke(long window, int key, int scancode, int action, int mods) {
@@ -99,13 +89,11 @@ public class GraphicsDisplay {
                 }
             }
         });
-
         mouse = new Mouse();
         mouse.init(displayID);
 
         glfwMakeContextCurrent(displayID);
         GL.createCapabilities();
-
         glfwShowWindow(displayID);
     }
 
@@ -113,11 +101,8 @@ public class GraphicsDisplay {
         GameData gameData = new GameData();
         gameData.init();
         gameData.setActive(true);
-
         glEnable(GL_DEPTH_TEST);
         glViewport(0, 0, 1920, 1080);
-        glBlendFunc(GL_DST_COLOR, GL_ONE);
-        glEnable(GL_DST_COLOR);
         glEnable(GL_CULL_FACE);
 
         double fpsLimit = 1.0 / 25.0;
@@ -129,7 +114,7 @@ public class GraphicsDisplay {
             deltaTimeGlobal = (float) (now - lastFrameTime);
 
             if ((now - lastFrameTime) >= fpsLimit) {
-                glClearColor(1, 1, 1, 1);
+                glClearColor(0.1f, 0.1f, 0.1f, 1);
                 glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
                 mouse.update();

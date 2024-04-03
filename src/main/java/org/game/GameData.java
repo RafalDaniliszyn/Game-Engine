@@ -3,10 +3,10 @@ package org.game;
 import org.game.component.CollisionComponent;
 import org.game.component.Component;
 import org.game.component.PositionComponent;
-import org.game.component.WindComponent;
 import org.game.component.mesh.MeshComponent;
 import org.game.component.mesh.MeshData;
 import org.game.component.mesh.MeshManager;
+import org.game.component.mesh.texture.TextureEnum;
 import org.game.entity.Entity;
 import org.game.entity.EntityProperties;
 import org.game.entity.LightSourceEntity;
@@ -17,25 +17,32 @@ import org.game.event.EquipmentEventManager;
 import org.game.helper.MapHelper;
 import org.game.helper.PositionHelper;
 import org.game.component.mesh.texture.TextureManager;
-import org.game.system.renderer.ShaderEnum;
-import org.game.system.renderer.ShaderManager;
-import org.game.ui.entity.EquipmentEntity;
+import org.game.system.shader.ShaderEnum;
+import org.game.system.shader.ShaderManager;
+import org.game.ui.component.RawUiModel;
+import org.game.ui.entity.UiEntity;
+import org.game.ui.system.UiRendererSystem;
 import org.game.system.BaseSystem;
 import org.game.system.CollisionSystem;
 import org.game.system.GrowthSystem;
-import org.game.system.UiSystem;
+import org.game.ui.system.UiSystem;
 import org.game.system.MoveSystem;
 import org.game.system.renderer.RenderSystem;
 import org.game.event.EventManager;
 import org.game.event.EventObserver;
 import org.joml.Vector3f;
-
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Random;
 
 public class GameData {
     private final Map<Component, String> components = new HashMap<>();
     private final Map<Long, Entity> entities = new HashMap<>();
-    private final Map<String, BaseSystem> systems = new HashMap<>();
+
+    //This must be a LinkedHashMap due to rendering order.
+    private final Map<String, BaseSystem> systems = new LinkedHashMap<>();
     private final Map<String, EventManager> eventManagers = new HashMap<>();
     private final MeshManager meshManager;
     private final TextureManager textureManager;
@@ -53,12 +60,12 @@ public class GameData {
         shaderManager = new ShaderManager();
 
         //prepareTestData();
-        StaticObjectEntity groundMap = new StaticObjectEntity(meshManager, "baseMap3", new Vector3f(0.0f, 0.0f, 0.0f),
+        StaticObjectEntity groundMap = new StaticObjectEntity(meshManager, "tileTest", new Vector3f(0.0f, 0.0f, 0.0f),
                 new Vector3f(0.0f, 0.0f, 0.0f), new Vector3f(1.0f, 1.0f, 1.0f), false);
         entities.put(groundMap.getId(), groundMap);
         groundMap.removeComponent(CollisionComponent.class);
 
-        MeshData groundMeshData = meshManager.getMeshData("baseMap3");
+        MeshData groundMeshData = meshManager.getMeshData("tileTest");
         mapVert = groundMeshData.getVertices();
 
         heightMap = MapHelper.getHeightMap(mapVert);
@@ -81,43 +88,44 @@ public class GameData {
                 new Vector3f(0.0f, 0.0f, 0.0f), new Vector3f(1.0f, 1.0f, 1.0f), false, new EntityProperties(ShaderEnum.WATER));
         entities.put(water.getId(), water);
 
+        StaticObjectEntity cube = new StaticObjectEntity(meshManager, "cube", new Vector3f(700.0f, 1.0f, 15.0f),
+                new Vector3f(0.0f, 0.0f, 0.0f), new Vector3f(0.5f, 0.5f, 0.5f), false, new EntityProperties(ShaderEnum.DEFAULT));
+        entities.put(cube.getId(), cube);
+
+        StaticObjectEntity building = new StaticObjectEntity(meshManager, "building", new Vector3f(600.0f, 0.01f, 40.0f),
+                new Vector3f(0.0f, 0.0f, 0.0f), new Vector3f(1.0f, 1.0f, 1.0f), false, new EntityProperties(ShaderEnum.DEFAULT));
+        entities.put(building.getId(), building);
+
         MultipleObjectsEntity grass = new MultipleObjectsEntity(mapVert, meshManager, "grass2",
                 new Vector3f(0.0f, 0.0f, 0.0f), new Vector3f(1.0f, 1.0f, 1.0f), 250, false, false);
         entities.put(grass.getId(), grass);
 
+        MultipleObjectsEntity tree9 = new MultipleObjectsEntity(mapVert, meshManager, "tree9",
+                new Vector3f(0.0f, 0.0f, 0.0f), new Vector3f(1.0f, 1.0f, 1.0f), 250, false, false);
+        entities.put(tree9.getId(), tree9);
 
-        MultipleObjectsEntity oak = new MultipleObjectsEntity(mapVert, meshManager, "tree2",
-                new Vector3f(0.0f, 0.0f, 0.0f), new Vector3f(1.0f, 1.0f, 1.0f), 700, false, true);
-        entities.put(oak.getId(), oak);
 
-        MultipleObjectsEntity stones = new MultipleObjectsEntity(mapVert, meshManager, "stones",
-                new Vector3f(0.0f, 0.0f, 0.0f), new Vector3f(1.0f, 1.0f, 1.0f), 30, false, true);
-        entities.put(stones.getId(), stones);
+//        MultipleObjectsEntity oak = new MultipleObjectsEntity(mapVert, meshManager, "tree2",
+//                new Vector3f(0.0f, 0.0f, 0.0f), new Vector3f(1.0f, 1.0f, 1.0f), 700, false, true);
+//        entities.put(oak.getId(), oak);
+//
+//        MultipleObjectsEntity stones = new MultipleObjectsEntity(mapVert, meshManager, "stones",
+//                new Vector3f(0.0f, 0.0f, 0.0f), new Vector3f(1.0f, 1.0f, 1.0f), 30, false, true);
+//        entities.put(stones.getId(), stones);
 
-        LightSourceEntity sun = new LightSourceEntity(meshManager, "sun", new Vector3f(-300.0f, 400.0f, 300.0f),
+        LightSourceEntity sun = new LightSourceEntity(meshManager, "sun", new Vector3f(-30.0f, 400.0f, 30.0f),
                 new Vector3f(0.0f, 0.0f, 0.0f), new Vector3f(1.0f, 1.0f, 1.0f), false, new Vector3f(1.0f, 1.0f, 1.0f));
         entities.put(sun.getId(), sun);
 
-        EquipmentEntity equipmentEntity = new EquipmentEntity(meshManager, 1L, 100.0f, 200.0f);
-        entities.put(equipmentEntity.getId(), equipmentEntity);
-
-        EquipmentEntity equipmentEntity1 = new EquipmentEntity(meshManager, 2L, 300.0f, 200.0f);
-        entities.put(equipmentEntity1.getId(), equipmentEntity1);
-
-        //Equipment event manager
-        eventManagers.put("equipmentEntity", equipmentEntity.getEventManager());
-        eventManagers.put("equipmentEntity1", equipmentEntity1.getEventManager());
 
         PlayerEntity player = new PlayerEntity(meshManager, false);
         playerId = player.getId();
         entities.put(player.getId(), player);
-        addEventManagerObserver(EquipmentEventManager.class, player);
+
 
         UiSystem uiSystem = new UiSystem(this);
         systems.put("interfaceSystem", uiSystem);
-//        //Wind
-//        WindSystem windSystem = new WindSystem(this);
-//        systems.put("windSystem", windSystem);
+
         //Growth
         GrowthSystem growthSystem = new GrowthSystem(this);
         systems.put("growthSystem", growthSystem);
@@ -127,9 +135,27 @@ public class GameData {
         //Collision
         CollisionSystem collisionSystem = new CollisionSystem(this);
         systems.put("collisionSystem", collisionSystem);
-        //Render
+
+        //Render System - Must be before UI Render System.
         RenderSystem renderSystem = new RenderSystem(this);
         systems.put("renderSystem", renderSystem);
+
+        //UI Render System
+        Integer buttonTextureID = textureManager.getTextures().get(TextureEnum.BUTTON);
+        RawUiModel rawUiModel1 = new RawUiModel(new Vector3f(0.13f, 0.25f, 0.0f), new Vector3f(0.7f, 0.5f, 0.0f), buttonTextureID);
+        RawUiModel rawUiModel2 = new RawUiModel(new Vector3f(0.13f, 0.25f, 0.0f), new Vector3f(0.3f, 0.5f, 0.0f), buttonTextureID);
+
+        UiEntity uiEntity1 = new UiEntity(1, rawUiModel1);
+        UiEntity uiEntity2 = new UiEntity(1, rawUiModel2);
+        entities.put(uiEntity1.getId(), uiEntity1);
+        entities.put(uiEntity2.getId(), uiEntity2);
+        eventManagers.put("uiEntity1", uiEntity1.getEventManager());
+        eventManagers.put("uiEntity2", uiEntity2.getEventManager());
+        addEventManagerObserver(EquipmentEventManager.class, player);
+        UiRendererSystem uiRendererSystem = new UiRendererSystem(this);
+        uiRendererSystem.addGui(rawUiModel1);
+        uiRendererSystem.addGui(rawUiModel2);
+        systems.put("uiRendererSystem", uiRendererSystem);
     }
 
     public void init() {
@@ -235,7 +261,6 @@ public class GameData {
                 grass.getComponents(MeshComponent.class).forEach(mesh -> {
                     mesh.setCullFace(false);
                 });
-                grass.addComponent(new WindComponent());
                 grass.removeComponent(CollisionComponent.class);
                 entities.put(grass.getId(), grass);
             }
