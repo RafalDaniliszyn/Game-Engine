@@ -23,4 +23,19 @@ public class Maths {
                 .scale(scale);
         return transform;
     }
+
+    /**
+     * This method checks whether objects overlap.
+     *
+     * @param x1 X position
+     * @param y1 Y position
+     * @param x2 X position of the element containing width and height.
+     * @param y2 Y position of the element containing width and height.
+     * @param width2 WIDTH of element associated with x2 and y2 variable.
+     * @param height2 HEIGHT of element associated with x2 and y2 variable.
+     * @return true if overlap or else false.
+     */
+    public static boolean overlap(double x1, double y1, double x2, double y2, double width2, double height2) {
+        return x1 > x2 && x1 < x2 + width2 && y1 > y2 && y1 < y2 + height2;
+    }
 }

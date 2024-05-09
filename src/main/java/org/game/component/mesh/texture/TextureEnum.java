@@ -33,9 +33,7 @@ public enum TextureEnum {
     CUBE(TextureEnum.root + "cube.png", GL_CLAMP_TO_EDGE, 1, 0, "cube.png"),
     BUILDING(TextureEnum.root + "building.png", GL_CLAMP_TO_EDGE, 1, 1, "building.png"),
     GRASS_TILE(TextureEnum.root + "grassTile.png", GL_CLAMP_TO_EDGE, 1, 1, "grassTile.png"),
-    TEST2D(TextureEnum.root + "2dtest.png", GL_CLAMP_TO_EDGE, 1, 1, "2dtest.png"),
     STONE_GROUP(TextureEnum.root + "grey.png", GL_CLAMP_TO_EDGE, 0, 0, "grey.png");
-
 
     private final String path;
     private static final String root = "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\main\\resources\\textures\\";

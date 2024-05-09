@@ -1,0 +1,88 @@
+[
+  {
+    "type": "terrain",
+    "textureLabel": "SAND_2D",
+    "texturePath": "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\main\\resources\\textures\\2D\\sand2D.png",
+    "depth": -2.0,
+    "stackable": false,
+    "stack": null,
+    "label": "sand",
+    "quantity": 1,
+    "components": [
+      "MeshComponent2D"
+    ]
+  },
+  {
+    "type": "terrain",
+    "textureLabel": "DIRT_2D",
+    "texturePath": "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\main\\resources\\textures\\2D\\dirt.png",
+    "depth": -2.0,
+    "stackable": false,
+    "stack": null,
+    "label": "DIRT_2D",
+    "quantity": 1,
+    "replaceableEdges": true,
+    "replaceableTexture": {
+      "LEFT": "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\main\\resources\\textures\\2D\\underground\\mineLeft.png",
+      "RIGHT": "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\main\\resources\\textures\\2D\\underground\\mineRight.png",
+      "UP": "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\main\\resources\\textures\\2D\\underground\\mineUp.png",
+      "DOWN": "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\main\\resources\\textures\\2D\\underground\\mineDown.png"
+    },
+    "components": [
+      "MeshComponent2D"
+    ]
+  },
+  {
+    "type": "terrain",
+    "textureLabel": "BRICK_2D",
+    "texturePath": "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\main\\resources\\textures\\2D\\brick.png",
+    "depth": -2.0,
+    "stackable": false,
+    "stack": null,
+    "label": "brick",
+    "quantity": 1,
+    "components": [
+      "MeshComponent2D"
+    ]
+  },
+  {
+    "type": "terrain",
+    "textureLabel": "HOLE_2D",
+    "texturePath": "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\main\\resources\\textures\\2D\\hole2D.png",
+    "depth": -2.0,
+    "stackable": false,
+    "stack": null,
+    "label": "hole2D",
+    "quantity": 1,
+    "components": [
+      "MeshComponent2D",
+      "CollisionComponent2D"
+    ]
+  },
+  {
+    "type": "terrain",
+    "textureLabel": "MINE",
+    "texturePath": "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\main\\resources\\textures\\2D\\underground\\mine.png",
+    "depth": -2.0,
+    "stackable": false,
+    "stack": null,
+    "label": "MINE",
+    "quantity": 1,
+    "components": [
+      "MeshComponent2D"
+    ]
+  },
+  {
+    "type": "item",
+    "textureLabel": "GOLD_2D",
+    "texturePath": "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\main\\resources\\textures\\2D\\gold2D.png",
+    "depth": -1.9,
+    "stackable": false,
+    "stack": null,
+    "label": "gold",
+    "quantity": 1,
+    "components": [
+      "MeshComponent2D"
+    ]
+  }
+]

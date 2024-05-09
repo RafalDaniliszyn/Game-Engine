@@ -6,6 +6,7 @@ import org.game.component.mesh.MeshComponent;
 import org.game.component.PositionComponent;
 import org.lwjgl.glfw.GLFW;
 
+// TODO: 5/9/2024 Class to remove
 public class GrowthSystem extends BaseSystem {
 
 
@@ -33,7 +34,6 @@ public class GrowthSystem extends BaseSystem {
         getGameData().getEntities(GrowthComponent.class, MeshComponent.class, PositionComponent.class).forEach((id, entity)-> {
             GrowthComponent growth = entity.getComponent(GrowthComponent.class);
             PositionComponent positionComponent = entity.getComponent(PositionComponent.class);
-            //System.out.println("stage: " + growth.getStage() + " elapsed time: " + growth.getPassedTime());
             if (growth.getStage() >= growth.getNumberOfStages()) {
                 growth.setGrowthComplete(true);
             }
@@ -62,7 +62,7 @@ public class GrowthSystem extends BaseSystem {
                     growth.setStage(growth.getStage() + 1);
                     growth.setLastUpdate(now);
                     Long meshId = growth.getMeshId(growth.getStage());
-                    MeshComponent meshComponent = getGameData().getMeshManager().getMeshComponent(meshId);
+                    MeshComponent meshComponent =null; //getGameData().getMeshManager().getMeshComponent(meshId);
                     entity.changeComponent(meshComponent, MeshComponent.class);
 //                    Vector3f scale = positionComponent.getScale();
 //                    scale.x += 0.5f;

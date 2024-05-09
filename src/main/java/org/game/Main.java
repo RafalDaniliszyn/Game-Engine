@@ -1,7 +1,13 @@
 package org.game;
 
+import org.game.debugWindow.Frame;
+import java.util.Arrays;
+
 public class Main {
     public static void main(String[] args) {
+        if (Arrays.asList(args).contains("debugWindow=true")) {
+            Frame frame = new Frame();
+        }
         Runnable window = () -> {
             try {
                 GraphicsDisplay.get().createDisplay();

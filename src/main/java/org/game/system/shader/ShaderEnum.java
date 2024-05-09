@@ -4,5 +4,6 @@ public enum ShaderEnum {
     DEFAULT,
     WIND,
     WATER,
-    UI
+    UI,
+    ORTHO
 }

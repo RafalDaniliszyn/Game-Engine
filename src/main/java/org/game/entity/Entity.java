@@ -88,4 +88,13 @@ public abstract class Entity {
     public void setProperties(EntityProperties properties) {
         this.properties = properties;
     }
+
+    @Override
+    public String toString() {
+        return "Entity{" +
+                "id=" + id +
+                ", componentList=" + componentList +
+                ", properties=" + properties +
+                '}';
+    }
 }

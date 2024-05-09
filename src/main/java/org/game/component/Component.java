@@ -16,4 +16,12 @@ public abstract class Component {
     public void setId(int id) {
         this.id = id;
     }
+
+    @Override
+    public String toString() {
+        return "Component{" +
+                "id=" + id +
+                "name=" + this.getClass().getName() +
+                '}';
+    }
 }

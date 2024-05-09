@@ -1,5 +1,6 @@
 package org.game.system.shader;
 
+import org.game.isometric.shader.OrthoShader;
 import org.game.ui.system.UiShader;
 import java.util.HashMap;
 import java.util.List;
@@ -30,6 +31,7 @@ public class ShaderManager {
     }
 
     private void loadShaders() {
+        // TODO: 5/9/2024 Change this test paths
         DefaultShader defaultShader = new DefaultShader(
                 "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\vertex.glsl",
                 "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\alphaFragment.glsl");
@@ -53,6 +55,12 @@ public class ShaderManager {
                 "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\fragmentUI.glsl");
         uiShader.create();
         shaderProgramMap.put(ShaderEnum.UI, uiShader);
+
+        OrthoShader orthoShader = new OrthoShader(
+                "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\vertexOrtho.glsl",
+                "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\fragmentOrtho.glsl");
+        orthoShader.create();
+        shaderProgramMap.put(ShaderEnum.ORTHO, orthoShader);
     }
 
 }
