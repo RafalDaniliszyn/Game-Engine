@@ -3,7 +3,7 @@ package org.game.isometric.system;
 import org.game.GameData;
 import org.game.GraphicsDisplay;
 import org.game.Key;
-import org.game.debugWindow.Panel;
+import org.game.editWindow.Panel;
 import org.game.entity.Entity;
 import org.game.isometric.Camera2D;
 import org.game.isometric.GameState;
@@ -16,6 +16,7 @@ import org.game.mouse.MouseState;
 import org.game.system.BaseSystem;
 import org.joml.Vector2f;
 import java.util.Deque;
+import java.util.Optional;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_LEFT_SHIFT;
 
@@ -84,20 +85,22 @@ public class DragSystem extends BaseSystem {
             return;
         }
 
-        if (MouseInput.LEFT_CLICK && (Key.key != GLFW_KEY_LEFT_SHIFT || Key.action == 0)) {
+        if (MouseInput.LEFT_CLICK && (Key.getKey() != GLFW_KEY_LEFT_SHIFT || Key.getAction() == 0)) {
             int floor = GameState.getCurrentFloor();
             double mouseX = (MouseInput.x - (GraphicsDisplay.WIDTH / 2.0f)) + camX;
             double mouseY = ((GraphicsDisplay.HEIGHT / 2.0f) - MouseInput.y) + camY;
 
             //
-            Deque<Long> entitiesOnTile = worldMapData.getEntitiesOnTile(floor, (int) (mouseX / tileSize), (int) (mouseY / tileSize));
-            Panel.clearDescription();
-            entitiesOnTile.forEach(id -> {
-                Entity entity = getGameData().getEntity(id);
-                if (entity != null) {
-                    Panel.addDescription("entity id: " + entity.getId(), "label: " + entity.getProperties().getLabel(), "quantity: " + entity.getProperties().getQuantity());
-                }
-            });
+            Optional<Deque<Long>> entitiesOnTile = worldMapData.getEntitiesOnTile(floor, (int) (mouseX / tileSize), (int) (mouseY / tileSize));
+            if (entitiesOnTile.isPresent()) {
+                Panel.clearDescription();
+                entitiesOnTile.get().forEach(id -> {
+                    Entity entity = getGameData().getEntity(id);
+                    if (entity != null) {
+                        Panel.addDescription("entity id: " + entity.getId(), "label: " + entity.getProperties().getLabel(), "quantity: " + entity.getProperties().getQuantity());
+                    }
+                });
+            }
             //
 
             Long firstEntityIdFromTile = worldMapData.getTopEntityIdFromTile(floor, (int) (mouseX / tileSize), (int) (mouseY / tileSize));

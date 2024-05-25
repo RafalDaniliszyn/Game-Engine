@@ -2,6 +2,7 @@ package org.game.ui.component;
 
 import org.game.component.Component;
 import org.game.event.Event;
+import org.game.isometric.component.ComponentEnum;
 import org.game.mouse.MouseInput;
 import org.game.mouse.Clickable;
 import org.game.event.EventManager;
@@ -66,5 +67,10 @@ public class UiComponent extends Component implements Clickable {
 
     private boolean overlap(double x1, double y1, double x2, double y2, double width2, double height2) {
        return x1 > x2 && x1 < x2 + width2 && y1 > y2 && y1 < y2 + height2;
+    }
+
+    @Override
+    public ComponentEnum getType() {
+        return null;
     }
 }

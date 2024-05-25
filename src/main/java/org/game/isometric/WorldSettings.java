@@ -2,6 +2,7 @@ package org.game.isometric;
 
 public class WorldSettings {
     public static final float TILE_SIZE = 100.0f;
+    public static final float TILE_OVERLAP_LENGTH;
 
     /**
      * Chunk must be square.
@@ -17,8 +18,9 @@ public class WorldSettings {
     public static final Integer FLOORS;
 
     static {
+        TILE_OVERLAP_LENGTH = 0.0f;
         CHUNK_SIZE = 40;
-        WORLD_SIZE = 3;
+        WORLD_SIZE = 4;
         FLOORS = 2;
     }
 

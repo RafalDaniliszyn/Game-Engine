@@ -74,10 +74,8 @@ public class GraphicsDisplay {
             @Override
             public void invoke(long window, int key, int scancode, int action, int mods) {
                 //update static Key
-                Key.window = window;
-                Key.key = key;
-                Key.scancode = scancode;
-                Key.action = action;
+
+                Key.update(key, action);
 
                 float offset = 25.0f * (deltaTimeGlobal);
                 if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
@@ -105,9 +103,12 @@ public class GraphicsDisplay {
         glViewport(0, 0, 1920, 1080);
         glEnable(GL_CULL_FACE);
 
-        double fpsLimit = 1.0 / 25.0;
+        double fpsLimit = 1.0 / 100.0;
         double lastUpdateTime = 0;
         double lastFrameTime = 0;
+
+        int fps = 0;
+        double fpsCounter = 0.0;
         while (!glfwWindowShouldClose(displayID)) {
             double now = glfwGetTime();
             double deltaTime = now - lastUpdateTime;
@@ -123,6 +124,13 @@ public class GraphicsDisplay {
                 glfwSwapBuffers(displayID);
                 glfwPollEvents();
 
+                fpsCounter += now - lastFrameTime;
+                fps += 1;
+                if (fpsCounter >= 1.0) {
+                    System.out.println(fps);
+                    fps = 0;
+                    fpsCounter = 0.0;
+                }
                 lastFrameTime = now;
             }
 

@@ -1,6 +1,7 @@
 package org.game.component;
 
 import org.game.helper.IdGenerator;
+import org.game.isometric.component.ComponentEnum;
 import org.joml.Vector3f;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -17,6 +18,11 @@ public class CollisionComponent extends Component {
         shapeCollisions = new HashMap<>();
         shapes = new HashMap<>();
         entityCollisions = new HashSet<>();
+    }
+
+    @Override
+    public ComponentEnum getType() {
+        return null;
     }
 
     public void addShape(float[] shape) {

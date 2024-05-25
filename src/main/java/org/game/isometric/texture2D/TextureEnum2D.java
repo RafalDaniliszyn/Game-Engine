@@ -9,7 +9,7 @@ public enum TextureEnum2D implements ITexture {
     HAM_2D(org.game.helper.IdGenerator.getNextIntegerId(), TextureEnum2D.root + "ham2D.png", 1L, GL_CLAMP_TO_EDGE, 1, 1, "ham2D.png", "HAM_2D"),
     CUT_TREE_2D(org.game.helper.IdGenerator.getNextIntegerId(), TextureEnum2D.root + "cutTree2D.png", 1L, GL_CLAMP_TO_EDGE, 1, 1, "cutTree2D.png.png", "CUT_TREE_2D"),
     TREE_2D(org.game.helper.IdGenerator.getNextIntegerId(), TextureEnum2D.root + TextureEnum2D.textures2D + "tree64.png", 1L, GL_CLAMP_TO_EDGE, 1, 1, "tree64.png", "TREE_2D"),
-    HOLE_2D(org.game.helper.IdGenerator.getNextIntegerId(), TextureEnum2D.root + TextureEnum2D.textures2D + "hole2D.png", null, GL_CLAMP_TO_EDGE, 1, 1, "hole2D.png", "HOLE_2D"),
+    HOLE_2D(org.game.helper.IdGenerator.getNextIntegerId(), TextureEnum2D.root + TextureEnum2D.textures2D + "holeDown2D.png", null, GL_CLAMP_TO_EDGE, 1, 1, "holeDown2D.png", "HOLE_2D"),
     //Gold Coins
     GOLD_COIN_1(org.game.helper.IdGenerator.getNextIntegerId(), TextureEnum2D.root + TextureEnum2D.textures2D + TextureEnum2D.goldCoin + "goldCoin2D.png",  1L, GL_CLAMP_TO_EDGE, 1, 1,  "goldCoin2D.png", "goldCoin"),
     GOLD_COIN_2(org.game.helper.IdGenerator.getNextIntegerId(), TextureEnum2D.root + TextureEnum2D.textures2D + TextureEnum2D.goldCoin + "goldCoin22D.png", 2L, GL_CLAMP_TO_EDGE, 1, 1,  "goldCoin22D.png", "goldCoin"),
@@ -41,7 +41,7 @@ public enum TextureEnum2D implements ITexture {
     PURPLE_COIN_5(org.game.helper.IdGenerator.getNextIntegerId(), TextureEnum2D.root + TextureEnum2D.textures2D + TextureEnum2D.purpleCoin + "purpleCoin52D.png", 5L, GL_CLAMP_TO_EDGE, 1, 1, "purpleCoin52D.png", "purpleCoin"),
 
     //Purple Bar
-    PURPLE_BAR(org.game.helper.IdGenerator.getNextIntegerId(), TextureEnum2D.root + TextureEnum2D.textures2D + TextureEnum2D.purpleCoin + "purpleBar2D.png", 0L, GL_CLAMP_TO_EDGE, 1, 1, "purpleBar2D.png", "purpleCoin"),
+    PURPLE_BAR(org.game.helper.IdGenerator.getNextIntegerId(), TextureEnum2D.root + TextureEnum2D.textures2D + TextureEnum2D.purpleCoin + "purpleBar2D.png", 0L, GL_CLAMP_TO_EDGE, 1, 1, "purpleBar2D.png", "purpleBar"),
 
     //Blue Coin
     BLUE_COIN_1(org.game.helper.IdGenerator.getNextIntegerId(), TextureEnum2D.root + TextureEnum2D.textures2D + TextureEnum2D.blueCoin + "blueCoin2D.png", 1L, GL_CLAMP_TO_EDGE, 1, 1,  "blueCoin2D.png", "blueCoin"),
@@ -50,17 +50,59 @@ public enum TextureEnum2D implements ITexture {
     BLUE_COIN_4(org.game.helper.IdGenerator.getNextIntegerId(), TextureEnum2D.root + TextureEnum2D.textures2D + TextureEnum2D.blueCoin + "blueCoin42D.png", 4L, GL_CLAMP_TO_EDGE, 1, 1, "blueCoin42D.png", "blueCoin"),
     BLUE_COIN_5(org.game.helper.IdGenerator.getNextIntegerId(), TextureEnum2D.root + TextureEnum2D.textures2D + TextureEnum2D.blueCoin + "blueCoin52D.png", 5L, GL_CLAMP_TO_EDGE, 1, 1, "blueCoin52D.png", "blueCoin"),
 
-    //Water
-    WATER(org.game.helper.IdGenerator.getNextIntegerId(), TextureEnum2D.root + TextureEnum2D.textures2D + TextureEnum2D.water + "water.png", null, GL_CLAMP_TO_EDGE, 1, 1, "water.png", "WATER_2D"),
-    WATER_UP(org.game.helper.IdGenerator.getNextIntegerId(), TextureEnum2D.root + TextureEnum2D.textures2D + TextureEnum2D.water + "waterUpGround.png", null, GL_CLAMP_TO_EDGE, 1, 1, "waterUpGround.png", "WATER_UP_2D"),
-    WATER_DOWN(org.game.helper.IdGenerator.getNextIntegerId(), TextureEnum2D.root + TextureEnum2D.textures2D + TextureEnum2D.water + "waterDownGround.png", null, GL_CLAMP_TO_EDGE, 1, 1, "waterDownGround.png", "WATER_DOWN_2D"),
-    WATER_LEFT(org.game.helper.IdGenerator.getNextIntegerId(), TextureEnum2D.root + TextureEnum2D.textures2D + TextureEnum2D.water + "waterLeftGround.png", null, GL_CLAMP_TO_EDGE, 1, 1, "waterLeftGround.png", "WATER_LEFT_2D"),
-    WATER_RIGHT(org.game.helper.IdGenerator.getNextIntegerId(), TextureEnum2D.root + TextureEnum2D.textures2D + TextureEnum2D.water + "waterRightGround.png", null, GL_CLAMP_TO_EDGE, 1, 1, "waterRightGround.png", "WATER_RIGHT_2D"),
+    PLAYER_1(org.game.helper.IdGenerator.getNextIntegerId(), TextureEnum2D.root + TextureEnum2D.textures2D + "player\\" + "player1.png", null, GL_CLAMP_TO_EDGE, 1, 1, "player1.png", "player1"),
+    PLAYER_2(org.game.helper.IdGenerator.getNextIntegerId(), TextureEnum2D.root + TextureEnum2D.textures2D + "player\\" + "player2.png", null, GL_CLAMP_TO_EDGE, 1, 1, "player2.png", "player2"),
+    PLAYER_3(org.game.helper.IdGenerator.getNextIntegerId(), TextureEnum2D.root + TextureEnum2D.textures2D + "player\\" + "player3.png", null, GL_CLAMP_TO_EDGE, 1, 1, "player3.png", "player3"),
+    PLAYER_4(org.game.helper.IdGenerator.getNextIntegerId(), TextureEnum2D.root + TextureEnum2D.textures2D + "player\\" + "player4.png", null, GL_CLAMP_TO_EDGE, 1, 1, "player4.png", "player4"),
+    PLAYER_5(org.game.helper.IdGenerator.getNextIntegerId(), TextureEnum2D.root + TextureEnum2D.textures2D + "player\\" + "player5.png", null, GL_CLAMP_TO_EDGE, 1, 1, "player5.png", "player5"),
+    PLAYER_6(org.game.helper.IdGenerator.getNextIntegerId(), TextureEnum2D.root + TextureEnum2D.textures2D + "player\\" + "player6.png", null, GL_CLAMP_TO_EDGE, 1, 1, "player6.png", "player6"),
 
-    WATER_UP_RIGHT(org.game.helper.IdGenerator.getNextIntegerId(), TextureEnum2D.root + TextureEnum2D.textures2D + TextureEnum2D.water + "waterUpRight.png", null, GL_CLAMP_TO_EDGE, 1, 1, "waterUpRight.png", "WATER_UP_RIGHT_2D"),
-    WATER_UP_LEFT(org.game.helper.IdGenerator.getNextIntegerId(), TextureEnum2D.root + TextureEnum2D.textures2D + TextureEnum2D.water + "waterUpLeft.png", null, GL_CLAMP_TO_EDGE, 1, 1, "waterUpLeft.png", "WATER_UP_LEFT_2D"),
-    WATER_DOWN_RIGHT(org.game.helper.IdGenerator.getNextIntegerId(), TextureEnum2D.root + TextureEnum2D.textures2D + TextureEnum2D.water + "waterDownRight.png", null, GL_CLAMP_TO_EDGE, 1, 1, "waterDownRight.png", "WATER_DOWN_RIGHT_2D"),
-    WATER_DOWN_LEFT(org.game.helper.IdGenerator.getNextIntegerId(), TextureEnum2D.root + TextureEnum2D.textures2D + TextureEnum2D.water + "waterDownLeft.png", null, GL_CLAMP_TO_EDGE, 1, 1, "waterDownLeft.png", "WATER_DOWN_LEFT_2D");
+    TRACTOR_UP(org.game.helper.IdGenerator.getNextIntegerId(), TextureEnum2D.root + TextureEnum2D.textures2D + "player\\tractor\\" + "tractorUp.png", null, GL_CLAMP_TO_EDGE, 1, 1, "TRACTOR_UP.png", "TRACTOR_UP"),
+    TRACTOR_DOWN(org.game.helper.IdGenerator.getNextIntegerId(), TextureEnum2D.root + TextureEnum2D.textures2D + "player\\tractor\\" + "tractorDown.png", null, GL_CLAMP_TO_EDGE, 1, 1, "TRACTOR_DOWN.png", "TRACTOR_DOWN"),
+    TRACTOR_LEFT(org.game.helper.IdGenerator.getNextIntegerId(), TextureEnum2D.root + TextureEnum2D.textures2D + "player\\tractor\\" + "tractorLeft.png", null, GL_CLAMP_TO_EDGE, 1, 1, "TRACTOR_LEFT.png", "TRACTOR_LEFT"),
+    TRACTOR_RIGHT(org.game.helper.IdGenerator.getNextIntegerId(), TextureEnum2D.root + TextureEnum2D.textures2D + "player\\tractor\\" + "tractorRight.png", null, GL_CLAMP_TO_EDGE, 1, 1, "TRACTOR_RIGHT.png", "TRACTOR_RIGHT"),
+
+    //Animation up
+    TRACTOR_UP_1_ANIMATION(org.game.helper.IdGenerator.getNextIntegerId(), TextureEnum2D.root + TextureEnum2D.textures2D + "player\\tractor\\digUp\\" + "tractorUp1.png", null, GL_CLAMP_TO_EDGE, 1, 1, "TRACTOR_UP_1_ANIMATION.png", "TRACTOR_UP_1_ANIMATION"),
+    TRACTOR_UP_2_ANIMATION(org.game.helper.IdGenerator.getNextIntegerId(), TextureEnum2D.root + TextureEnum2D.textures2D + "player\\tractor\\digUp\\" + "tractorUp2.png", null, GL_CLAMP_TO_EDGE, 1, 1, "TRACTOR_UP_2_ANIMATION.png", "TRACTOR_UP_2_ANIMATION"),
+    TRACTOR_UP_3_ANIMATION(org.game.helper.IdGenerator.getNextIntegerId(), TextureEnum2D.root + TextureEnum2D.textures2D + "player\\tractor\\digUp\\" + "tractorUp3.png", null, GL_CLAMP_TO_EDGE, 1, 1, "TRACTOR_UP_3_ANIMATION.png", "TRACTOR_UP_3_ANIMATION"),
+
+    //Animation down
+    TRACTOR_DOWN_1_ANIMATION(org.game.helper.IdGenerator.getNextIntegerId(), TextureEnum2D.root + TextureEnum2D.textures2D + "player\\tractor\\digDown\\" + "tractorDown1.png", null, GL_CLAMP_TO_EDGE, 1, 1, "TRACTOR_DOWN_1_ANIMATION.png", "TRACTOR_DOWN_1_ANIMATION"),
+    TRACTOR_DOWN_2_ANIMATION(org.game.helper.IdGenerator.getNextIntegerId(), TextureEnum2D.root + TextureEnum2D.textures2D + "player\\tractor\\digDown\\" + "tractorDown2.png", null, GL_CLAMP_TO_EDGE, 1, 1, "TRACTOR_DOWN_2_ANIMATION.png", "TRACTOR_DOWN_2_ANIMATION"),
+    TRACTOR_DOWN_3_ANIMATION(org.game.helper.IdGenerator.getNextIntegerId(), TextureEnum2D.root + TextureEnum2D.textures2D + "player\\tractor\\digDown\\" + "tractorDown3.png", null, GL_CLAMP_TO_EDGE, 1, 1, "TRACTOR_DOWN_3_ANIMATION.png", "TRACTOR_DOWN_3_ANIMATION"),
+
+    //Animation left
+    TRACTOR_LEFT_1_ANIMATION(org.game.helper.IdGenerator.getNextIntegerId(), TextureEnum2D.root + TextureEnum2D.textures2D + "player\\tractor\\digLeft\\" + "tractorLeft1.png", null, GL_CLAMP_TO_EDGE, 1, 1, "TRACTOR_LEFT_1_ANIMATION.png", "TRACTOR_LEFT_1_ANIMATION"),
+    TRACTOR_LEFT_2_ANIMATION(org.game.helper.IdGenerator.getNextIntegerId(), TextureEnum2D.root + TextureEnum2D.textures2D + "player\\tractor\\digLeft\\" + "tractorLeft2.png", null, GL_CLAMP_TO_EDGE, 1, 1, "TRACTOR_LEFT_2_ANIMATION.png", "TRACTOR_LEFT_2_ANIMATION"),
+    TRACTOR_LEFT_3_ANIMATION(org.game.helper.IdGenerator.getNextIntegerId(), TextureEnum2D.root + TextureEnum2D.textures2D + "player\\tractor\\digLeft\\" + "tractorLeft3.png", null, GL_CLAMP_TO_EDGE, 1, 1, "TRACTOR_LEFT_3_ANIMATION.png", "TRACTOR_LEFT_3_ANIMATION"),
+
+    //Animation right
+    TRACTOR_RIGHT_1_ANIMATION(org.game.helper.IdGenerator.getNextIntegerId(), TextureEnum2D.root + TextureEnum2D.textures2D + "player\\tractor\\digRight\\" + "tractorRight1.png", null, GL_CLAMP_TO_EDGE, 1, 1, "TRACTOR_RIGHT_1_ANIMATION.png", "TRACTOR_RIGHT_1_ANIMATION"),
+    TRACTOR_RIGHT_2_ANIMATION(org.game.helper.IdGenerator.getNextIntegerId(), TextureEnum2D.root + TextureEnum2D.textures2D + "player\\tractor\\digRight\\" + "tractorRight2.png", null, GL_CLAMP_TO_EDGE, 1, 1, "TRACTOR_RIGHT_2_ANIMATION.png", "TRACTOR_RIGHT_2_ANIMATION"),
+    TRACTOR_RIGHT_3_ANIMATION(org.game.helper.IdGenerator.getNextIntegerId(), TextureEnum2D.root + TextureEnum2D.textures2D + "player\\tractor\\digRight\\" + "tractorRight3.png", null, GL_CLAMP_TO_EDGE, 1, 1, "TRACTOR_RIGHT_3_ANIMATION.png", "TRACTOR_RIGHT_3_ANIMATION"),
+
+    //Dynamite Animation
+    DYNAMITE_ANIMATION_1 (org.game.helper.IdGenerator.getNextIntegerId(), TextureEnum2D.root + TextureEnum2D.textures2D + "explosion\\" + "dynamiteAnimation1.png", null, GL_CLAMP_TO_EDGE, 1, 1, "dynamiteAnimation1.png", "DYNAMITE_ANIMATION_1"),
+    DYNAMITE_ANIMATION_2 (org.game.helper.IdGenerator.getNextIntegerId(), TextureEnum2D.root + TextureEnum2D.textures2D + "explosion\\" + "dynamiteAnimation2.png", null, GL_CLAMP_TO_EDGE, 1, 1, "dynamiteAnimation2.png", "DYNAMITE_ANIMATION_2"),
+    DYNAMITE_ANIMATION_3 (org.game.helper.IdGenerator.getNextIntegerId(), TextureEnum2D.root + TextureEnum2D.textures2D + "explosion\\" + "dynamiteAnimation3.png", null, GL_CLAMP_TO_EDGE, 1, 1, "dynamiteAnimation3.png", "DYNAMITE_ANIMATION_3"),
+    DYNAMITE_ANIMATION_4 (org.game.helper.IdGenerator.getNextIntegerId(), TextureEnum2D.root + TextureEnum2D.textures2D + "explosion\\" + "dynamiteAnimation4.png", null, GL_CLAMP_TO_EDGE, 1, 1, "dynamiteAnimation4.png", "DYNAMITE_ANIMATION_4"),
+    DYNAMITE_ANIMATION_5 (org.game.helper.IdGenerator.getNextIntegerId(), TextureEnum2D.root + TextureEnum2D.textures2D + "explosion\\" + "dynamiteAnimation5.png", null, GL_CLAMP_TO_EDGE, 1, 1, "dynamiteAnimation5.png", "DYNAMITE_ANIMATION_5"),
+    DYNAMITE_ANIMATION_6 (org.game.helper.IdGenerator.getNextIntegerId(), TextureEnum2D.root + TextureEnum2D.textures2D + "explosion\\" + "dynamiteAnimation6.png", null, GL_CLAMP_TO_EDGE, 1, 1, "dynamiteAnimation6.png", "DYNAMITE_ANIMATION_6"),
+    DYNAMITE_ANIMATION_7 (org.game.helper.IdGenerator.getNextIntegerId(), TextureEnum2D.root + TextureEnum2D.textures2D + "explosion\\" + "dynamiteAnimation7.png", null, GL_CLAMP_TO_EDGE, 1, 1, "dynamiteAnimation7.png", "DYNAMITE_ANIMATION_7"),
+    DYNAMITE_ANIMATION_8 (org.game.helper.IdGenerator.getNextIntegerId(), TextureEnum2D.root + TextureEnum2D.textures2D + "explosion\\" + "dynamiteAnimation8.png", null, GL_CLAMP_TO_EDGE, 1, 1, "dynamiteAnimation8.png", "DYNAMITE_ANIMATION_8"),
+    DYNAMITE_ANIMATION_9 (org.game.helper.IdGenerator.getNextIntegerId(), TextureEnum2D.root + TextureEnum2D.textures2D + "explosion\\" + "dynamiteAnimation9.png", null, GL_CLAMP_TO_EDGE, 1, 1, "dynamiteAnimation9.png", "DYNAMITE_ANIMATION_9"),
+    DYNAMITE_ANIMATION_10(org.game.helper.IdGenerator.getNextIntegerId(), TextureEnum2D.root + TextureEnum2D.textures2D + "explosion\\" + "dynamiteAnimation10.png", null, GL_CLAMP_TO_EDGE, 1, 1, "dynamiteAnimation10.png", "DYNAMITE_ANIMATION_10"),
+
+    //Explosion animation
+    EXPLOSION_ANIMATION_1(org.game.helper.IdGenerator.getNextIntegerId(), TextureEnum2D.root + TextureEnum2D.textures2D + "explosion\\explosionAnimation\\" + "explosionAnimation1.png", null, GL_CLAMP_TO_EDGE, 1, 1, "explosionAnimation1.png", "EXPLOSION_ANIMATION_1"),
+    EXPLOSION_ANIMATION_2(org.game.helper.IdGenerator.getNextIntegerId(), TextureEnum2D.root + TextureEnum2D.textures2D + "explosion\\explosionAnimation\\" + "explosionAnimation2.png", null, GL_CLAMP_TO_EDGE, 1, 1, "explosionAnimation2.png", "EXPLOSION_ANIMATION_2"),
+    EXPLOSION_ANIMATION_3(org.game.helper.IdGenerator.getNextIntegerId(), TextureEnum2D.root + TextureEnum2D.textures2D + "explosion\\explosionAnimation\\" + "explosionAnimation3.png", null, GL_CLAMP_TO_EDGE, 1, 1, "explosionAnimation3.png", "EXPLOSION_ANIMATION_3"),
+    EXPLOSION_ANIMATION_4(org.game.helper.IdGenerator.getNextIntegerId(), TextureEnum2D.root + TextureEnum2D.textures2D + "explosion\\explosionAnimation\\" + "explosionAnimation4.png", null, GL_CLAMP_TO_EDGE, 1, 1, "explosionAnimation4.png", "EXPLOSION_ANIMATION_4"),
+    EXPLOSION_ANIMATION_5(org.game.helper.IdGenerator.getNextIntegerId(), TextureEnum2D.root + TextureEnum2D.textures2D + "explosion\\explosionAnimation\\" + "explosionAnimation5.png", null, GL_CLAMP_TO_EDGE, 1, 1, "explosionAnimation5.png", "EXPLOSION_ANIMATION_5"),
+    EXPLOSION_ANIMATION_6(org.game.helper.IdGenerator.getNextIntegerId(), TextureEnum2D.root + TextureEnum2D.textures2D + "explosion\\explosionAnimation\\" + "explosionAnimation6.png", null, GL_CLAMP_TO_EDGE, 1, 1, "explosionAnimation6.png", "EXPLOSION_ANIMATION_6"),
+    EXPLOSION_ANIMATION_7(org.game.helper.IdGenerator.getNextIntegerId(), TextureEnum2D.root + TextureEnum2D.textures2D + "explosion\\explosionAnimation\\" + "explosionAnimation7.png", null, GL_CLAMP_TO_EDGE, 1, 1, "explosionAnimation7.png", "EXPLOSION_ANIMATION_7"),
+    EXPLOSION_ANIMATION_8(org.game.helper.IdGenerator.getNextIntegerId(), TextureEnum2D.root + TextureEnum2D.textures2D + "explosion\\explosionAnimation\\" + "explosionAnimation8.png", null, GL_CLAMP_TO_EDGE, 1, 1, "explosionAnimation8.png", "EXPLOSION_ANIMATION_8");
 
     private final int id;
     private final String path;

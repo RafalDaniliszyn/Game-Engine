@@ -16,6 +16,11 @@ public class EntityDto {
     private boolean replaceableEdges;
     private Map<Side, String> replaceableTexture;
     private List<String> components;
+    private String afterDestroyTexturePath;
+    private String afterDestroyLabel;
+    private boolean isDestroyable;
+    private double destructionDifficulty;
+    private Map<String, Integer> drop;
 
 
     public EntityDto() {
@@ -93,7 +98,6 @@ public class EntityDto {
         this.replaceableEdges = replaceableEdges;
     }
 
-
     public Map<Side, String> getReplaceableTexture() {
         return replaceableTexture;
     }
@@ -110,6 +114,46 @@ public class EntityDto {
         this.components = components;
     }
 
+    public String getAfterDestroyTexturePath() {
+        return afterDestroyTexturePath;
+    }
+
+    public void setAfterDestroyTexturePath(String afterDestroyTexturePath) {
+        this.afterDestroyTexturePath = afterDestroyTexturePath;
+    }
+
+    public String getAfterDestroyLabel() {
+        return afterDestroyLabel;
+    }
+
+    public void setAfterDestroyLabel(String afterDestroyLabel) {
+        this.afterDestroyLabel = afterDestroyLabel;
+    }
+
+    public boolean isDestroyable() {
+        return isDestroyable;
+    }
+
+    public void setIsDestroyable(boolean destroyable) {
+        isDestroyable = destroyable;
+    }
+
+    public double getDestructionDifficulty() {
+        return destructionDifficulty;
+    }
+
+    public void setDestructionDifficulty(double destructionDifficulty) {
+        this.destructionDifficulty = destructionDifficulty;
+    }
+
+    public Map<String, Integer> getDrop() {
+        return drop;
+    }
+
+    public void setDrop(Map<String, Integer> drop) {
+        this.drop = drop;
+    }
+
     @Override
     public String toString() {
         return "EntityDto{" +
@@ -122,7 +166,11 @@ public class EntityDto {
                 ", quantity=" + quantity +
                 ", stack=" + stack +
                 ", replaceableEdges=" + replaceableEdges +
+                ", replaceableTexture=" + replaceableTexture +
                 ", components=" + components +
+                ", afterDestroyTexturePath='" + afterDestroyTexturePath + '\'' +
+                ", afterDestroyLabel='" + afterDestroyLabel + '\'' +
+                ", isDestroyable=" + isDestroyable +
                 '}';
     }
 }

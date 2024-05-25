@@ -1,6 +1,6 @@
 package org.game;
 
-import org.game.debugWindow.Frame;
+import org.game.editWindow.Frame;
 import java.util.Arrays;
 
 public class Main {

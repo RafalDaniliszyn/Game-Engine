@@ -1,6 +1,7 @@
 package org.game.component.mesh;
 
 import org.game.component.Component;
+import org.game.isometric.component.ComponentEnum;
 import org.joml.Vector3f;
 import org.lwjgl.BufferUtils;
 import java.nio.FloatBuffer;
@@ -197,5 +198,10 @@ public class MeshComponent extends Component {
 
     public void setSettings(boolean settings) {
         this.settings = settings;
+    }
+
+    @Override
+    public ComponentEnum getType() {
+        return null;
     }
 }

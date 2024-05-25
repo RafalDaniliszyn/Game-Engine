@@ -2,39 +2,51 @@ package org.game.entity;
 
 import org.game.helper.IdGenerator;
 import org.game.component.Component;
+import org.game.isometric.component.ComponentEnum;
 import org.game.system.shader.ShaderEnum;
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Entity {
     private final long id;
+    private State state;
     private List<Component> componentList;
+    private final List<ComponentEnum> componentEnumList;
     private EntityProperties properties;
 
     public Entity() {
         this.componentList = new ArrayList<>();
         this.id = IdGenerator.getNextId();
+        this.state = State.NEW;
         this.properties = new EntityProperties(ShaderEnum.DEFAULT);
+        this.componentEnumList = new ArrayList<>();
     }
 
     public Entity(EntityProperties properties) {
         this.componentList = new ArrayList<>();
         this.id = IdGenerator.getNextId();
+        this.state = State.NEW;
         this.properties = properties;
+        this.componentEnumList = new ArrayList<>();
     }
 
-    public void addComponent(List<? extends Component> component) {
+    public void addComponents(List<? extends Component> component) {
         componentList.addAll(component);
+        component.forEach(comp -> {
+            componentEnumList.add(comp.getType());
+        });
     }
 
     public void addComponent(Component component) {
         componentList.add(component);
+        componentEnumList.add(component.getType());
     }
 
     public <T extends Component> void changeComponent(Component newComponent, Class<T> toChange) {
         for (int i = 0; i < componentList.size(); i++) {
             if (toChange.isAssignableFrom(componentList.get(i).getClass())) {
-                componentList.remove(i);
+                Component removed = componentList.remove(i);
+                componentEnumList.remove(removed.getType());
                 addComponent(newComponent);
                 return;
             }
@@ -44,7 +56,8 @@ public abstract class Entity {
     public <T extends Component> void removeComponent(Class<T> toRemove) {
         for (int i = 0; i < componentList.size(); i++) {
             if (toRemove.isAssignableFrom(componentList.get(i).getClass())) {
-                componentList.remove(i);
+                Component removed = componentList.remove(i);
+                componentEnumList.remove(removed.getType());
                 return;
             }
         }
@@ -73,6 +86,14 @@ public abstract class Entity {
         return id;
     }
 
+    public State getState() {
+        return state;
+    }
+
+    public void setState(State state) {
+        this.state = state;
+    }
+
     public List<Component> getComponentList() {
         return componentList;
     }
@@ -89,6 +110,10 @@ public abstract class Entity {
         this.properties = properties;
     }
 
+    public List<ComponentEnum> getComponentEnumList() {
+        return componentEnumList;
+    }
+
     @Override
     public String toString() {
         return "Entity{" +
@@ -96,5 +121,11 @@ public abstract class Entity {
                 ", componentList=" + componentList +
                 ", properties=" + properties +
                 '}';
+    }
+
+    public enum State {
+        NEW,
+        ACTIVE,
+        DESTROYED
     }
 }

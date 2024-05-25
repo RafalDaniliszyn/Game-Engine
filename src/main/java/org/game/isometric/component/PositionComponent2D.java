@@ -32,4 +32,9 @@ public class PositionComponent2D extends Component {
     public void setFloor(int floor) {
         this.floor = floor;
     }
+
+    @Override
+    public ComponentEnum getType() {
+        return ComponentEnum.PositionComponent2D;
+    }
 }

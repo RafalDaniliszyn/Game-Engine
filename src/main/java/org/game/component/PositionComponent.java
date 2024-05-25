@@ -1,6 +1,7 @@
 package org.game.component;
 
 import org.game.helper.PositionHelper;
+import org.game.isometric.component.ComponentEnum;
 import org.joml.Vector3f;
 
 public class PositionComponent extends Component {
@@ -87,5 +88,10 @@ public class PositionComponent extends Component {
 
     public void setLastMoveVector(Vector3f lastMoveVector) {
         this.lastMoveVector = lastMoveVector;
+    }
+
+    @Override
+    public ComponentEnum getType() {
+        return null;
     }
 }

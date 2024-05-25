@@ -2,28 +2,27 @@ package org.game;
 
 import org.game.component.Component;
 import org.game.component.PositionComponent;
-import org.game.debugWindow.Frame;
+import org.game.editWindow.Frame;
 import org.game.entity.Entity;
 import org.game.isometric.blockLoader.BlocksReader;
+import org.game.isometric.component.ComponentEnum;
 import org.game.isometric.entity.PlayerEntity2D;
 import org.game.isometric.renderer.Renderer2D;
-import org.game.isometric.system.CollisionSystem2D;
-import org.game.isometric.system.DragSystem;
-import org.game.isometric.system.GameStateSystem;
-import org.game.isometric.system.MoveSystem2D;
+import org.game.isometric.system.*;
 import org.game.isometric.texture2D.TextureEnum2D;
 import org.game.isometric.texture2D.TextureManager2D;
+import org.game.isometric.utils.EntityUtils;
 import org.game.isometric.worldMap.MapEditor;
 import org.game.isometric.worldMap.WorldMapData;
 import org.game.system.shader.ShaderManager;
 import org.game.system.BaseSystem;
 import org.game.event.EventManager;
 import org.game.event.EventObserver;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import org.joml.Vector2f;
+
+import java.util.*;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  * This class is used for testing functionality during development.
@@ -101,21 +100,40 @@ public class GameData {
         return result;
     }
 
-    @SafeVarargs
-    public final Map<Long, Entity> getEntities(Predicate<Entity> predicate, Class<? extends Component>... componentClass) {
+    public final Map<Long, Entity> getEntities(ComponentEnum... componentEnum) {
+        Map<Long, Entity> result = new HashMap<>();
+        entities.forEach((id, entity) -> {
+            boolean containsAllComponents = EntityUtils.containsComponents(entity, componentEnum);
+            if (containsAllComponents) {
+                result.put(entity.getId(), entity);
+            }
+        });
+        return result;
+    }
+
+    public final Map<Long, Entity> getEntities(Predicate<Entity> predicate, ComponentEnum... componentEnum) {
         Map<Long, Entity> result = new HashMap<>();
         entities.forEach((id, entity) -> {
             if (predicate.test(entity)) {
-                boolean anyMatch = Arrays.stream(componentClass)
-                        .allMatch(component -> entity.getComponentList().stream()
-                                .anyMatch(component1 -> component.isAssignableFrom(component1.getClass())));
-                if (anyMatch) {
+                boolean containsAllComponents = EntityUtils.containsComponents(entity, componentEnum);
+                if (containsAllComponents) {
                     result.put(entity.getId(), entity);
                 }
             }
         });
         return result;
     }
+
+    public final Map<Long, Entity> getEntitiesWithPredicate(Predicate<Entity> predicate) {
+        Map<Long, Entity> result = new HashMap<>();
+        entities.forEach((id, entity) -> {
+            if (predicate.test(entity)) {
+                result.put(entity.getId(), entity);
+            }
+        });
+        return result;
+    }
+
 
     public void addEventManagerObserver(Class<? extends EventManager> eventManager, EventObserver eventObserver) {
         eventManagers.forEach((s, manager) -> {
@@ -187,12 +205,18 @@ public class GameData {
         systems.put("gameStateSystem", gameStateSystem);
         MapEditor mapEditor = new MapEditor(this, worldMapData);
         systems.put("mapEditor", mapEditor);
+        DestroySystem2D destroySystem2D = new DestroySystem2D(this);
+        systems.put("destroySystem2D", destroySystem2D);
         DragSystem dragSystem = new DragSystem(this);
         systems.put("dragSystem", dragSystem);
         CollisionSystem2D collisionSystem2D = new CollisionSystem2D(this);
         systems.put("collisionSystem2D", collisionSystem2D);
+        AnimationSystem2D animationSystem2D = new AnimationSystem2D(this);
+        systems.put("animationSystem2D", animationSystem2D);
         MoveSystem2D moveSystem2D = new MoveSystem2D(this);
         systems.put("moveSystem2D", moveSystem2D);
+        TileActionSystem tileActionSystem = new TileActionSystem(this);
+        systems.put("tileActionSystem", tileActionSystem);
         Renderer2D renderer2D = new Renderer2D(this);
         systems.put("renderer2d", renderer2D);
     }

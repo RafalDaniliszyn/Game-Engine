@@ -1,5 +1,6 @@
 package org.game.component;
 
+import org.game.isometric.component.ComponentEnum;
 import org.joml.Vector3f;
 
 public class LightComponent extends Component {
@@ -24,5 +25,10 @@ public class LightComponent extends Component {
 
     public void setDown(boolean down) {
         this.down = down;
+    }
+
+    @Override
+    public ComponentEnum getType() {
+        return null;
     }
 }

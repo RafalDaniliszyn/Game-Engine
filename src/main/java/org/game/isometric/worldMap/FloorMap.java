@@ -1,7 +1,6 @@
 package org.game.isometric.worldMap;
 
 import org.game.GameData;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,19 +15,19 @@ public class FloorMap {
      * Key - floor
      * Value - List with entity ids
      */
-    private final Map<Integer, List<Long>> entityIdMap;
+ //   private final Map<Integer, List<Long>> entityIdMap;
 
     public FloorMap(GameData gameData) {
         floorMap = new HashMap<>();
-        this.entityIdMap = new HashMap<>();
+       // this.entityIdMap = new HashMap<>();
         for (int i = 0; i < FLOORS; i++) {
-            entityIdMap.put(i, new ArrayList<>());
+           // entityIdMap.put(i, new ArrayList<>());
             ChunkMap chunkMap = new ChunkMap(gameData);
             Chunk[][] chunks = chunkMap.getChunks();
             for (Chunk[] chunk : chunks) {
                 for (int j = 0; j < chunks.length; j++) {
                     List<Long> entityIdList = chunk[j].fillChunk(i);
-                    entityIdMap.get(i).addAll(entityIdList);
+                   // entityIdMap.get(i).addAll(entityIdList);
                 }
             }
             floorMap.put(i, chunkMap);
@@ -43,13 +42,13 @@ public class FloorMap {
         if (entityId == null || floor < 0 || floor > FLOORS) {
             return;
         }
-        entityIdMap.get(floor).add(entityId);
+        //entityIdMap.get(floor).add(entityId);
     }
 
     public void removeEntityIdOnFloor(Long entityId, Integer floor) {
         if (entityId == null || floor < 0 || floor > FLOORS) {
             return;
         }
-        entityIdMap.get(floor).remove(entityId);
+       // entityIdMap.get(floor).remove(entityId);
     }
 }

@@ -53,4 +53,8 @@ public class MeshComponent2D extends Component {
         this.scale = scale;
     }
 
+    @Override
+    public ComponentEnum getType() {
+        return ComponentEnum.MeshComponent2D;
+    }
 }

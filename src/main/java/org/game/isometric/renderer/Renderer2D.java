@@ -5,6 +5,7 @@ import org.game.entity.EntityProperties;
 import org.game.isometric.Camera2D;
 import org.game.isometric.GameState;
 import org.game.isometric.WorldSettings;
+import org.game.isometric.component.ComponentEnum;
 import org.game.isometric.component.MeshComponent2D;
 import org.game.isometric.component.PositionComponent2D;
 import org.game.isometric.mesh.RawModel;
@@ -68,21 +69,17 @@ public class Renderer2D extends BaseRenderer {
                 }
             }
             return false;
-        }, MeshComponent2D.class).forEach((id, entity) -> {
+        }, ComponentEnum.MeshComponent2D).forEach((id, entity) -> {
             PositionComponent2D positionComponent = entity.getComponent(PositionComponent2D.class);
-            Vector2f position = positionComponent.getPosition();
-            if (position.x > currentX - offset && position.x < currentX + offset
-                    && position.y > currentY - offset && position.y < currentY + offset) {
-                MeshComponent2D mesh = entity.getComponent(MeshComponent2D.class);
-                EntityProperties properties = entity.getProperties();
-                render(mesh, positionComponent, properties.getDepth());
-            }
+            MeshComponent2D mesh = entity.getComponent(MeshComponent2D.class);
+            EntityProperties properties = entity.getProperties();
+            render(mesh, positionComponent, properties.getDepth());
         });
     }
 
     @Override
     public void delete() {
-        getGameData().getEntities(MeshComponent2D.class).forEach((id, entity) -> {
+        getGameData().getEntities(ComponentEnum.MeshComponent2D).forEach((id, entity) -> {
             entity.getComponent(MeshComponent2D.class).getRawModel().remove();
         });
     }

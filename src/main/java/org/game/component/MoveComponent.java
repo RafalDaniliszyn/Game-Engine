@@ -1,5 +1,6 @@
 package org.game.component;
 
+import org.game.isometric.component.ComponentEnum;
 import org.joml.Vector3f;
 
 public class MoveComponent extends Component{
@@ -10,6 +11,11 @@ public class MoveComponent extends Component{
     public MoveComponent() {
         this.moveVector = new Vector3f(0.0f, 0.0f, 0.0f);
         this.speed = 0.0f;
+    }
+
+    @Override
+    public ComponentEnum getType() {
+        return null;
     }
 
     public MoveComponent(Vector3f moveVector, float speed) {

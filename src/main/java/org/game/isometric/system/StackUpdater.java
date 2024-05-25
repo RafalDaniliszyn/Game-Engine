@@ -44,6 +44,9 @@ public class StackUpdater {
             gameData.removeEntity(topEntityId);
 
             Long topEntityStacked = worldMapData.getTopEntityIdFromTile(floor, tileX, tileY);
+            if (topEntityStacked == null) {
+                return;
+            }
             entity = gameData.getEntity(topEntityStacked);
             EntityPropertiesHelper.setQuantity(entity, quantitySum);
 
@@ -54,7 +57,6 @@ public class StackUpdater {
         }
         //Stack has depth range for example if terrain level is on -2.0f depth level then stack of gold can be from -1.9f to -1.0f
         //Every stack begin from -1.9f and next layer subtract 0.1f
-        MeshComponent2D meshComponent = entity.getComponent(MeshComponent2D.class);
         float toAdd = entityPropertiesList.size() * 0.1f;
         entity.getProperties().setDepth(-1.9f + toAdd);
         System.out.println(-1.9f + toAdd);

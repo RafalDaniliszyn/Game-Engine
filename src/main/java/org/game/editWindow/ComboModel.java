@@ -1,4 +1,4 @@
-package org.game.debugWindow;
+package org.game.editWindow;
 
 import javax.imageio.ImageIO;
 import java.awt.Image;

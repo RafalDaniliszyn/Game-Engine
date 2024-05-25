@@ -1,12 +1,17 @@
 package org.game.component;
 
 import org.game.helper.IdGenerator;
+import org.game.isometric.component.ComponentEnum;
 
 public abstract class Component {
     private long id;
 
     public Component() {
         this.id = IdGenerator.getNextId();
+    }
+
+    public ComponentEnum getType(){
+        return null;
     }
 
     public long getId() {

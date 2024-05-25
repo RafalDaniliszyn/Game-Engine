@@ -103,19 +103,19 @@ public class MoveSystem extends BaseSystem {
     }
 
     private void getInputKeys() {
-        if (Key.key == GLFW_KEY_W) {
+        if (Key.getKey() == GLFW_KEY_W) {
            KEY_W = true;
         }
-        if (Key.key == GLFW_KEY_S) {
+        if (Key.getKey() == GLFW_KEY_S) {
            KEY_S = true;
         }
-        if (Key.key == GLFW_KEY_A) {
+        if (Key.getKey() == GLFW_KEY_A) {
            KEY_A = true;
         }
-        if (Key.key == GLFW_KEY_D) {
+        if (Key.getKey() == GLFW_KEY_D) {
             KEY_D = true;
         }
-        if (Key.key == GLFW_KEY_SPACE) {
+        if (Key.getKey() == GLFW_KEY_SPACE) {
            KEY_SPACE = true;
         }
         if (MouseInput.WHEEL_UP) {
@@ -124,7 +124,7 @@ public class MoveSystem extends BaseSystem {
         if (MouseInput.WHEEL_DOWN) {
             Camera.distance += 0.1f;
         }
-        if (Key.action == GLFW_RELEASE) {
+        if (Key.getAction() == GLFW_RELEASE) {
             KEY_W = false;
             KEY_S = false;
             KEY_A = false;

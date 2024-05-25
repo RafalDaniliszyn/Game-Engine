@@ -1,4 +1,4 @@
-package org.game.debugWindow;
+package org.game.editWindow;
 
 import javax.swing.JPanel;
 import java.awt.Graphics;

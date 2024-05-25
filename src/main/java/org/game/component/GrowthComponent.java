@@ -1,7 +1,7 @@
 package org.game.component;
 
+import org.game.isometric.component.ComponentEnum;
 import org.lwjgl.glfw.GLFW;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -80,5 +80,10 @@ public class GrowthComponent extends Component {
 
     public Long getMeshId(int stage) {
         return meshIds.get(stage);
+    }
+
+    @Override
+    public ComponentEnum getType() {
+        return null;
     }
 }

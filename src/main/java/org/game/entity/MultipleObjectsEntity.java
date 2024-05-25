@@ -32,7 +32,7 @@ public class MultipleObjectsEntity extends Entity {
                 }
             });
         }
-        addComponent(meshComponent);
+        addComponents(meshComponent);
         if (collision) {
             addComponent(collisionComponent);
         }

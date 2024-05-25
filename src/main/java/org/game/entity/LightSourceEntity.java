@@ -20,7 +20,7 @@ public class LightSourceEntity extends Entity {
                 addComponent(meshManager.getCollisionLines(mesh.getVertices(), positionComponent));
             });
         }
-        addComponent(meshComponent);
+        addComponents(meshComponent);
         LightComponent lightComponent = new LightComponent(new Vector3f(1.0f, 1.0f, 1.0f));
         addComponent(lightComponent);
     }

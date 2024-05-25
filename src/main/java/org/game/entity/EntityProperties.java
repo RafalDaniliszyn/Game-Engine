@@ -1,8 +1,11 @@
 package org.game.entity;
 
 import org.game.isometric.blockLoader.Side;
+import org.game.isometric.action.Action;
 import org.game.isometric.model.Stackable;
 import org.game.system.shader.ShaderEnum;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class EntityProperties {
@@ -19,9 +22,13 @@ public class EntityProperties {
     private float depth;
     private boolean replaceableEdges;
     private Map<Side, Integer> replaceableTextureIdMap;
+    private List<Action> actionListToDo;
+    private List<Action> actionList;
 
     public EntityProperties() {
         this.shaderType = ShaderEnum.DEFAULT;
+        this.actionListToDo = new ArrayList<>();
+        this.actionList = new ArrayList<>();
     }
 
     public EntityProperties(boolean collidable, boolean draggable, boolean stackable, String label,
@@ -34,6 +41,8 @@ public class EntityProperties {
         this.stack = stack;
         this.replaceableEdges = replaceableEdges;
         this.replaceableTextureIdMap = replaceableTextureIdMap;
+        this.actionListToDo = new ArrayList<>();
+        this.actionList = new ArrayList<>();
     }
 
     public EntityProperties(ShaderEnum shaderType) {
@@ -128,6 +137,25 @@ public class EntityProperties {
         this.replaceableTextureIdMap = replaceableTextureIdMap;
     }
 
+    public void setActionComponentList(List<Action> actionList) {
+        this.actionListToDo = actionList;
+    }
+
+    public List<Action> getActionListToDo() {
+        return actionListToDo;
+    }
+    public void setActionListToDo(List<Action> actionListToDo) {
+        this.actionListToDo = actionListToDo;
+    }
+
+    public List<Action> getActionList() {
+        return actionList;
+    }
+
+    public void setActionList(List<Action> actionList) {
+        this.actionList = actionList;
+    }
+
     @Override
     public String toString() {
         return "EntityProperties{" +
@@ -197,6 +225,24 @@ public class EntityProperties {
 
         public EntityPropertiesBuilder setReplaceableTextureIdMap(Map<Side, Integer> replaceableTextureIdMap) {
             this.entityProperties.setReplaceableTextureIdMap(replaceableTextureIdMap);
+            return this;
+        }
+
+        public EntityPropertiesBuilder setActionList(List<Action> actionList) {
+            if (actionList == null) {
+                this.setActionList(new ArrayList<>());
+                return this;
+            }
+            this.entityProperties.setActionList(actionList);
+            return this;
+        }
+
+        public EntityPropertiesBuilder setActionListToDo(List<Action> actionListToDo) {
+            if (actionListToDo == null) {
+                this.entityProperties.setActionListToDo(new ArrayList<>());
+                return this;
+            }
+            this.entityProperties.setActionListToDo(actionListToDo);
             return this;
         }
     }

@@ -103,6 +103,31 @@ public final class TileUtils {
                 result.add(down.peekFirst());
             }
         }
+
+        if (tilePosition.x() > 0 && tilePosition.y() > 0) {
+            Deque<Long> downLeft = entitiesQueue[tilePosition.x() - 1][tilePosition.y() - 1];
+            if (downLeft != null) {
+                result.add(downLeft.peekFirst());
+            }
+        }
+        if (tilePosition.x() < entitiesQueue.length - 1 && tilePosition.y() > 0) {
+            Deque<Long> downRight = entitiesQueue[tilePosition.x() + 1][tilePosition.y() - 1];
+            if (downRight != null) {
+                result.add(downRight.peekFirst());
+            }
+        }
+        if (tilePosition.x() > 0 && tilePosition.y() < entitiesQueue.length - 1) {
+            Deque<Long> upLeft = entitiesQueue[tilePosition.x() - 1][tilePosition.y() + 1];
+            if (upLeft != null) {
+                result.add(upLeft.peekFirst());
+            }
+        }
+        if (tilePosition.x() < entitiesQueue.length - 1 && tilePosition.y() < entitiesQueue.length - 1) {
+            Deque<Long> upRight = entitiesQueue[tilePosition.x() + 1][tilePosition.y() + 1];
+            if (upRight != null) {
+                result.add(upRight.peekFirst());
+            }
+        }
         return result;
     }
 }

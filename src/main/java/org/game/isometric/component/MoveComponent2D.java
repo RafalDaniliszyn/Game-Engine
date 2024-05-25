@@ -14,7 +14,7 @@ public class MoveComponent2D extends Component {
     public MoveComponent2D(float speed) {
         this.speed = speed;
         this.direction = Direction.UP;
-        this.animationTimer = new AnimationTimer(WorldSettings.TILE_SIZE);
+        this.animationTimer = new AnimationTimer(WorldSettings.TILE_SIZE - WorldSettings.TILE_OVERLAP_LENGTH);
         this.directionBlocked = new DirectionBlocked();
     }
 
@@ -61,6 +61,11 @@ public class MoveComponent2D extends Component {
             case DOWN -> directionBlocked.setDownBlocked(isBlocked);
             case UP -> directionBlocked.setUpBlocked(isBlocked);
         }
+    }
+
+    @Override
+    public ComponentEnum getType() {
+        return ComponentEnum.MoveComponent2D;
     }
 
     public enum Direction {

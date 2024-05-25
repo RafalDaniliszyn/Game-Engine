@@ -20,7 +20,7 @@ public class StaticObjectEntity extends Entity {
                 addComponent(meshManager.getCollisionLines(mesh.getVertices(), positionComponent));
             });
         }
-        addComponent(meshComponent);
+        addComponents(meshComponent);
         addComponent(collisionComponent);
     }
 
@@ -36,7 +36,7 @@ public class StaticObjectEntity extends Entity {
                 addComponent(meshManager.getCollisionLines(mesh.getVertices(), positionComponent));
             });
         }
-        addComponent(meshComponent);
+        addComponents(meshComponent);
         addComponent(collisionComponent);
     }
 
@@ -52,7 +52,7 @@ public class StaticObjectEntity extends Entity {
                 addComponent(meshManager.getCollisionLines(mesh.getVertices(), positionComponent));
             });
         }
-        addComponent(meshComponent);
+        addComponents(meshComponent);
         addComponent(collisionComponent);
     }
 }

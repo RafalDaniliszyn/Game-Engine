@@ -1,4 +1,4 @@
 package org.game.event;
 
-public class EquipmentEventManager extends EventManager{
+public class EquipmentEventManager extends EventManager {
 }

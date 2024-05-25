@@ -8,6 +8,7 @@ import org.game.isometric.system.StackUpdater;
 import org.game.isometric.utils.PositionUtils;
 import org.game.isometric.utils.TilePosition;
 import org.game.isometric.utils.TileUtils;
+import java.util.ArrayList;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
@@ -20,7 +21,6 @@ public class WorldMapData {
 
     public WorldMapData(GameData gameData) {
         this.gameData = gameData;
-
         this.floorMap = new FloorMap(gameData);
         this.stackUpdater = new StackUpdater(gameData, this);
     }
@@ -34,15 +34,18 @@ public class WorldMapData {
     }
 
     public List<EntityProperties> getEntityPropertiesList(int floor, int tileX, int tileY) {
-        Deque<Long> entitiesId = getEntitiesOnTile(floor, tileX, tileY);
-        List<EntityProperties> entityProperties = new LinkedList<>();
-        entitiesId.forEach(id -> {
-            Entity entity = gameData.getEntity(id);
-            if (entity != null) {
-                entityProperties.add(entity.getProperties());
-            }
-        });
-        return entityProperties;
+        Optional<Deque<Long>> entitiesId = getEntitiesOnTile(floor, tileX, tileY);
+        if (entitiesId.isPresent()) {
+            List<EntityProperties> entityProperties = new LinkedList<>();
+            entitiesId.get().forEach(id -> {
+                Entity entity = gameData.getEntity(id);
+                if (entity != null) {
+                    entityProperties.add(entity.getProperties());
+                }
+            });
+            return entityProperties;
+        }
+        return new ArrayList<>();
     }
 
     public void addEntityToTile(int floor, int tileX, int tileY, Long entityId, boolean isTerrain) {
@@ -102,17 +105,19 @@ public class WorldMapData {
         }
     }
 
-    public Deque<Long> getEntitiesOnTile(int floor, int tileX, int tileY) {
-        Deque<Long>[][] entityQueue = getTileInfoQueuesInChunk(floor, tileX, tileY);
-        return TileUtils.getEntitiesOnTile(entityQueue, tileX, tileY);
+    public Optional<Deque<Long>> getEntitiesOnTile(int floor, int tileX, int tileY) {
+        Optional<Deque<Long>[][]> entityQueue = getTileInfoQueuesInChunk(floor, tileX, tileY);
+        return entityQueue.map(queue -> TileUtils.getEntitiesOnTile(queue, tileX, tileY));
     }
 
     public Long getTopEntityIdFromTile(int floor, int tileX, int tileY) {
-        return getEntitiesOnTile(floor, tileX, tileY).peekLast();
+        Optional<Deque<Long>> entitiesOnTile = getEntitiesOnTile(floor, tileX, tileY);
+        return entitiesOnTile.map(Deque::peekLast).orElse(null);
     }
 
     public Long getBottomEntityIdFromTile(int floor, int tileX, int tileY) {
-        return getEntitiesOnTile(floor, tileX, tileY).peekFirst();
+        Optional<Deque<Long>> entitiesOnTile = getEntitiesOnTile(floor, tileX, tileY);
+        return entitiesOnTile.map(Deque::peekFirst).orElse(null);
     }
 
     private Optional<Deque<Long>[][]> getTileIdMap(int floor, int tileX, int tileY) {
@@ -124,9 +129,13 @@ public class WorldMapData {
         return Optional.empty();
     }
 
-    private Deque<Long>[][] getTileInfoQueuesInChunk(int floor, int tileX, int tileY) {
+    private Optional<Deque<Long>[][]> getTileInfoQueuesInChunk(int floor, int tileX, int tileY) {
         TilePosition tilePosition = PositionUtils.getTilePosition(tileX, tileY);
-        return floorMap.getFloorMap().get(floor).getChunks()[tilePosition.chunkX()][tilePosition.chunkY()].getEntitiesQueue();
+        ChunkMap chunkMap = floorMap.getFloorMap().get(floor);
+        if (chunkMap == null) {
+            return Optional.empty();
+        }
+        return Optional.of(chunkMap.getChunks()[tilePosition.chunkX()][tilePosition.chunkY()].getEntitiesQueue());
     }
 
 }
