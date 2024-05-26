@@ -10,5 +10,6 @@ public enum ComponentEnum {
     DestroyComponent2D,
     DestroyableComponent2D,
     CollisionComponent2D,
-    AnimationComponent2D
+    AnimationComponent2D,
+    StateChangedComponent2D
 }

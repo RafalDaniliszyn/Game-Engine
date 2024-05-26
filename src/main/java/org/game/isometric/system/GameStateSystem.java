@@ -1,6 +1,7 @@
 package org.game.isometric.system;
 
 import org.game.GameData;
+import org.game.entity.Entity;
 import org.game.isometric.GameState;
 import org.game.isometric.WorldSettings;
 import org.game.isometric.component.ComponentEnum;
@@ -15,11 +16,14 @@ public class GameStateSystem extends BaseSystem {
 
     public GameStateSystem(GameData gameData) {
         super(gameData);
+        addRequiredComponent(ComponentEnum.PlayerComponent2D);
     }
 
     @Override
     public void update(float deltaTime) {
-        getGameData().getEntities(ComponentEnum.PlayerComponent2D).forEach((id, entity) -> {
+        GameData gameData = getGameData();
+        getEntitiesToProcess().forEach(id -> {
+            Entity entity = gameData.getEntity(id);
             PositionComponent2D positionComponent = entity.getComponent(PositionComponent2D.class);
             Vector2f position = positionComponent.getPosition();
             MoveComponent2D moveComponent = entity.getComponent(MoveComponent2D.class);

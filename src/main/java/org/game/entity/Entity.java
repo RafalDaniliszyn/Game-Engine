@@ -3,6 +3,7 @@ package org.game.entity;
 import org.game.helper.IdGenerator;
 import org.game.component.Component;
 import org.game.isometric.component.ComponentEnum;
+import org.game.isometric.component.StateChangedComponent2D;
 import org.game.system.shader.ShaderEnum;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,11 +36,13 @@ public abstract class Entity {
         component.forEach(comp -> {
             componentEnumList.add(comp.getType());
         });
+        markStateChangedComponent();
     }
 
     public void addComponent(Component component) {
         componentList.add(component);
         componentEnumList.add(component.getType());
+        markStateChangedComponent();
     }
 
     public <T extends Component> void changeComponent(Component newComponent, Class<T> toChange) {
@@ -48,6 +51,7 @@ public abstract class Entity {
                 Component removed = componentList.remove(i);
                 componentEnumList.remove(removed.getType());
                 addComponent(newComponent);
+                markStateChangedComponent();
                 return;
             }
         }
@@ -58,6 +62,21 @@ public abstract class Entity {
             if (toRemove.isAssignableFrom(componentList.get(i).getClass())) {
                 Component removed = componentList.remove(i);
                 componentEnumList.remove(removed.getType());
+                markStateChangedComponent();
+                return;
+            }
+        }
+    }
+
+    /**
+     * This method is to prevent infinite loops and StackOverflowException.
+     * Note: it should not be used outside the StateChangedSystem2D class.
+     */
+    public void removeStateChangedComponent() {
+        for (int i = 0; i < componentList.size(); i++) {
+            if (StateChangedComponent2D.class.isAssignableFrom(componentList.get(i).getClass())) {
+                componentList.remove(i);
+                componentEnumList.remove(ComponentEnum.StateChangedComponent2D);
                 return;
             }
         }
@@ -80,6 +99,12 @@ public abstract class Entity {
             }
         }
         return null;
+    }
+
+    private void markStateChangedComponent() {
+        StateChangedComponent2D stateChangedComponent = new StateChangedComponent2D();
+        this.componentList.add(stateChangedComponent);
+        this.componentEnumList.add(ComponentEnum.StateChangedComponent2D);
     }
 
     public long getId() {

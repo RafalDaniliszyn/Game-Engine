@@ -20,7 +20,7 @@ public class WorldSettings {
     static {
         TILE_OVERLAP_LENGTH = 0.0f;
         CHUNK_SIZE = 40;
-        WORLD_SIZE = 4;
+        WORLD_SIZE = 2;
         FLOORS = 2;
     }
 
