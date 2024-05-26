@@ -21,7 +21,7 @@ import org.joml.Vector2f;
 import java.util.List;
 import java.util.Map;
 
-import static org.game.entity.Entity.*;
+import static org.game.entity.Entity.State;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_SPACE;
 
 public class DestroySystem2D extends BaseSystem {
@@ -30,6 +30,7 @@ public class DestroySystem2D extends BaseSystem {
     public DestroySystem2D(GameData gameData) {
         super(gameData);
         this.edgeReplacer = new EdgeReplacer(gameData, gameData.getWorldMapData());
+        addRequiredComponent(ComponentEnum.DestroyableComponent2D, ComponentEnum.DestroyComponent2D, ComponentEnum.MeshComponent2D, ComponentEnum.PositionComponent2D);
     }
 
     @Override
@@ -92,7 +93,8 @@ public class DestroySystem2D extends BaseSystem {
 
     private void updateEntitiesToDestroy() {
         GameData gameData = getGameData();
-        gameData.getEntities(ComponentEnum.DestroyableComponent2D, ComponentEnum.DestroyComponent2D, ComponentEnum.MeshComponent2D, ComponentEnum.PositionComponent2D).forEach((id, entity) -> {
+        getEntitiesToProcess().forEach(id -> {
+            Entity entity = gameData.getEntity(id);
             DestroyComponent2D destroyComponent = entity.getComponent(DestroyComponent2D.class);
             if (destroyComponent.isDestroyNow()) {
                 destroy(gameData, entity);

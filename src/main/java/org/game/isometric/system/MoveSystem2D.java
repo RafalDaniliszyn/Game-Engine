@@ -20,9 +20,11 @@ import org.game.isometric.utils.AnimationUtils;
 import org.game.system.BaseSystem;
 import org.joml.Vector2f;
 import java.util.Deque;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.game.isometric.action.Action.Invoke.ON_ENTER;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_A;
@@ -34,8 +36,12 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_W;
 
 public class MoveSystem2D extends BaseSystem {
 
+    Set<Long> entitiesToProcess;
+
     public MoveSystem2D(GameData gameData) {
         super(gameData);
+        entitiesToProcess = new HashSet<>();
+        addRequiredComponent(ComponentEnum.PositionComponent2D, ComponentEnum.MoveComponent2D);
     }
 
     @Override
@@ -110,7 +116,9 @@ public class MoveSystem2D extends BaseSystem {
     }
 
     private void move(float dt) {
-        getGameData().getEntities(ComponentEnum.PositionComponent2D, ComponentEnum.MoveComponent2D).forEach((id, entity) -> {
+        GameData gameData = getGameData();
+        getEntitiesToProcess().forEach(id -> {
+            Entity entity = gameData.getEntity(id);
             PositionComponent2D positionComponent = entity.getComponent(PositionComponent2D.class);
             MoveComponent2D moveComponent = entity.getComponent(MoveComponent2D.class);
             MeshComponent2D meshComponent = entity.getComponent(MeshComponent2D.class);

@@ -8,7 +8,14 @@ import org.game.isometric.blockLoader.BlocksReader;
 import org.game.isometric.component.ComponentEnum;
 import org.game.isometric.entity.PlayerEntity2D;
 import org.game.isometric.renderer.Renderer2D;
-import org.game.isometric.system.*;
+import org.game.isometric.system.AnimationSystem2D;
+import org.game.isometric.system.CollisionSystem2D;
+import org.game.isometric.system.DestroySystem2D;
+import org.game.isometric.system.DragSystem;
+import org.game.isometric.system.GameStateSystem;
+import org.game.isometric.system.MoveSystem2D;
+import org.game.isometric.system.StateChangedSystem2D;
+import org.game.isometric.system.TileActionSystem;
 import org.game.isometric.texture2D.TextureEnum2D;
 import org.game.isometric.texture2D.TextureManager2D;
 import org.game.isometric.utils.EntityUtils;
@@ -18,11 +25,15 @@ import org.game.system.shader.ShaderManager;
 import org.game.system.BaseSystem;
 import org.game.event.EventManager;
 import org.game.event.EventObserver;
-import org.joml.Vector2f;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 /**
  * This class is used for testing functionality during development.
@@ -64,6 +75,9 @@ public class GameData {
         });
     }
 
+    Map<String, Long> executionTime = new HashMap<>();
+    long times = 0;
+
     public void update(float deltaTime) {
         if (!active) {
             return;
@@ -72,8 +86,31 @@ public class GameData {
             eventManager.notifyObservers();
         });
         systems.forEach((s, system) -> {
+            ExecutionTimeChecker executionTimeChecker = new ExecutionTimeChecker();
+            executionTimeChecker.start();
             system.update(deltaTime);
+            long stop = executionTimeChecker.stop(s);
+
+//            if (executionTime.containsKey(s)) {
+//                Long time = executionTime.get(s);
+//                executionTime.put(s, time + stop);
+//            } else {
+//                executionTime.put(s, stop);
+//            }
         });
+        times += 1;
+//        if (times >= 100) {
+//            times = 0;
+//            List<Map.Entry<String, Long>> list = new ArrayList<>(executionTime.entrySet());
+//            list.sort(Map.Entry.comparingByValue());
+//            Map<String, Long> sortedMap = new LinkedHashMap<>();
+//            for (Map.Entry<String, Long> entry : list) {
+//                sortedMap.put(entry.getKey(), entry.getValue());
+//            }
+//            sortedMap.forEach((key, value) -> System.out.println(key + " : " + value));
+//        }
+
+
     }
 
     public void delete() {
@@ -86,6 +123,11 @@ public class GameData {
         return components;
     }
 
+
+
+    /**
+     * Method for 3D module.
+     */
     @SafeVarargs
     public final Map<Long, Entity> getEntities(Class<? extends Component>... componentClass) {
         Map<Long, Entity> result = new HashMap<>();
@@ -145,14 +187,37 @@ public class GameData {
 
     public void addEntity(Entity entity) {
         entities.put(entity.getId(), entity);
+        List<ComponentEnum> componentEnumList = entity.getComponentEnumList();
+        systems.forEach((name, system) -> {
+            List<ComponentEnum> requiredComponents = system.getRequiredComponents();
+            if (new HashSet<>(componentEnumList).containsAll(requiredComponents)) {
+                system.addEntityToProcess(entity.getId());
+            }
+        });
     }
 
     public void removeEntity(Long entityId) {
         entities.remove(entityId);
+        systems.forEach((systemName, system) -> {
+            system.removeEntity(entityId);
+        });
     }
 
     public Entity getEntity(Long id) {
         return entities.get(id);
+    }
+
+    public Map<Long, Entity> getEntities(Predicate<Entity> predicate, Set<Long> entityIdSet) {
+        Map<Long, Entity> entityList = new HashMap<>();
+        entityIdSet.forEach(id -> {
+            Entity entity = entities.get(id);
+            if (entity != null && predicate.test(entity)) {
+                entityList.put(id, entity);
+            } else if (entity == null) {
+                entityIdSet.remove(id);
+            }
+        });
+        return entityList;
     }
 
 
@@ -189,18 +254,41 @@ public class GameData {
         return worldMapData;
     }
 
+    public Map<String, BaseSystem> getSystems() {
+        return systems;
+    }
+
     public void updateSkyPos(float x, float z) {
         Entity sky = getEntity(skyId);
         sky.getComponent(PositionComponent.class).getPosition().x -= x;
         sky.getComponent(PositionComponent.class).getPosition().z -= z;
     }
 
+
+    private void updateSystemsProcessList() {
+        systems.forEach((name, system) -> {
+            List<ComponentEnum> requiredComponents = system.getRequiredComponents();
+            entities.forEach((id, entity) -> {
+                Set<Long> entitiesToProcess = system.getEntitiesToProcess();
+                List<ComponentEnum> componentEnumList = entity.getComponentEnumList();
+                if (new HashSet<>(componentEnumList).containsAll(requiredComponents)) {
+                    system.addEntityToProcess(id);
+                } else {
+                    entitiesToProcess.remove(id);
+                }
+            });
+        });
+    }
+
     private void test2d() {
         Integer hamTextureId = TextureManager2D.getTextureId(TextureEnum2D.HAM_2D);
         PlayerEntity2D playerEntity2D = new PlayerEntity2D(hamTextureId, 38, 3);
+
         entities.put(playerEntity2D.getId(), playerEntity2D);
         this.worldMapData = new WorldMapData(this);
 
+        StateChangedSystem2D stateChangedSystem2D = new StateChangedSystem2D(this);
+        systems.put("stateChangedSystem2D", stateChangedSystem2D);
         GameStateSystem gameStateSystem = new GameStateSystem(this);
         systems.put("gameStateSystem", gameStateSystem);
         MapEditor mapEditor = new MapEditor(this, worldMapData);
@@ -219,6 +307,8 @@ public class GameData {
         systems.put("tileActionSystem", tileActionSystem);
         Renderer2D renderer2D = new Renderer2D(this);
         systems.put("renderer2d", renderer2D);
+
+        updateSystemsProcessList();
     }
 
 //    private void test3d() {

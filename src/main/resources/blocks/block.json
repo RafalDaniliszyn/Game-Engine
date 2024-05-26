@@ -98,8 +98,7 @@
       "DOWN_RIGHT": "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\main\\resources\\textures\\2D\\grass\\grassDownRight.png"
     },
     "components": [
-      "MeshComponent2D",
-      "CollisionComponent2D"
+      "MeshComponent2D"
     ]
   },
   {

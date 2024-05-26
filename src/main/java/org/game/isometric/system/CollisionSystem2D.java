@@ -1,6 +1,7 @@
 package org.game.isometric.system;
 
 import org.game.GameData;
+import org.game.entity.Entity;
 import org.game.isometric.GameState;
 import org.game.isometric.WorldSettings;
 import org.game.isometric.component.ComponentEnum;
@@ -17,12 +18,16 @@ public class CollisionSystem2D extends BaseSystem {
 
     public CollisionSystem2D(GameData gameData) {
         super(gameData);
+        addRequiredComponent(ComponentEnum.CollisionComponent2D, ComponentEnum.PositionComponent2D, ComponentEnum.MoveComponent2D);
     }
 
     @Override
     public void update(float deltaTime) {
-        WorldMapData worldMapData = getGameData().getWorldMapData();
-        getGameData().getEntities(ComponentEnum.CollisionComponent2D, ComponentEnum.PositionComponent2D, ComponentEnum.MoveComponent2D).forEach((id, entity) -> {
+        GameData gameData = getGameData();
+        WorldMapData worldMapData = gameData.getWorldMapData();
+
+        getEntitiesToProcess().forEach(id -> {
+            Entity entity = gameData.getEntity(id);
             PositionComponent2D positionComponent = entity.getComponent(PositionComponent2D.class);
             Vector2f position = positionComponent.getPosition();
             MoveComponent2D moveComponent = entity.getComponent(MoveComponent2D.class);
@@ -35,7 +40,6 @@ public class CollisionSystem2D extends BaseSystem {
             AtomicReference<Boolean> anyCollisionDown = new AtomicReference<>(false);
 
             int currentFloor = GameState.getCurrentFloor();
-            GameData gameData = getGameData();
             Optional<Deque<Long>> entitiesOnTileLeft = worldMapData.getEntitiesOnTile(currentFloor, tileXToCheck - 1, tileYToCheck);
             entitiesOnTileLeft.ifPresent(ids -> ids.forEach(entityLeft -> {
                 boolean collidable = gameData.getEntity(entityLeft).getProperties().isCollidable();

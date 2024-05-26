@@ -1,6 +1,7 @@
 package org.game.isometric.renderer;
 
 import org.game.GameData;
+import org.game.entity.Entity;
 import org.game.entity.EntityProperties;
 import org.game.isometric.Camera2D;
 import org.game.isometric.GameState;
@@ -17,6 +18,7 @@ import org.joml.Vector2f;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL20;
 import java.nio.FloatBuffer;
+import java.util.Set;
 
 import static org.game.GraphicsDisplay.HEIGHT;
 import static org.game.GraphicsDisplay.WIDTH;
@@ -48,6 +50,7 @@ public class Renderer2D extends BaseRenderer {
     public Renderer2D(GameData gameData) {
         super(gameData);
         this.shaderProgram = getGameData().getShaderManager().getShader(ShaderEnum.ORTHO);
+        addRequiredComponent(ComponentEnum.MeshComponent2D);
     }
 
     @Override
