@@ -9,7 +9,7 @@ public class ExecutionTimeChecker {
 
     public long stop(String methodName) {
         long duration = System.currentTimeMillis() - executionStart;
-        System.out.println(methodName + ": " + duration);
+        //System.out.println(methodName + ": " + duration);
         return duration;
     }
 }
