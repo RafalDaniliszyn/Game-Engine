@@ -1,5 +1,19 @@
 package org.game.isometric.blockLoader;
 
 public enum Side {
-    CENTER, LEFT, RIGHT, UP, DOWN, UP_LEFT, UP_RIGHT, DOWN_LEFT, DOWN_RIGHT
+    CENTER,
+    LEFT,
+    RIGHT,
+    UP,
+    DOWN,
+    UP_LEFT,
+    UP_RIGHT,
+    DOWN_LEFT,
+    DOWN_RIGHT,
+    LEFT_UP_DOWN,
+    RIGHT_UP_DOWN,
+    LEFT_UP_RIGHT,
+    LEFT_DOWN_RIGHT,
+    LEFT_RIGHT,
+    UP_DOWN
 }

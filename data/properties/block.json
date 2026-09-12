@@ -1,0 +1,657 @@
+{
+  "type": "ChannelActiveModel",
+  "entityDto": [
+    {
+      "entityType": "terrain",
+      "textureLabel": "WFC_DOWN",
+      "texturePath": "/textures/2D/wfcTest/down.png",
+      "depth": -2.0,
+      "stackable": false,
+      "stack": null,
+      "label": "WFC_DOWN",
+      "quantity": 1,
+      "replaceableEdges": false,
+      "destroyable": false,
+      "components": [
+        "MeshComponent2D"
+      ]
+    },
+    {
+      "entityType": "terrain",
+      "textureLabel": "WFC_LEFT",
+      "texturePath": "/textures/2D/wfcTest/left.png",
+      "depth": -2.0,
+      "stackable": false,
+      "stack": null,
+      "label": "WFC_LEFT",
+      "quantity": 1,
+      "replaceableEdges": false,
+      "destroyable": false,
+      "components": [
+        "MeshComponent2D"
+      ]
+    },
+    {
+      "entityType": "terrain",
+      "textureLabel": "WFC_LEFT_DOWN",
+      "texturePath": "/textures/2D/wfcTest/leftDown.png",
+      "depth": -2.0,
+      "stackable": false,
+      "stack": null,
+      "label": "WFC_LEFT_DOWN",
+      "quantity": 1,
+      "replaceableEdges": false,
+      "destroyable": false,
+      "components": [
+        "MeshComponent2D"
+      ]
+    },
+    {
+      "entityType": "terrain",
+      "textureLabel": "WFC_LEFT_UP",
+      "texturePath": "/textures/2D/wfcTest/leftUp.png",
+      "depth": -2.0,
+      "stackable": false,
+      "stack": null,
+      "label": "WFC_LEFT_UP",
+      "quantity": 1,
+      "replaceableEdges": false,
+      "destroyable": false,
+      "components": [
+        "MeshComponent2D"
+      ]
+    },
+    {
+      "entityType": "terrain",
+      "textureLabel": "WFC_RIGHT",
+      "texturePath": "/textures/2D/wfcTest/right.png",
+      "depth": -2.0,
+      "stackable": false,
+      "stack": null,
+      "label": "WFC_RIGHT",
+      "quantity": 1,
+      "replaceableEdges": false,
+      "destroyable": false,
+      "components": [
+        "MeshComponent2D"
+      ]
+    },
+    {
+      "entityType": "terrain",
+      "textureLabel": "WFC_RIGHT_DOWN",
+      "texturePath": "/textures/2D/wfcTest/rightDown.png",
+      "depth": -2.0,
+      "stackable": false,
+      "stack": null,
+      "label": "WFC_RIGHT_DOWN",
+      "quantity": 1,
+      "replaceableEdges": false,
+      "destroyable": false,
+      "components": [
+        "MeshComponent2D"
+      ]
+    },
+    {
+      "entityType": "terrain",
+      "textureLabel": "WFC_RIGHT_UP",
+      "texturePath": "/textures/2D/wfcTest/rightUp.png",
+      "depth": -2.0,
+      "stackable": false,
+      "stack": null,
+      "label": "WFC_RIGHT_UP",
+      "quantity": 1,
+      "replaceableEdges": false,
+      "destroyable": false,
+      "components": [
+        "MeshComponent2D"
+      ]
+    },
+    {
+      "entityType": "terrain",
+      "textureLabel": "WFC_UP",
+      "texturePath": "/textures/2D/wfcTest/up.png",
+      "depth": -2.0,
+      "stackable": false,
+      "stack": null,
+      "label": "WFC_UP",
+      "quantity": 1,
+      "replaceableEdges": false,
+      "destroyable": false,
+      "components": [
+        "MeshComponent2D"
+      ]
+    },
+    {
+      "entityType": "terrain",
+      "textureLabel": "SAND_2D",
+      "texturePath": "/textures/2D/sand2D.png",
+      "depth": -2.0,
+      "stackable": false,
+      "stack": null,
+      "label": "SAND_2D",
+      "quantity": 1,
+      "replaceableEdges": false,
+      "destroyable": true,
+      "destructionDifficulty": 300.0,
+      "afterDestroyTexturePath": "/textures/2D/underground/mine.png",
+      "afterDestroyLabel": "SAND_2D_DESTROYED",
+      "components": [
+        "MeshComponent2D"
+      ]
+    },
+    {
+      "entityType": "terrain",
+      "textureLabel": "BRICK_2D",
+      "texturePath": "/textures/2D/brick.png",
+      "depth": -2.0,
+      "stackable": false,
+      "stack": null,
+      "label": "BRICK_2D",
+      "quantity": 1,
+      "replaceableEdges": false,
+      "components": [
+        "MeshComponent2D"
+      ]
+    },
+    {
+      "entityType": "terrain",
+      "textureLabel": "BRICK_WALL_H",
+      "texturePath": "/textures/2D/brickWall/horizontal.png",
+      "depth": -2.0,
+      "stackable": false,
+      "stack": null,
+      "label": "BRICK_WALL_H",
+      "quantity": 1,
+      "replaceableEdges": false,
+      "components": [
+        "MeshComponent2D",
+        "CollisionComponent2D"
+      ]
+    },
+    {
+      "entityType": "terrain",
+      "textureLabel": "COAST_2D",
+      "texturePath": "/textures/2D/sand2D.png",
+      "depth": -2.0,
+      "stackable": false,
+      "stack": null,
+      "label": "COAST_2D",
+      "quantity": 1,
+      "replaceableEdges": false,
+      "components": [
+        "MeshComponent2D"
+      ]
+    },
+    {
+      "entityType": "terrain",
+      "textureLabel": "PATH_2D",
+      "texturePath": "/textures/2D/dirt/path.png",
+      "depth": -2.0,
+      "stackable": false,
+      "stack": null,
+      "label": "PATH_2D",
+      "quantity": 1,
+      "replaceableEdges": false,
+      "destroyable": false,
+      "components": [
+        "MeshComponent2D"
+      ]
+    },
+    {
+      "entityType": "terrain",
+      "textureLabel": "WOODEN_WALL_DOWN_2D",
+      "texturePath": "/textures/2D/woodenWall/woodenWallDown.png",
+      "depth": -2.0,
+      "stackable": false,
+      "stack": null,
+      "label": "WOODEN_WALL_DOWN_2D",
+      "quantity": 1,
+      "replaceableEdges": false,
+      "destroyable": false,
+      "components": [
+        "MeshComponent2D"
+      ]
+    },
+    {
+      "entityType": "terrain",
+      "textureLabel": "WOODEN_WALL_RIGHT_END_2D",
+      "texturePath": "/textures/2D/woodenWall/woodenWallRightLeftEnd.png",
+      "depth": -2.0,
+      "stackable": false,
+      "stack": null,
+      "label": "WOODEN_WALL_RIGHT_END_2D",
+      "quantity": 1,
+      "replaceableEdges": false,
+      "destroyable": false,
+      "components": [
+        "MeshComponent2D"
+      ]
+    },
+    {
+      "entityType": "terrain",
+      "textureLabel": "WOODEN_WALL_LEFT_END_2D",
+      "texturePath": "/textures/2D/woodenWall/woodenWallRightLeftEnd.png",
+      "depth": -2.0,
+      "stackable": false,
+      "stack": null,
+      "label": "WOODEN_WALL_LEFT_END_2D",
+      "quantity": 1,
+      "replaceableEdges": false,
+      "destroyable": false,
+      "components": [
+        "MeshComponent2D"
+      ]
+    },
+    {
+      "entityType": "terrain",
+      "textureLabel": "DIRT_2D",
+      "texturePath": "/textures/2D/dirt.png",
+      "depth": -2.0,
+      "stackable": false,
+      "stack": null,
+      "label": "DIRT_2D",
+      "quantity": 1,
+      "replaceableEdges": true,
+      "replaceableTexture": {
+        "CENTER":     "/textures/2D/underground/mineCenter.png",
+        "LEFT":       "/textures/2D/underground/mineLeft.png",
+        "RIGHT":      "/textures/2D/underground/mineRight.png",
+        "UP":         "/textures/2D/underground/mineUp.png",
+        "DOWN":       "/textures/2D/underground/mineDown.png",
+        "UP_LEFT":    "/textures/2D/underground/mineUpLeft.png",
+        "UP_RIGHT":   "/textures/2D/underground/mineUpRight.png",
+        "DOWN_LEFT":  "/textures/2D/underground/mineDownLeft.png",
+        "DOWN_RIGHT": "/textures/2D/underground/mineDownRight.png",
+        "LEFT_UP_DOWN": "/textures/2D/underground/mineLeftUpDown.png",
+        "RIGHT_UP_DOWN": "/textures/2D/underground/mineRightUpDown.png",
+        "LEFT_UP_RIGHT": "/textures/2D/underground/mineLeftUpRight.png",
+        "LEFT_DOWN_RIGHT": "/textures/2D/underground/mineLeftDownRight.png",
+        "LEFT_RIGHT": "/textures/2D/underground/mineLeftRight.png",
+        "UP_DOWN": "/textures/2D/underground/mineUpDown.png"
+      },
+      "destroyable": true,
+      "destructionDifficulty": 300.0,
+      "afterDestroyTexturePath": "/textures/2D/underground/mine.png",
+      "afterDestroyLabel": "DIRT_2D_DESTROYED",
+      "drop": {
+        "IRON_ORE": 5,
+        "GOLD_ORE": 2,
+        "DIAMOND_ORE": 1
+      },
+      "components": [
+        "MeshComponent2D",
+        "CollisionComponent2D"
+      ]
+    },
+    {
+      "entityType": "terrain",
+      "textureLabel": "WATER_2D",
+      "texturePath": "/textures/2D/water/water.png",
+      "depth": -2.0,
+      "stackable": false,
+      "stack": null,
+      "label": "WATER_2D",
+      "quantity": 1,
+      "replaceableEdges": true,
+      "replaceableTexture": {
+        "LEFT":       "/textures/2D/water/waterLeftGround.png",
+        "RIGHT":      "/textures/2D/water/waterRightGround.png",
+        "UP":         "/textures/2D/water/waterUpGround.png",
+        "DOWN":       "/textures/2D/water/waterDownGround.png",
+        "UP_LEFT":    "/textures/2D/water/waterUpLeft.png",
+        "UP_RIGHT":   "/textures/2D/water/waterUpRight.png",
+        "DOWN_LEFT":  "/textures/2D/water/waterDownLeft.png",
+        "DOWN_RIGHT": "/textures/2D/water/waterDownRight.png",
+        "CENTER":     		"/textures/2D/water/water.png",
+        "LEFT_UP_DOWN": 	"/textures/2D/water/waterLeftUpDown.png",
+        "RIGHT_UP_DOWN": 	"/textures/2D/water/waterRightUpDown.png",
+        "LEFT_UP_RIGHT": 	"/textures/2D/water/waterLeftUpRight.png",
+        "LEFT_DOWN_RIGHT": 	"/textures/2D/water/waterLeftDownRight.png",
+        "LEFT_RIGHT": 		"/textures/2D/water/waterLeftRight.png",
+        "UP_DOWN":    		"/textures/2D/water/waterUpDown.png"
+      },
+      "components": [
+        "MeshComponent2D",
+        "CollisionComponent2D"
+      ]
+    },
+    {
+      "entityType": "terrain",
+      "textureLabel": "GRASS_2D",
+      "texturePath": "/textures/2D/grass/grass.png",
+      "depth": -2.0,
+      "stackable": false,
+      "stack": null,
+      "label": "GRASS_2D",
+      "quantity": 1,
+      "replaceableEdges": true,
+      "replaceableTexture": {
+        "LEFT":       "/textures/2D/grass/grassLeft.png",
+        "RIGHT":      "/textures/2D/grass/grassRight.png",
+        "UP":         "/textures/2D/grass/grassUp.png",
+        "DOWN":       "/textures/2D/grass/grassDown.png",
+        "UP_LEFT":    "/textures/2D/grass/grassUpLeft.png",
+        "UP_RIGHT":   "/textures/2D/grass/grassUpRight.png",
+        "DOWN_LEFT":  "/textures/2D/grass/grassDownLeft.png",
+        "DOWN_RIGHT": "/textures/2D/grass/grassDownRight.png",
+        "CENTER":     		"/textures/2D/grass/grass.png",
+        "LEFT_UP_DOWN": 	"/textures/2D/grass/grassLeftUpDown.png",
+        "RIGHT_UP_DOWN": 	"/textures/2D/grass/grassRightUpDown.png",
+        "LEFT_UP_RIGHT": 	"/textures/2D/grass/grassLeftUpRight.png",
+        "LEFT_DOWN_RIGHT": 	"/textures/2D/grass/grassLeftDownRight.png",
+        "LEFT_RIGHT": 		"/textures/2D/grass/grassLeftRight.png",
+        "UP_DOWN":    		"/textures/2D/grass/grassUpDown.png"
+      },
+      "components": [
+        "MeshComponent2D"
+      ]
+    },
+    {
+      "entityType": "terrain",
+      "textureLabel": "BRICK_2D",
+      "texturePath": "/textures/2D/brick.png",
+      "depth": -2.0,
+      "stackable": false,
+      "stack": null,
+      "label": "brick",
+      "quantity": 1,
+      "components": [
+        "MeshComponent2D"
+      ]
+    },
+    {
+      "entityType": "terrain",
+      "textureLabel": "HOLE_DOWN_2D",
+      "texturePath": "/textures/2D/holeDown2D.png",
+      "depth": -2.0,
+      "stackable": false,
+      "stack": null,
+      "label": "HOLE_DOWN_2D",
+      "quantity": 1,
+      "components": [
+        "MeshComponent2D"
+      ],
+      "actionList": [
+        {
+          "type": "moveDownActionDto",
+          "action": "MoveDownAction",
+          "invoke": "ON_ENTER"
+        }
+      ]
+    },
+    {
+      "entityType": "terrain",
+      "textureLabel": "HOLE_UP_2D",
+      "texturePath": "/textures/2D/holeUp2D.png",
+      "depth": -2.0,
+      "stackable": false,
+      "stack": null,
+      "label": "HOLE_UP_2D",
+      "quantity": 1,
+      "components": [
+        "MeshComponent2D"
+      ],
+      "actionList": [
+        {
+          "type": "moveUpActionDto",
+          "action": "MoveUpAction",
+          "invoke": "ON_ENTER"
+        }
+      ]
+    },
+    {
+      "entityType": "terrain",
+      "textureLabel": "MINE_2D",
+      "texturePath": "/textures/2D/underground/mine.png",
+      "depth": -2.0,
+      "stackable": false,
+      "stack": null,
+      "label": "MINE_2D",
+      "quantity": 1,
+      "components": [
+        "MeshComponent2D"
+      ]
+    },
+    {
+      "entityType": "terrain",
+      "textureLabel": "GROUND_2D",
+      "texturePath": "/textures/2D/ground2D.png",
+      "depth": -2.0,
+      "stackable": false,
+      "stack": null,
+      "label": "GROUND_2D",
+      "quantity": 1,
+      "components": [
+        "MeshComponent2D"
+      ]
+    },
+    {
+      "entityType": "item",
+      "textureLabel": "GOLD_2D",
+      "texturePath": "/textures/2D/gold2D.png",
+      "depth": -1.9,
+      "stackable": false,
+      "stack": null,
+      "label": "GOLD_2D",
+      "quantity": 1,
+      "components": [
+        "MeshComponent2D"
+      ]
+    },
+    {
+      "entityType": "item",
+      "textureLabel": "IRON_ORE",
+      "texturePath": "/textures/2D/ironOre.png",
+      "depth": -1.9,
+      "stackable": false,
+      "stack": null,
+      "label": "IRON_ORE",
+      "quantity": 1,
+      "components": [
+        "MeshComponent2D"
+      ]
+    },
+    {
+      "entityType": "item",
+      "textureLabel": "GOLD_ORE",
+      "texturePath": "/textures/2D/goldOre.png",
+      "depth": -1.9,
+      "stackable": false,
+      "stack": null,
+      "label": "GOLD_ORE",
+      "quantity": 1,
+      "components": [
+        "MeshComponent2D"
+      ]
+    },
+    {
+      "entityType": "item",
+      "textureLabel": "DIAMOND_ORE",
+      "texturePath": "/textures/2D/diamondOre.png",
+      "depth": -1.9,
+      "stackable": true,
+      "stack": null,
+      "label": "DIAMOND_ORE",
+      "quantity": 1,
+      "components": [
+        "MeshComponent2D",
+        "DragComponent2D"
+      ]
+    },
+    {
+      "entityType": "item",
+      "textureLabel": "CUT_TREE",
+      "texturePath": "/textures/cutTree2D.png",
+      "depth": -1.9,
+      "stackable": false,
+      "stack": null,
+      "label": "CUT_TREE",
+      "quantity": 1,
+      "components": [
+        "MeshComponent2D"
+      ]
+    },
+    {
+      "entityType": "item",
+      "textureLabel": "TREE_2D",
+      "texturePath": "/textures/2D/greenTree2D.png",
+      "depth": -0.09,
+      "stackable": false,
+      "stack": null,
+      "label": "TREE_2D",
+      "quantity": 1,
+      "components": [
+        "MeshComponent2D",
+        "CollisionComponent2D"
+      ]
+    },
+    {
+      "entityType": "item",
+      "textureLabel": "CEREAL",
+      "texturePath": "/textures/2D/grass/cereal.png",
+      "depth": -1.9,
+      "stackable": false,
+      "stack": null,
+      "label": "CEREAL",
+      "quantity": 1,
+      "components": [
+        "MeshComponent2D"
+      ]
+    },
+    {
+      "entityType": "item",
+      "textureLabel": "DYNAMITE",
+      "texturePath": "/textures/2D/dynamite.png",
+      "depth": -1.3,
+      "stackable": false,
+      "stack": null,
+      "label": "DYNAMITE",
+      "destroyable": true,
+      "destructionDifficulty": 300.0,
+      "afterDestroyTexturePath": "/textures/2D/underground/mine.png",
+      "afterDestroyLabel": "DYNAMITE_DESTROYED",
+      "actionList": [
+        {
+          "type": "explosionActionDto",
+          "action": "ExplosionAction",
+          "explosionRange": 6,
+          "removeEntityAfter": true,
+          "removeActionAfter": false,
+          "duration": 3000,
+          "invoke": "ON_PUT"
+        }
+      ],
+      "quantity": 1,
+      "components": [
+        "MeshComponent2D"
+      ]
+    },
+
+
+    {
+      "entityType": "item",
+      "textureLabel": "FENCE_2D",
+      "texturePath": "/textures/2D/fence/fence_1.png",
+      "depth": -1.9,
+      "stackable": false,
+      "stack": null,
+      "label": "FENCE_2D",
+      "quantity": 1,
+      "components": [
+        "MeshComponent2D"
+      ]
+    },
+    {
+      "entityType": "item",
+      "textureLabel": "FENCE_SIDE_2D",
+      "texturePath": "/textures/2D/fence/fenceSide.png",
+      "depth": -1.9,
+      "stackable": false,
+      "stack": null,
+      "label": "FENCE_SIDE_2D",
+      "quantity": 1,
+      "components": [
+        "MeshComponent2D"
+      ]
+    },
+    {
+      "entityType": "item",
+      "textureLabel": "FENCE_RIGHT_DOWN_2D",
+      "texturePath": "/textures/2D/fence/fenceRightDown.png",
+      "depth": -1.9,
+      "stackable": false,
+      "stack": null,
+      "label": "FENCE_RIGHT_DOWN_2D",
+      "quantity": 1,
+      "components": [
+        "MeshComponent2D"
+      ]
+    },
+    {
+      "entityType": "item",
+      "textureLabel": "FENCE_LEFT_DOWN_2D",
+      "texturePath": "/textures/2D/fence/fenceLeftDown.png",
+      "depth": -1.9,
+      "stackable": false,
+      "stack": null,
+      "label": "FENCE_LEFT_DOWN_2D",
+      "quantity": 1,
+      "components": [
+        "MeshComponent2D"
+      ]
+    },
+    {
+      "entityType": "item",
+      "textureLabel": "FENCE_LEFT_UP_2D",
+      "texturePath": "/textures/2D/fence/fenceLeftUp.png",
+      "depth": -1.9,
+      "stackable": false,
+      "stack": null,
+      "label": "FENCE_LEFT_UP_2D",
+      "quantity": 1,
+      "components": [
+        "MeshComponent2D"
+      ]
+    },
+    {
+      "entityType": "item",
+      "textureLabel": "FENCE_RIGHT_UP_2D",
+      "texturePath": "/textures/2D/fence/fenceRightUp.png",
+      "depth": -1.9,
+      "stackable": false,
+      "stack": null,
+      "label": "FENCE_RIGHT_UP_2D",
+      "quantity": 1,
+      "components": [
+        "MeshComponent2D"
+      ]
+    },
+    {
+      "entityType": "item",
+      "textureLabel": "FENCE_BLANK_2D",
+      "texturePath": "/textures/2D/fence/fenceBlank.png",
+      "depth": -1.9,
+      "stackable": false,
+      "stack": null,
+      "label": "FENCE_BLANK_2D",
+      "quantity": 1,
+      "components": [
+        "MeshComponent2D"
+      ]
+    },
+    {
+      "entityType": "item",
+      "textureLabel": "WATER_WELL",
+      "texturePath": "/textures/2D/waterWell/waterWell.png",
+      "depth": -1.9,
+      "stackable": false,
+      "stack": null,
+      "label": "WATER_WELL",
+      "quantity": 1,
+      "components": [
+        "MeshComponent2D",
+        "CollisionComponent2D"
+      ]
+    }
+  ]
+}

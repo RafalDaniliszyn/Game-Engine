@@ -10,6 +10,8 @@ public class MeshComponent2D extends Component {
     private RawModel rawModel;
     private final ShaderEnum shaderType;
     private Vector2f scale;
+    private int tWidth;
+    private int tHeight;
 
     public MeshComponent2D(int textureID, Vector2f scale) {
         this.shaderType = ShaderEnum.ORTHO;
@@ -21,6 +23,15 @@ public class MeshComponent2D extends Component {
     public MeshComponent2D(int textureID) {
         this.shaderType = ShaderEnum.ORTHO;
         this.rawModel = new RawModel();
+        this.scale = new Vector2f(1.0f, 1.0f);
+        this.textureID = textureID;
+    }
+
+    public MeshComponent2D(int textureID, int tWidth, int tHeight) {
+        this.shaderType = ShaderEnum.ORTHO;
+        this.rawModel = new RawModel(tWidth, tHeight);
+        this.tWidth = tWidth;
+        this.tHeight = tHeight;
         this.scale = new Vector2f(1.0f, 1.0f);
         this.textureID = textureID;
     }
@@ -51,6 +62,14 @@ public class MeshComponent2D extends Component {
 
     public void setScale(Vector2f scale) {
         this.scale = scale;
+    }
+
+    public int gettWidth() {
+        return tWidth;
+    }
+
+    public int gettHeight() {
+        return tHeight;
     }
 
     @Override

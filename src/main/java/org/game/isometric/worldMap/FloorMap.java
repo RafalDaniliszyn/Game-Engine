@@ -1,54 +1,45 @@
 package org.game.isometric.worldMap;
 
 import org.game.GameData;
+import org.game.isometric.event.EventHandler;
+import org.game.isometric.event.EventPublisher;
+import org.game.isometric.event.LoadChunkEvent;
+import org.game.isometric.event.ReadyToLoadChunkEvent;
+import org.game.network.model.WorldMapModel;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
-import static org.game.isometric.WorldSettings.FLOORS;
 
 public class FloorMap {
 
     private final Map<Integer, ChunkMap> floorMap;
 
-    /**
-     * Key - floor
-     * Value - List with entity ids
-     */
- //   private final Map<Integer, List<Long>> entityIdMap;
-
     public FloorMap(GameData gameData) {
         floorMap = new HashMap<>();
-       // this.entityIdMap = new HashMap<>();
-        for (int i = 0; i < FLOORS; i++) {
-           // entityIdMap.put(i, new ArrayList<>());
-            ChunkMap chunkMap = new ChunkMap(gameData);
-            Chunk[][] chunks = chunkMap.getChunks();
-            for (Chunk[] chunk : chunks) {
-                for (int j = 0; j < chunks.length; j++) {
-                    List<Long> entityIdList = chunk[j].fillChunk(i);
-                   // entityIdMap.get(i).addAll(entityIdList);
+        EventPublisher.getInstance().addListener(LoadChunkEvent.class, new EventHandler<LoadChunkEvent>() {
+            @Override
+            public void handleEvent(LoadChunkEvent event) {
+                WorldMapModel worldMapModel = event.getWorldMapModel();
+                int floor = worldMapModel.getFloor();
+                if (floorMap.containsKey(floor)) {
+                    Chunk[][] chunks = floorMap.get(floor).getChunks();
+                    int chunkX = worldMapModel.getChunkX();
+                    int chunkY = worldMapModel.getChunkY();
+                    chunks[chunkX][chunkY].fillChunk(worldMapModel);
+                } else {
+                    ChunkMap chunkMap = new ChunkMap(gameData);
+                    Chunk[][] chunks = chunkMap.getChunks();
+                    int chunkX = worldMapModel.getChunkX();
+                    int chunkY = worldMapModel.getChunkY();
+                    chunks[chunkX][chunkY].fillChunk(worldMapModel);
+                    floorMap.put(floor, chunkMap);
                 }
+
             }
-            floorMap.put(i, chunkMap);
-        }
+        });
+        EventPublisher.getInstance().publishToEventGroup(new ReadyToLoadChunkEvent());
     }
 
     public Map<Integer, ChunkMap> getFloorMap() {
         return floorMap;
-    }
-
-    public void addEntityIdToFloor(Long entityId, Integer floor) {
-        if (entityId == null || floor < 0 || floor > FLOORS) {
-            return;
-        }
-        //entityIdMap.get(floor).add(entityId);
-    }
-
-    public void removeEntityIdOnFloor(Long entityId, Integer floor) {
-        if (entityId == null || floor < 0 || floor > FLOORS) {
-            return;
-        }
-       // entityIdMap.get(floor).remove(entityId);
     }
 }

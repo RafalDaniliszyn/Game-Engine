@@ -3,6 +3,7 @@ package org.game.isometric.component;
 import org.game.component.Component;
 import org.game.isometric.WorldSettings;
 import org.game.isometric.system.AnimationTimer;
+import org.joml.Vector2f;
 
 public class MoveComponent2D extends Component {
     private float speed;
@@ -10,12 +11,14 @@ public class MoveComponent2D extends Component {
     private boolean blocked;
     private AnimationTimer animationTimer;
     private final DirectionBlocked directionBlocked;
+    private Vector2f destination;
 
     public MoveComponent2D(float speed) {
         this.speed = speed;
         this.direction = Direction.UP;
         this.animationTimer = new AnimationTimer(WorldSettings.TILE_SIZE - WorldSettings.TILE_OVERLAP_LENGTH);
         this.directionBlocked = new DirectionBlocked();
+        this.destination = new Vector2f();
     }
 
     public float getSpeed() {
@@ -61,6 +64,14 @@ public class MoveComponent2D extends Component {
             case DOWN -> directionBlocked.setDownBlocked(isBlocked);
             case UP -> directionBlocked.setUpBlocked(isBlocked);
         }
+    }
+
+    public Vector2f getDestination() {
+        return destination;
+    }
+
+    public void setDestination(Vector2f destination) {
+        this.destination = destination;
     }
 
     @Override

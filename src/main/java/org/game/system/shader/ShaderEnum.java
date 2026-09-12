@@ -5,5 +5,8 @@ public enum ShaderEnum {
     WIND,
     WATER,
     UI,
-    ORTHO
+    ORTHO,
+    FINAL_ORTHO,
+    LIGHT_ORTHO,
+    WIND_ORTHO
 }

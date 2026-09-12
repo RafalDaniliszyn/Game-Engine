@@ -1,8 +1,9 @@
 package org.game.system.shader;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import static org.lwjgl.opengl.GL20.GL_FRAGMENT_SHADER;
 import static org.lwjgl.opengl.GL20.GL_VERTEX_SHADER;
@@ -55,25 +56,28 @@ public abstract class ShaderProgram {
         glUseProgram(0);
     }
 
-    private String readFile(String shaderFile) {
-        File file = new File(shaderFile);
-        Scanner scanner = null;
-        try {
-            scanner = new Scanner(file);
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
+    private String readFileStream(String shaderFile) {
+        InputStream resourceStream = DefaultShader.class.getResourceAsStream(shaderFile);
+        if (resourceStream == null) {
+            throw new RuntimeException("Resource not found: " + shaderFile);
         }
 
-        String string = "";
-        while(scanner.hasNextLine()) {
-            string += scanner.nextLine() + "\n";
+        StringBuilder builder = new StringBuilder();
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(resourceStream))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                builder.append(line).append("\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        return string;
+        System.out.println("File loading completed.");
+        return builder.toString();
     }
 
     private int loadShader(int type, String file) {
         int id = glCreateShader(type);
-        glShaderSource(id, readFile(file));
+        glShaderSource(id, readFileStream(file));
         glCompileShader(id);
         return id;
     }

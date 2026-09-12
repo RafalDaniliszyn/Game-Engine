@@ -2,12 +2,16 @@ package org.game.isometric.action;
 
 import org.game.entity.Entity;
 import org.game.isometric.GameState;
-import org.game.isometric.component.ComponentEnum;
 import org.game.isometric.component.PositionComponent2D;
 
 public class MoveDownAction extends Action {
     public MoveDownAction(boolean removeEntityAfter, Invoke invoke) {
         super(removeEntityAfter, true, invoke);
+    }
+
+    @Override
+    public ActionEnum getActionType() {
+        return ActionEnum.MoveDownAction;
     }
 
     @Override
@@ -20,8 +24,4 @@ public class MoveDownAction extends Action {
         }
     }
 
-    @Override
-    public ComponentEnum getType() {
-        return null;
-    }
 }

@@ -36,7 +36,7 @@ public class StackUpdater {
                 && entityProperties1.getLabel().equals(entityProperties2.getLabel())) {
 
             int quantitySum = entityProperties1.getQuantity() + entityProperties2.getQuantity();
-            if (quantitySum > entityProperties1.getStack().getMaxOnStack()) {
+            if (entityProperties1.getStack() != null && quantitySum > entityProperties1.getStack().getMaxOnStack()) {
                 return;
             }
 
@@ -48,8 +48,10 @@ public class StackUpdater {
                 return;
             }
             entity = gameData.getEntity(topEntityStacked);
+            if (entity == null) {
+                return;
+            }
             EntityPropertiesHelper.setQuantity(entity, quantitySum);
-
             MeshComponent2D meshComponent = entity.getComponent(MeshComponent2D.class);
             Integer textureId = EntityPropertiesHelper.getStackTextureId(entity, quantitySum);
             meshComponent.setTextureID(textureId);
@@ -59,6 +61,5 @@ public class StackUpdater {
         //Every stack begin from -1.9f and next layer subtract 0.1f
         float toAdd = entityPropertiesList.size() * 0.1f;
         entity.getProperties().setDepth(-1.9f + toAdd);
-        System.out.println(-1.9f + toAdd);
     }
 }

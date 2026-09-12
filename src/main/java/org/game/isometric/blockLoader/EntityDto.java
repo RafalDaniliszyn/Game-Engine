@@ -1,11 +1,13 @@
 package org.game.isometric.blockLoader;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import org.game.isometric.action.dto.ActionDto;
 import org.game.isometric.model.Stackable;
 import java.util.List;
 import java.util.Map;
 
 public class EntityDto {
-    private String type;
+    private String entityType;
     private String textureLabel;
     private String texturePath;
     private float depth;
@@ -18,20 +20,21 @@ public class EntityDto {
     private List<String> components;
     private String afterDestroyTexturePath;
     private String afterDestroyLabel;
-    private boolean isDestroyable;
+    private boolean destroyable;
     private double destructionDifficulty;
     private Map<String, Integer> drop;
+    private List<ActionDto> actionList;
 
 
     public EntityDto() {
     }
 
-    public String getType() {
-        return type;
+    public String getEntityType() {
+        return entityType;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setEntityType(String entityType) {
+        this.entityType = entityType;
     }
 
     public String getTextureLabel() {
@@ -90,6 +93,7 @@ public class EntityDto {
         this.stack = stack;
     }
 
+    @JsonProperty("replaceableEdges")
     public boolean hasReplaceableEdges() {
         return replaceableEdges;
     }
@@ -131,11 +135,11 @@ public class EntityDto {
     }
 
     public boolean isDestroyable() {
-        return isDestroyable;
+        return destroyable;
     }
 
-    public void setIsDestroyable(boolean destroyable) {
-        isDestroyable = destroyable;
+    public void setDestroyable(boolean destroyable) {
+        this.destroyable = destroyable;
     }
 
     public double getDestructionDifficulty() {
@@ -154,23 +158,33 @@ public class EntityDto {
         this.drop = drop;
     }
 
+    public List<ActionDto> getActionList() {
+        return actionList;
+    }
+
+    public void setActionList(List<ActionDto> actionList) {
+        this.actionList = actionList;
+    }
+
     @Override
     public String toString() {
         return "EntityDto{" +
-                "type='" + type + '\'' +
+                "entityType='" + entityType + '\'' +
                 ", textureLabel='" + textureLabel + '\'' +
                 ", texturePath='" + texturePath + '\'' +
                 ", depth=" + depth +
                 ", stackable=" + stackable +
                 ", label='" + label + '\'' +
                 ", quantity=" + quantity +
-                ", stack=" + stack +
                 ", replaceableEdges=" + replaceableEdges +
                 ", replaceableTexture=" + replaceableTexture +
                 ", components=" + components +
                 ", afterDestroyTexturePath='" + afterDestroyTexturePath + '\'' +
                 ", afterDestroyLabel='" + afterDestroyLabel + '\'' +
-                ", isDestroyable=" + isDestroyable +
+                ", destroyable=" + destroyable +
+                ", destructionDifficulty=" + destructionDifficulty +
+                ", drop=" + drop +
+                ", actionList=" + actionList +
                 '}';
     }
 }

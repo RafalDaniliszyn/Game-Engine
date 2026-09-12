@@ -1,83 +1,169 @@
 package org.game.isometric.renderer;
 
 import org.game.GameData;
+import org.game.WindowCallbackProcessor;
 import org.game.entity.Entity;
 import org.game.entity.EntityProperties;
-import org.game.isometric.Camera2D;
+import org.game.entity.EntityType;
+import org.game.isometric.GameLoadingState;
 import org.game.isometric.GameState;
-import org.game.isometric.WorldSettings;
+import org.game.isometric.blockLoader.BlocksReader;
+import org.game.isometric.blockLoader.Side;
 import org.game.isometric.component.ComponentEnum;
 import org.game.isometric.component.MeshComponent2D;
 import org.game.isometric.component.PositionComponent2D;
-import org.game.isometric.mesh.RawModel;
+import org.game.isometric.event.EventHandler;
+import org.game.isometric.event.EventPublisher;
+import org.game.isometric.event.LoadTextureEvent;
+import org.game.isometric.utils.TilePosition;
 import org.game.system.renderer.BaseRenderer;
-import org.game.system.shader.ShaderEnum;
-import org.game.system.shader.ShaderProgram;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
-import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.GL20;
-import java.nio.FloatBuffer;
-import java.util.Set;
 
+import java.lang.Math;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Deque;
+import java.util.Optional;
+
+import static org.game.GraphicsDisplay.BASE_HEIGHT;
+import static org.game.GraphicsDisplay.BASE_WIDTH;
 import static org.game.GraphicsDisplay.HEIGHT;
+import static org.game.GraphicsDisplay.LEFT_SHIFT;
 import static org.game.GraphicsDisplay.WIDTH;
-import static org.game.isometric.utils.MathUtils.transformation2D;
-import static org.lwjgl.opengl.GL11.GL_BLEND;
-import static org.lwjgl.opengl.GL11.GL_FLOAT;
-import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
-import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
-import static org.lwjgl.opengl.GL11.GL_TRIANGLE_STRIP;
-import static org.lwjgl.opengl.GL11.glBindTexture;
-import static org.lwjgl.opengl.GL11.glBlendFunc;
-import static org.lwjgl.opengl.GL11.glDisable;
-import static org.lwjgl.opengl.GL11.glDrawArrays;
-import static org.lwjgl.opengl.GL11.glEnable;
-import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
-import static org.lwjgl.opengl.GL15.glBindBuffer;
-import static org.lwjgl.opengl.GL20.glDisableVertexAttribArray;
-import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
-import static org.lwjgl.opengl.GL20.glUniform1f;
-import static org.lwjgl.opengl.GL20.glUniformMatrix4fv;
-import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
-import static org.lwjgl.opengl.GL30.glBindVertexArray;
+import static org.game.isometric.WorldSettings.*;
+import static org.game.isometric.texture2D.TextureManager2D.loadTexture;
+import static org.lwjgl.opengl.GL11.glViewport;
+
 
 public class Renderer2D extends BaseRenderer {
 
-    private final ShaderProgram shaderProgram;
+    private Matrix4f orthoProjection;
+    private final ScenePass scenePass;
+    private final LightPass lightPass;
+    private final FinalPass finalPass;
 
     public Renderer2D(GameData gameData) {
         super(gameData);
-        this.shaderProgram = getGameData().getShaderManager().getShader(ShaderEnum.ORTHO);
         addRequiredComponent(ComponentEnum.MeshComponent2D);
+        scenePass = new ScenePass();
+        lightPass = new LightPass();
+        finalPass = new FinalPass();
+        this.orthoProjection = get2DProjection();
+        WindowCallbackProcessor.getInstance().addWindowSizeCallback((window, width, height) -> {
+            WIDTH = width;
+            HEIGHT = height;
+            glViewport((int) (WIDTH * LEFT_SHIFT), 0, width, height);
+            scenePass.refresh();
+            lightPass.refresh();
+            finalPass.refresh();
+            this.orthoProjection = get2DProjection();
+        });
+        EventPublisher.getInstance().addListener(LoadTextureEvent.class, new EventHandler<LoadTextureEvent>() {
+            @Override
+            public void handleEvent(LoadTextureEvent event) {
+                Path texturePath = Paths.get(System.getProperty("user.dir"));
+                Integer textureId = loadTexture(texturePath + "\\" + event.getPath(), "");
+                String entityLabel = event.getEntityLabel();
+                Entity entity = BlocksReader.getEntity(entityLabel);
+                if (entity != null) {
+                    entity.getProperties().getRotatedEntityIdMap().put(event.getRotation(), textureId);
+                }
+            }
+        });
     }
 
     @Override
     public void update(float deltaTime) {
+        if (!GameLoadingState.CREATE_PLAYER_COMPLETE && !GameLoadingState.PLAYER_SERVER_DATA_RECEIVED) {
+            return;
+        }
+        glViewport((int) (WIDTH * LEFT_SHIFT), 0, WIDTH, HEIGHT);
         GameData gameData = getGameData();
+
         int currentChunkX = GameState.getCurrentChunkX();
         int currentChunkY = GameState.getCurrentChunkY();
-        float offset = WorldSettings.CHUNK_SIZE * WorldSettings.TILE_SIZE;
-        int currentX = (int) ((currentChunkX + 0.5) * offset);
-        int currentY = (int) ((currentChunkY + 0.5) * offset);
+        int currentFloor = GameState.getCurrentFloor();
+        TilePosition playerPosition = GameState.getPlayerPosition();
+        int playerX = playerPosition.x() + currentChunkX * CHUNK_SIZE;
+        int playerY = playerPosition.y() + currentChunkY * CHUNK_SIZE;
+        int range = 14;
 
-        gameData.getEntities(entity -> {
-            PositionComponent2D positionComponent = entity.getComponent(PositionComponent2D.class);
-            if (positionComponent != null) {
-                Vector2f position = positionComponent.getPosition();
-                if (position.x > currentX - offset && position.x < currentX + offset
-                        && position.y > currentY - offset && position.y < currentY + offset) {
-                    return positionComponent.getFloor() == GameState.getCurrentFloor();
-                }
+        Optional<Deque<Long>[][]> idQueuesOnChunk = gameData.getWorldMapData().getIdQueues(currentFloor);
+        Optional<Deque<Side>[][]> edgeQueues = gameData.getWorldMapData().getEdgeQueues(currentFloor);
+
+        if (idQueuesOnChunk.isEmpty()) {
+            return;
+        }
+        Deque<Long>[][] deques = idQueuesOnChunk.get();
+        Deque<Side>[][] edges = edgeQueues.get();
+        int rxStart = Math.max(playerX - range, 0);
+        int ryStart = Math.max(playerY - range, 0);
+        int rxEnd = Math.min(playerX + range, deques.length-1);
+        int ryEnd = Math.min(playerY + range, deques.length-1);
+
+        Vector2f tilePosition = new Vector2f();
+        scenePass.beforeRender();
+
+        for (int y = ryStart; y < ryEnd; y++) {
+            for(int x = rxEnd; x >= rxStart; x--) {
+                int tileX = (int) (x * TILE_SIZE);
+                int tileY = (int) (y * TILE_SIZE);
+                int finalX = x;
+                int finalY = y;
+                deques[x][y].descendingIterator().forEachRemaining(id -> {
+                    Entity entity = gameData.getEntity(id);
+                    if (entity != null) {
+                        String label = entity.getProperties().getLabel();
+
+                        //to test only
+                        scenePass.setWindUniform("TREE_2D".equals(label));
+
+                        EntityProperties properties = entity.getProperties();
+                        MeshComponent2D mesh = entity.getComponent(MeshComponent2D.class);
+                        int tWidth = mesh.gettWidth();
+                        int offset = 0;
+                        if (tWidth != TILE_SIZE && tWidth != 0) {
+                            offset = (int) (TILE_SIZE % tWidth);
+                        }
+
+                        tilePosition.set(tileX - offset, tileY);
+
+                        if ("terrain".equals(entity.getProperties().getType()) && entity.getProperties().hasReplaceableEdges() && edges[finalX][finalY].getLast() != null) {
+                            scenePass.render(orthoProjection, mesh, entity.getProperties().getReplaceableTextureIdMap().get(edges[finalX][finalY].getFirst()), tilePosition, properties.getDepth());
+                        } else {
+                            scenePass.render(orthoProjection, mesh, tilePosition, properties.getDepth());
+                        }
+                    }
+                });
             }
-            return false;
-        }, ComponentEnum.MeshComponent2D).forEach((id, entity) -> {
+        }
+
+        //Online Players
+        gameData.getEntities(ComponentEnum.MeshComponent2D, ComponentEnum.ServerPlayerComponent2D).forEach((id, entity) -> {
             PositionComponent2D positionComponent = entity.getComponent(PositionComponent2D.class);
             MeshComponent2D mesh = entity.getComponent(MeshComponent2D.class);
-            EntityProperties properties = entity.getProperties();
-            render(mesh, positionComponent, properties.getDepth());
+            if (positionComponent.getFloor() == GameState.getCurrentFloor()) {
+                EntityProperties properties = entity.getProperties();
+                scenePass.render(orthoProjection, mesh, positionComponent.getPosition(), properties.getDepth());
+            }
         });
+
+        //Player
+        gameData.getEntities(ComponentEnum.MeshComponent2D, ComponentEnum.PlayerComponent2D).forEach((id, entity) -> {
+            PositionComponent2D positionComponent = entity.getComponent(PositionComponent2D.class);
+            MeshComponent2D mesh = entity.getComponent(MeshComponent2D.class);
+            if (positionComponent.getFloor() == GameState.getCurrentFloor()) {
+                EntityProperties properties = entity.getProperties();
+                scenePass.render(orthoProjection, mesh, positionComponent.getPosition(), properties.getDepth());
+            }
+
+            lightPass.setPlayerLightTest(positionComponent.getPosition());
+        });
+        scenePass.afterRender();
+
+        lightPass.render(orthoProjection);
+        finalPass.render(scenePass.getSceneTexture(), lightPass.getLightTexture());
     }
 
     @Override
@@ -92,56 +178,15 @@ public class Renderer2D extends BaseRenderer {
 
     }
 
-    private void setPointer() {
-        glVertexAttribPointer(0, 2, GL_FLOAT, false, 4 * Float.BYTES, 0);
-        glVertexAttribPointer(1, 2, GL_FLOAT, false, 4 * Float.BYTES, 2 * Float.BYTES);
-    }
-
-    private void setUniforms(MeshComponent2D meshComponent2D, PositionComponent2D position, float depth) {
-        int transformationMatrixID = GL20.glGetUniformLocation(shaderProgram.getProgramID(), "MVP");
-        Matrix4f MVP = new Matrix4f();
-        MVP.set(get2DProjection()).mul(Camera2D.getView()).mul(transformation2D(meshComponent2D.getScale(), position.getPosition()));
-        FloatBuffer transformationMatrix = BufferUtils.createFloatBuffer(16);
-        MVP.get(transformationMatrix);
-        glUniformMatrix4fv(transformationMatrixID, false, transformationMatrix);
-
-        int depthID = GL20.glGetUniformLocation(shaderProgram.getProgramID(), "depth");
-        glUniform1f(depthID, depth);
-    }
-
     private Matrix4f get2DProjection() {
         Matrix4f projection = new Matrix4f();
-        projection.ortho(-WIDTH/2.0f, WIDTH/2.0f, -HEIGHT/2.0f, HEIGHT/2.0f, 0.0f, 100.0f);
+        projection.ortho(
+                -BASE_WIDTH /2.0f,
+                BASE_WIDTH /2.0f,
+                -BASE_HEIGHT /2.0f,
+                BASE_HEIGHT /2.0f,
+                0.0f,
+                52.0f);
         return projection;
-    }
-
-    private void render(MeshComponent2D meshComponent2D, PositionComponent2D position, float depth) {
-        shaderProgram.use();
-        RawModel rawModel = meshComponent2D.getRawModel();
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        setUniforms(meshComponent2D, position, depth);
-
-        glBindVertexArray(rawModel.getVaoID());
-        glBindBuffer(GL_ARRAY_BUFFER, rawModel.getVboID());
-        glBindTexture(GL_TEXTURE_2D, meshComponent2D.getTextureID());
-
-        glEnableVertexAttribArray(0);
-        glEnableVertexAttribArray(1);
-        setPointer();
-
-        //glDisable(GL_CULL_FACE);
-        glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-        //glEnable(GL_CULL_FACE);
-        glDisableVertexAttribArray(0);
-        glDisableVertexAttribArray(1);
-
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
-        glBindBuffer(GL_TEXTURE_2D, 0);
-        glBindVertexArray(0);
-
-        glDisable(GL_BLEND);
-
-        shaderProgram.stop();
     }
 }

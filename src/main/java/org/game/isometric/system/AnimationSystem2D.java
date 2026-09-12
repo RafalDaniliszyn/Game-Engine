@@ -19,9 +19,9 @@ public class AnimationSystem2D extends BaseSystem {
         GameData gameData = getGameData();
         getEntitiesToProcess().forEach(id -> {
             Entity entity = gameData.getEntity(id);
-            List<AnimationComponent2D> animationComponent = entity.getComponents(AnimationComponent2D.class);
+            List<AnimationComponent2D> animationComponents = entity.getComponents(AnimationComponent2D.class);
             MeshComponent2D meshComponent = entity.getComponent(MeshComponent2D.class);
-            for (AnimationComponent2D animation : animationComponent) {
+            for (AnimationComponent2D animation : animationComponents) {
                 if (animation.isActive()) {
                     int nextFrameTextureId = animation.nextFrame();
                     meshComponent.setTextureID(nextFrameTextureId);

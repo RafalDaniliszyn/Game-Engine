@@ -2,30 +2,28 @@ package org.game.isometric.worldMap;
 
 import org.game.GameData;
 import org.game.entity.Entity;
-import org.game.entity.EntityProperties;
-import org.game.isometric.WorldSettings;
+import org.game.entity.EntityType;
 import org.game.isometric.blockLoader.BlocksReader;
 import org.game.isometric.blockLoader.EntityMapper;
 import org.game.isometric.blockLoader.Side;
-import org.game.isometric.component.PositionComponent2D;
-import org.game.isometric.entity.TerrainEntity2D;
-import org.game.isometric.texture2D.TextureManager2D;
+import org.game.isometric.system.SwapEdgeHelper;
 import org.game.isometric.utils.TileUtils;
-import org.joml.Vector2f;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Deque;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import org.game.network.client.DataSync;
+import org.game.network.client.incomingDataHandler.fileTransfer.FileTransferRequestModel;
+import org.game.network.model.EntityIdLabelDto;
+import org.game.network.model.WorldMapModel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.*;
 
 import static org.game.isometric.WorldSettings.CHUNK_SIZE;
-import static org.game.isometric.texture2D.TextureEnum2D.DIRT2D;
-import static org.game.isometric.texture2D.TextureEnum2D.GRASS2D;
 
 public class Chunk {
+    private static final Logger log = LoggerFactory.getLogger(Chunk.class);
     private final Deque<Long>[][] entitiesQueue;
+    private final Deque<Side>[][] edgeMap;
+    private final Set<String> textureRequestSet;
     private final GameData gameData;
     private final int chunkX;
     private final int chunkY;
@@ -35,68 +33,57 @@ public class Chunk {
         this.chunkX = chunkX;
         this.chunkY = chunkY;
 
+        this.edgeMap = new ArrayDeque[CHUNK_SIZE][CHUNK_SIZE];
+        for (int i = 0; i < CHUNK_SIZE; i++) {
+            for (int j = 0; j < CHUNK_SIZE; j++) {
+                this.edgeMap[i][j] = new ArrayDeque<>();
+            }
+        }
+
         this.entitiesQueue = new ArrayDeque[CHUNK_SIZE][CHUNK_SIZE];
         for (int i = 0; i < CHUNK_SIZE; i++) {
             for (int j = 0; j < CHUNK_SIZE; j++) {
                 this.entitiesQueue[i][j] = new ArrayDeque<>();
             }
         }
+        this.textureRequestSet = new HashSet<>();
     }
 
-    /**
-     * This is test method.
-     *
-     * @param floor
-     * @return
-     */
-    public List<Long> fillChunk(Integer floor) {
-        List<Long> entityIdList = new ArrayList<>();
-        Integer textureIdGrass = TextureManager2D.getTextureId(GRASS2D);
-        Integer textureIdDirt = TextureManager2D.getTextureId(DIRT2D);
-        Integer currentTextureId = textureIdGrass;
-        boolean collidable = false;
-        float tileSize = WorldSettings.TILE_SIZE - WorldSettings.TILE_OVERLAP_LENGTH;
-        if (floor < WorldSettings.FLOORS - 1) {
-            currentTextureId = textureIdDirt;
-            collidable = true;
-        }
-        int xOffset = chunkX * CHUNK_SIZE;
-        int yOffset = chunkY * CHUNK_SIZE;
-        for (int i = 0; i < entitiesQueue.length; i++) {
-            for (int j = 0; j < entitiesQueue.length; j++) {
-                Map<Side, Integer> replaceableTextureIdMap = new HashMap<>();
-                if (Objects.equals(currentTextureId, textureIdDirt)) {
-                    Entity entityBase = BlocksReader.getEntity("DIRT_2D");
-                    Entity dirt = EntityMapper.getNewEntity(entityBase);
-                    if (dirt != null && dirt.getProperties() != null) {
-                        //dirt.getProperties().setDepth(-(2.0f/(0.1f*i))); This line is for test isometric view
-                        dirt.addComponent(new PositionComponent2D(new Vector2f((i+xOffset) * tileSize, (j+yOffset) * tileSize), floor));
-                        TileUtils.addEntityOnBottom(dirt.getId() ,entitiesQueue[i][j]);
-                        gameData.addEntity(dirt);
-                        entityIdList.add(dirt.getId());
+    public void fillChunk(WorldMapModel mapModel) {
+        log.debug("fillChunk floor: {}, X: {}, Y: {}", mapModel.getFloor(), mapModel.getChunkX(), mapModel.getChunkY());
+
+        Deque<EntityIdLabelDto>[][] entitiesQue = mapModel.getEntitiesQueue();
+        for (int i = 0; i < entitiesQue.length; i++) {
+            for (int j = 0; j < entitiesQue.length; j++) {
+                for (EntityIdLabelDto entityData : entitiesQue[i][j]) {
+                    String label = entityData.getLabel();
+                    long id = entityData.getId();
+
+                    Entity entityBase = BlocksReader.getEntity(label);
+                    if (entityBase == null) {
+                        entityBase = BlocksReader.getEntity(label);
                     }
-                } else {
-                    TerrainEntity2D terrainEntity2D = new TerrainEntity2D(currentTextureId, new Vector2f((i+xOffset) * tileSize, (j+yOffset) * tileSize), floor,
-                            new EntityProperties.EntityPropertiesBuilder()
-                                    .setCollidable(collidable)
-                                    .setDraggable(false)
-                                    .setLabel(TextureManager2D.getTextureById(currentTextureId).getLabel())
-                                    .setStackable(false)
-                                    .setQuantity(1)
-                                    .setDepth(-2.0f)
-                                    .setReplaceableEdges(false)
-                                    .setReplaceableTextureIdMap(replaceableTextureIdMap)
-                                    .build());
-                    TileUtils.addEntityOnBottom(terrainEntity2D.getId() ,entitiesQueue[i][j]);
-                    gameData.addEntity(terrainEntity2D);
-                    entityIdList.add(terrainEntity2D.getId());
+
+                    if (entityBase.getId() != id) {
+                        long currentId = entityBase.getId();
+                        gameData.removeEntity(currentId);
+                        entityBase.setId(id);
+                        gameData.addEntity(entityBase);
+                    }
+
+                    TileUtils.addEntityOnBottom(id, entitiesQueue[i][j]);
+                    //SwapEdgeHelper.changeAround(entitiesQueue, i, j);
+                    SwapEdgeHelper.changeEdges(edgeMap, entitiesQueue, i, j);
                 }
             }
         }
-        return entityIdList;
     }
 
     public Deque<Long>[][] getEntitiesQueue() {
         return entitiesQueue;
+    }
+
+    public Deque<Side>[][] getEdgeMap() {
+        return edgeMap;
     }
 }

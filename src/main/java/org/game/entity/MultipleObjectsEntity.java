@@ -13,7 +13,7 @@ public class MultipleObjectsEntity extends Entity {
 
     public MultipleObjectsEntity(float[] mapVertices, MeshManager meshManager, String meshName,
                                  Vector3f rotation, Vector3f scale, int size, boolean lines, boolean collision) {
-        super(new EntityProperties(ShaderEnum.WIND));
+        super(new EntityProperties(ShaderEnum.WIND), EntityType.LOCAL);
         PositionComponent[] positionComponent = new PositionComponent[size];
         Random random = new Random();
         for (int i = 0; i < positionComponent.length; i++) {

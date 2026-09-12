@@ -2,29 +2,36 @@ package org.game;
 
 import org.game.component.Component;
 import org.game.component.PositionComponent;
-import org.game.editWindow.Frame;
 import org.game.entity.Entity;
+import org.game.entity.EntityType;
+import org.game.isometric.Camera2D;
+import org.game.isometric.GameLoadingState;
+import org.game.isometric.GameState;
 import org.game.isometric.blockLoader.BlocksReader;
 import org.game.isometric.component.ComponentEnum;
+import org.game.isometric.component.PositionComponent2D;
 import org.game.isometric.entity.PlayerEntity2D;
+import org.game.isometric.event.EventPublisher;
 import org.game.isometric.renderer.Renderer2D;
-import org.game.isometric.system.AnimationSystem2D;
-import org.game.isometric.system.CollisionSystem2D;
-import org.game.isometric.system.DestroySystem2D;
-import org.game.isometric.system.DragSystem;
-import org.game.isometric.system.GameStateSystem;
-import org.game.isometric.system.MoveSystem2D;
-import org.game.isometric.system.StateChangedSystem2D;
-import org.game.isometric.system.TileActionSystem;
-import org.game.isometric.texture2D.TextureEnum2D;
+import org.game.isometric.system.*;
+import org.game.isometric.system.destroySystem.DestroySystem2D;
 import org.game.isometric.texture2D.TextureManager2D;
 import org.game.isometric.utils.EntityUtils;
 import org.game.isometric.worldMap.MapEditor;
 import org.game.isometric.worldMap.WorldMapData;
+import org.game.network.client.GameClient;
+import org.game.network.client.serverMap.MapLoader;
 import org.game.system.shader.ShaderManager;
 import org.game.system.BaseSystem;
 import org.game.event.EventManager;
 import org.game.event.EventObserver;
+import org.game.ui.component.ItemUiContainer;
+import org.game.ui.component.SelectItemButton;
+import org.game.ui.newUiConcept.UiMainMenuScreen;
+import org.game.ui.system.UiRendererSystem;
+import org.joml.Vector2f;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -35,10 +42,13 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Predicate;
 
+import static org.lwjgl.glfw.GLFW.*;
+
 /**
  * This class is used for testing functionality during development.
  */
 public class GameData {
+    private static final Logger logger = LoggerFactory.getLogger(GameData.class);
     private final Map<Component, String> components = new HashMap<>();
     private final Map<Long, Entity> entities = new LinkedHashMap<>();
 
@@ -55,28 +65,26 @@ public class GameData {
     private float[][] heightMap;
     private Long skyId;
     private boolean active;
+    private GameClient gameClient;
 
-    public GameData() {
+    public static GameData gameData;
+
+    public GameData() throws InterruptedException {
         active = false;
-        //textureManager = new TextureManager();
-        //textureManager2D = new TextureManager2D();
-        //meshManager = new MeshManager(textureManager);
         shaderManager = new ShaderManager();
-        //test3d();
         TextureManager2D.loadTextures();
+        gameClient = GameClient.getInstance();
+        gameData = this;
         BlocksReader.readBlocks();
-        Frame.addTexturesToComboBox();
+        waitForGameClient();
         test2d();
     }
 
-    public void init() {
+    public void init() throws InterruptedException {
         systems.forEach((s, systems) -> {
             systems.init();
         });
     }
-
-    Map<String, Long> executionTime = new HashMap<>();
-    long times = 0;
 
     public void update(float deltaTime) {
         if (!active) {
@@ -85,45 +93,22 @@ public class GameData {
         eventManagers.forEach((s, eventManager) -> {
             eventManager.notifyObservers();
         });
+        EventPublisher.getInstance().fireGlContextTasks();
         systems.forEach((s, system) -> {
-            ExecutionTimeChecker executionTimeChecker = new ExecutionTimeChecker();
-            executionTimeChecker.start();
             system.update(deltaTime);
-            long stop = executionTimeChecker.stop(s);
-
-//            if (executionTime.containsKey(s)) {
-//                Long time = executionTime.get(s);
-//                executionTime.put(s, time + stop);
-//            } else {
-//                executionTime.put(s, stop);
-//            }
         });
-        times += 1;
-//        if (times >= 100) {
-//            times = 0;
-//            List<Map.Entry<String, Long>> list = new ArrayList<>(executionTime.entrySet());
-//            list.sort(Map.Entry.comparingByValue());
-//            Map<String, Long> sortedMap = new LinkedHashMap<>();
-//            for (Map.Entry<String, Long> entry : list) {
-//                sortedMap.put(entry.getKey(), entry.getValue());
-//            }
-//            sortedMap.forEach((key, value) -> System.out.println(key + " : " + value));
-//        }
-
-
     }
 
     public void delete() {
         systems.forEach((s, systems) -> {
             systems.delete();
         });
+        gameClient.shutdown();
     }
 
     public Map<Component, String> getComponents() {
         return components;
     }
-
-
 
     /**
      * Method for 3D module.
@@ -187,13 +172,17 @@ public class GameData {
 
     public void addEntity(Entity entity) {
         entities.put(entity.getId(), entity);
-        List<ComponentEnum> componentEnumList = entity.getComponentEnumList();
+        Set<ComponentEnum> componentEnumList = entity.getComponentEnumSet();
         systems.forEach((name, system) -> {
             List<ComponentEnum> requiredComponents = system.getRequiredComponents();
-            if (new HashSet<>(componentEnumList).containsAll(requiredComponents)) {
+            if (componentEnumList.containsAll(requiredComponents)) {
                 system.addEntityToProcess(entity.getId());
             }
         });
+    }
+
+    public void putEntity(Entity entity) {
+        entities.put(entity.getId(), entity);
     }
 
     public void removeEntity(Long entityId) {
@@ -264,34 +253,64 @@ public class GameData {
         sky.getComponent(PositionComponent.class).getPosition().z -= z;
     }
 
+    private void waitForGameClient() {
+        Thread thread = new Thread(() -> {
+            while (!MapLoader.mapReceived) {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+        thread.start();
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        thread.interrupt();
+    }
 
     private void updateSystemsProcessList() {
+        Set<ComponentEnum> added = new HashSet<>();
+        Map<String, Set<ComponentEnum>> addedEntityMap = new HashMap<>();
+        systems.forEach((name, system) -> {
+            addedEntityMap.put(name, new HashSet<>());
+        });
+
         systems.forEach((name, system) -> {
             List<ComponentEnum> requiredComponents = system.getRequiredComponents();
             entities.forEach((id, entity) -> {
+                if (id == 126) {
+                    System.out.println(entity);
+                }
                 Set<Long> entitiesToProcess = system.getEntitiesToProcess();
-                List<ComponentEnum> componentEnumList = entity.getComponentEnumList();
-                if (new HashSet<>(componentEnumList).containsAll(requiredComponents)) {
+                Set<ComponentEnum> componentEnumList = entity.getComponentEnumSet();
+                if (componentEnumList.containsAll(requiredComponents)) {
                     system.addEntityToProcess(id);
+                    added.addAll(new HashSet<>(componentEnumList));
                 } else {
                     entitiesToProcess.remove(id);
+                }
+                addedEntityMap.put(name, added);
+                if (id == 126) {
+                    System.out.println(entity);
                 }
             });
         });
     }
 
     private void test2d() {
-        Integer hamTextureId = TextureManager2D.getTextureId(TextureEnum2D.HAM_2D);
-        PlayerEntity2D playerEntity2D = new PlayerEntity2D(hamTextureId, 38, 3);
-
-        entities.put(playerEntity2D.getId(), playerEntity2D);
+        //createPlayer();
         this.worldMapData = new WorldMapData(this);
 
+        System.out.println("Systems initialize");
         StateChangedSystem2D stateChangedSystem2D = new StateChangedSystem2D(this);
         systems.put("stateChangedSystem2D", stateChangedSystem2D);
         GameStateSystem gameStateSystem = new GameStateSystem(this);
         systems.put("gameStateSystem", gameStateSystem);
-        MapEditor mapEditor = new MapEditor(this, worldMapData);
+        MapEditor mapEditor = new MapEditor(this);
         systems.put("mapEditor", mapEditor);
         DestroySystem2D destroySystem2D = new DestroySystem2D(this);
         systems.put("destroySystem2D", destroySystem2D);
@@ -305,20 +324,75 @@ public class GameData {
         systems.put("moveSystem2D", moveSystem2D);
         TileActionSystem tileActionSystem = new TileActionSystem(this);
         systems.put("tileActionSystem", tileActionSystem);
+
+        //UI Render System
+
+        UiRendererSystem uiRendererSystem = new UiRendererSystem(this);
+
+        UiMainMenuScreen uiMainMenuScreen = new UiMainMenuScreen(300, 400);
+        uiRendererSystem.addUiContainers(uiMainMenuScreen.getContainers());
+
+
+//        uiRendererSystem.addGui(new SelectItemButton(10, 600, 50, 50, "DYNAMITE"    , BlocksReader.getTextureIdByItemLabel("DYNAMITE"    ), GLFW_MOUSE_BUTTON_1));
+//        uiRendererSystem.addGui(new SelectItemButton(10, 540, 50, 50, "HOLE_UP_2D"  , BlocksReader.getTextureIdByItemLabel("HOLE_UP_2D"  ), GLFW_MOUSE_BUTTON_1));
+//        uiRendererSystem.addGui(new SelectItemButton(10, 480, 50, 50, "HOLE_DOWN_2D", BlocksReader.getTextureIdByItemLabel("HOLE_DOWN_2D"), GLFW_MOUSE_BUTTON_1));
+//        uiRendererSystem.addGui(new SelectItemButton(10, 420, 50, 50, "IRON_ORE"    , BlocksReader.getTextureIdByItemLabel("IRON_ORE"    ), GLFW_MOUSE_BUTTON_1));
+//        uiRendererSystem.addGui(new SelectItemButton(10, 360, 50, 50, "SAND_2D"     , BlocksReader.getTextureIdByItemLabel("SAND_2D"     ), GLFW_MOUSE_BUTTON_1));
+//        uiRendererSystem.addGui(new SelectItemButton(10, 300, 50, 50, "DIRT_2D"     , BlocksReader.getTextureIdByItemLabel("DIRT_2D"     ), GLFW_MOUSE_BUTTON_1));
+//        uiRendererSystem.addGui(new SelectItemButton(10, 240, 50, 50, "WATER_2D"    , BlocksReader.getTextureIdByItemLabel("WATER_2D"    ), GLFW_MOUSE_BUTTON_1));
+//        uiRendererSystem.addGui(new SelectItemButton(10, 180, 50, 50, "GRASS_2D"    , BlocksReader.getTextureIdByItemLabel("GRASS_2D"    ), GLFW_MOUSE_BUTTON_1));
+
+        List<SelectItemButton> uiElementList = List.of(
+            new SelectItemButton(20, 600, 50, 50, "DYNAMITE"    , BlocksReader.getTextureIdByItemLabel("DYNAMITE"    ), GLFW_MOUSE_BUTTON_1),
+            new SelectItemButton(20, 540, 50, 50, "HOLE_UP_2D"  , BlocksReader.getTextureIdByItemLabel("HOLE_UP_2D"  ), GLFW_MOUSE_BUTTON_1),
+            new SelectItemButton(20, 480, 50, 50, "HOLE_DOWN_2D", BlocksReader.getTextureIdByItemLabel("HOLE_DOWN_2D"), GLFW_MOUSE_BUTTON_1),
+            new SelectItemButton(20, 420, 50, 50, "IRON_ORE"    , BlocksReader.getTextureIdByItemLabel("IRON_ORE"    ), GLFW_MOUSE_BUTTON_1),
+            new SelectItemButton(20, 360, 50, 50, "SAND_2D"     , BlocksReader.getTextureIdByItemLabel("SAND_2D"     ), GLFW_MOUSE_BUTTON_1),
+            new SelectItemButton(10, 300, 50, 50, "DIRT_2D"     , BlocksReader.getTextureIdByItemLabel("DIRT_2D"     ), GLFW_MOUSE_BUTTON_1),
+            new SelectItemButton(10, 240, 50, 50, "WATER_2D"    , BlocksReader.getTextureIdByItemLabel("WATER_2D"    ), GLFW_MOUSE_BUTTON_1),
+            new SelectItemButton(10, 180, 50, 50, "GRASS_2D"    , BlocksReader.getTextureIdByItemLabel("GRASS_2D"    ), GLFW_MOUSE_BUTTON_1),
+            new SelectItemButton(10, 180, 50, 50, "DIAMOND_ORE" , BlocksReader.getTextureIdByItemLabel("DIAMOND_ORE" ), GLFW_MOUSE_BUTTON_1),
+            new SelectItemButton(10, 180, 50, 50, "GOLD_ORE"    , BlocksReader.getTextureIdByItemLabel("GOLD_ORE"    ), GLFW_MOUSE_BUTTON_1),
+            new SelectItemButton(10, 180, 50, 50, "GOLD_2D"     , BlocksReader.getTextureIdByItemLabel("GOLD_2D"     ), GLFW_MOUSE_BUTTON_1),
+            new SelectItemButton(10, 180, 50, 50, "CUT_TREE"    , BlocksReader.getTextureIdByItemLabel("CUT_TREE"    ), GLFW_MOUSE_BUTTON_1),
+            new SelectItemButton(10, 180, 50, 50, "TREE_2D"     , BlocksReader.getTextureIdByItemLabel("TREE_2D"     ), GLFW_MOUSE_BUTTON_1),
+            new SelectItemButton(10, 180, 50, 50, "CEREAL"      , BlocksReader.getTextureIdByItemLabel("CEREAL"   ), GLFW_MOUSE_BUTTON_1),
+            new SelectItemButton(10, 180, 50, 50, "BRICK_2D"    , BlocksReader.getTextureIdByItemLabel("BRICK_2D"   ), GLFW_MOUSE_BUTTON_1)
+        );
+        ItemUiContainer itemUiContainer = new ItemUiContainer(uiElementList, 500, 600, 5, 3, 10);
+        uiRendererSystem.addGuiContainer(itemUiContainer);
+
+//        List<AbstractUiElement> menuElementList = List.of(
+//                new MenuButton(228, 45, GLFW_MOUSE_BUTTON_1),
+//                new MenuButton(228, 45, GLFW_MOUSE_BUTTON_1),
+//                new MenuButton(228, 45, GLFW_MOUSE_BUTTON_1),
+//                new MenuButton(228, 45, GLFW_MOUSE_BUTTON_1),
+//                new MenuButton(228, 45, GLFW_MOUSE_BUTTON_1)
+//        );
+//        MenuContainer menuContainer = new MenuContainer(menuElementList, new MenuLayout());
+//        uiRendererSystem.addUiContainer(menuContainer);
+
+
+        //
+
+//        Renderer2DV1 renderer2DV1 = new Renderer2DV1(this);
+//        systems.put("renderer2dv1", renderer2DV1);
+
         Renderer2D renderer2D = new Renderer2D(this);
         systems.put("renderer2d", renderer2D);
-
+        systems.put("uiRendererSystem", uiRendererSystem);
+        System.out.println("Systems initialize END");
         updateSystemsProcessList();
     }
 
-//    private void test3d() {
-//        //prepareTestData();
-//        StaticObjectEntity groundMap = new StaticObjectEntity(meshManager, "tileTest", new Vector3f(0.0f, 0.0f, 0.0f),
+    private void test3d() {
+//        prepareTestData();
+//        StaticObjectEntity groundMap = new StaticObjectEntity(meshManager, "baseMap3", new Vector3f(0.0f, 0.0f, 0.0f),
 //                new Vector3f(0.0f, 0.0f, 0.0f), new Vector3f(1.0f, 1.0f, 1.0f), false);
 //        entities.put(groundMap.getId(), groundMap);
 //        groundMap.removeComponent(CollisionComponent.class);
 //
-//        MeshData groundMeshData = meshManager.getMeshData("tileTest");
+//        MeshData groundMeshData = meshManager.getMeshData("baseMap3");
 //        mapVert = groundMeshData.getVertices();
 //
 //        heightMap = MapHelper.getHeightMap(mapVert);
@@ -350,11 +424,11 @@ public class GameData {
 //        entities.put(building.getId(), building);
 //
 //        MultipleObjectsEntity grass = new MultipleObjectsEntity(mapVert, meshManager, "grass2",
-//                new Vector3f(0.0f, 0.0f, 0.0f), new Vector3f(1.0f, 1.0f, 1.0f), 250, false, false);
+//                new Vector3f(0.0f, 0.0f, 0.0f), new Vector3f(1.0f, 1.0f, 1.0f), 25, false, false);
 //        entities.put(grass.getId(), grass);
 //
 //        MultipleObjectsEntity tree9 = new MultipleObjectsEntity(mapVert, meshManager, "tree9",
-//                new Vector3f(0.0f, 0.0f, 0.0f), new Vector3f(1.0f, 1.0f, 1.0f), 250, false, false);
+//                new Vector3f(0.0f, 0.0f, 0.0f), new Vector3f(1.0f, 1.0f, 1.0f), 25, false, false);
 //        entities.put(tree9.getId(), tree9);
 //
 //
@@ -392,8 +466,8 @@ public class GameData {
 //        //Render System - Must be before UI Render System.
 //        RenderSystem renderSystem = new RenderSystem(this);
 //        systems.put("renderSystem", renderSystem);
-//
-//        //UI Render System
+
+        //UI Render System
 //        Integer buttonTextureID = textureManager.getTextures().get(TextureEnum.BUTTON);
 //        RawUiModel rawUiModel1 = new RawUiModel(new Vector3f(0.13f, 0.25f, 0.0f), new Vector3f(0.7f, 0.5f, 0.0f), buttonTextureID);
 //        RawUiModel rawUiModel2 = new RawUiModel(new Vector3f(0.13f, 0.25f, 0.0f), new Vector3f(0.3f, 0.5f, 0.0f), buttonTextureID);
@@ -408,9 +482,9 @@ public class GameData {
 //        UiRendererSystem uiRendererSystem = new UiRendererSystem(this);
 //        uiRendererSystem.addGui(rawUiModel1);
 //        uiRendererSystem.addGui(rawUiModel2);
-//        systems.put("uiRendererSystem", uiRendererSystem);
-//    }
-//
+      //  systems.put("uiRendererSystem", uiRendererSystem);
+    }
+
 //    private void prepareTestData() {
 //        MeshData groundMeshData = meshManager.getMeshData("baseMap3");
 //        mapVert = groundMeshData.getVertices();

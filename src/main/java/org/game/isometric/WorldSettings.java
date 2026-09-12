@@ -1,7 +1,7 @@
 package org.game.isometric;
 
 public class WorldSettings {
-    public static final float TILE_SIZE = 100.0f;
+    public static final float TILE_SIZE = 52.0f;
     public static final float TILE_OVERLAP_LENGTH;
 
     /**
@@ -14,17 +14,20 @@ public class WorldSettings {
      * World must be square.
      * WORLD_SIZE is number of chunks on one side.
      */
-    public static final Integer WORLD_SIZE;
+    public static Integer WORLD_SIZE;
     public static final Integer FLOORS;
+
+    public static float CAMERA_Z = 0.0f;
+
 
     static {
         TILE_OVERLAP_LENGTH = 0.0f;
-        CHUNK_SIZE = 40;
-        WORLD_SIZE = 2;
+        CHUNK_SIZE = 50;
+        WORLD_SIZE = 1;
         FLOORS = 2;
     }
 
-    public static float getTileSize() {
+    public static float getTileSizeTemp() {
         return TILE_SIZE;
     }
 }

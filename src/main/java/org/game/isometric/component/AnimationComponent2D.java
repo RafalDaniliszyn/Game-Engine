@@ -8,10 +8,11 @@ public class AnimationComponent2D extends Component {
     private int currentFrame;
     private boolean active;
     private final int frames;
-    private final double frameDuration;
+    private double frameDuration;
     private double elapsedTime;
     private double lastUpdateTime;
     private final String label;
+    private boolean loop;
 
     public AnimationComponent2D(Map<Integer, Integer> textures, float animationDuration, String label) {
         this.textures = textures;
@@ -22,6 +23,7 @@ public class AnimationComponent2D extends Component {
         this.elapsedTime = 0;
         this.lastUpdateTime = 0;
         this.label = label;
+        this.loop = false;
     }
 
     public int nextFrame() {
@@ -33,7 +35,9 @@ public class AnimationComponent2D extends Component {
         if (currentFrame >= frames) {
             currentFrame = 1;
             lastUpdateTime = 0;
-            active = false;
+            if (!loop) {
+                active = false;
+            }
         }
 
         if (active && elapsedTime >= frameDuration) {
@@ -55,6 +59,22 @@ public class AnimationComponent2D extends Component {
 
     public String getLabel() {
         return label;
+    }
+
+    public boolean isLoop() {
+        return loop;
+    }
+
+    public void setLoop(boolean loop) {
+        this.loop = loop;
+    }
+
+    public void setFrameDuration(double frameDuration) {
+        this.frameDuration = frameDuration;
+    }
+
+    public double getFrameDuration() {
+        return frameDuration;
     }
 
     @Override

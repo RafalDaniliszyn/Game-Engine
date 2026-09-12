@@ -3,12 +3,16 @@ package org.game.isometric.action;
 import org.game.entity.Entity;
 import org.game.isometric.GameState;
 import org.game.isometric.WorldSettings;
-import org.game.isometric.component.ComponentEnum;
 import org.game.isometric.component.PositionComponent2D;
 
 public class MoveUpAction extends Action {
     public MoveUpAction(boolean removeEntityAfter, Invoke invoke) {
         super(removeEntityAfter, true, invoke);
+    }
+
+    @Override
+    public ActionEnum getActionType() {
+        return ActionEnum.MoveUpAction;
     }
 
     @Override
@@ -22,8 +26,4 @@ public class MoveUpAction extends Action {
         }
     }
 
-    @Override
-    public ComponentEnum getType() {
-        return null;
-    }
 }

@@ -1,0 +1,276 @@
+{
+  "type": "Rules",
+  "tileRules": [
+    {
+      "label": "WFC_LEFT_DOWN",
+      "chance": 0.21728710576164552,
+      "floors": [5],
+      "acceptedNeighbors": {
+        "acceptsSideListMap": {
+          "LEFT": [
+            "GRASS_2D"
+          ],
+          "UP": [
+            "WFC_LEFT"
+          ],
+          "RIGHT": [
+            "WFC_DOWN"
+          ],
+          "DOWN": [
+            "GRASS_2D"
+          ]
+        }
+      }
+    },
+    {
+      "label": "WFC_RIGHT_DOWN",
+      "chance": 0.030022780431531347,
+      "floors": [5],
+      "acceptedNeighbors": {
+        "acceptsSideListMap": {
+          "LEFT": [
+            "WFC_DOWN"
+          ],
+          "UP": [
+            "WFC_RIGHT"
+          ],
+          "RIGHT": [
+            "GRASS_2D"
+          ],
+          "DOWN": [
+            "GRASS_2D"
+          ]
+        }
+      }
+    },
+    {
+      "label": "WFC_LEFT_UP",
+      "chance": 0.13709713572787276,
+      "floors": [5],
+      "acceptedNeighbors": {
+        "acceptsSideListMap": {
+          "LEFT": [
+            "GRASS_2D"
+          ],
+          "UP": [
+            "GRASS_2D"
+          ],
+          "RIGHT": [
+            "WFC_UP"
+          ],
+          "DOWN": [
+            "WFC_LEFT"
+          ]
+        }
+      }
+    },
+    {
+      "label": "WFC_RIGHT_UP",
+      "chance": 0.21728710576164552,
+      "floors": [5],
+      "acceptedNeighbors": {
+        "acceptsSideListMap": {
+          "LEFT": [
+            "WFC_UP"
+          ],
+          "UP": [
+            "GRASS_2D"
+          ],
+          "RIGHT": [
+            "GRASS_2D"
+          ],
+          "DOWN": [
+            "WFC_RIGHT"
+          ]
+        }
+      }
+    },
+    {
+      "label": "WFC_LEFT",
+      "chance": 0.21728710576164552,
+      "floors": [5],
+      "acceptedNeighbors": {
+        "acceptsSideListMap": {
+          "LEFT": [
+            "GRASS_2D"
+          ],
+          "UP": [
+            "WFC_LEFT",
+            "WFC_LEFT_UP"
+          ],
+          "RIGHT": [
+            "GRASS_2D"
+          ],
+          "DOWN": [
+            "WFC_LEFT",
+            "WFC_LEFT_DOWN"
+          ]
+        }
+      }
+    },
+    {
+      "label": "WFC_RIGHT",
+      "chance": 0.21728710576164552,
+      "floors": [5],
+      "acceptedNeighbors": {
+        "acceptsSideListMap": {
+          "LEFT": [
+            "GRASS_2D"
+          ],
+          "UP": [
+            "WFC_RIGHT",
+            "WFC_RIGHT_UP"
+          ],
+          "RIGHT": [
+            "GRASS_2D"
+          ],
+          "DOWN": [
+            "WFC_RIGHT",
+            "WFC_RIGHT_DOWN"
+          ]
+        }
+      }
+    },
+    {
+      "label": "WFC_UP",
+      "chance": 0.21728710576164552,
+      "floors": [5],
+      "acceptedNeighbors": {
+        "acceptsSideListMap": {
+          "LEFT": [
+            "WFC_LEFT_UP",
+            "WFC_UP"
+          ],
+          "UP": [
+            "GRASS_2D"
+          ],
+          "RIGHT": [
+            "WFC_UP",
+            "WFC_RIGHT_UP"
+          ],
+          "DOWN": [
+            "GRASS_2D"
+          ]
+        }
+      }
+    },
+    {
+      "label": "WFC_DOWN",
+      "chance": 0.21728710576164552,
+      "floors": [5],
+      "acceptedNeighbors": {
+        "acceptsSideListMap": {
+          "LEFT": [
+            "WFC_LEFT_DOWN",
+            "WFC_DOWN"
+          ],
+          "UP": [
+            "GRASS_2D"
+          ],
+          "RIGHT": [
+            "WFC_DOWN",
+            "WFC_RIGHT_DOWN"
+          ],
+          "DOWN": [
+            "GRASS_2D"
+          ]
+        }
+      }
+    },
+    {
+      "label": "GRASS_2D",
+      "chance": 0.1753837081183836,
+      "floors": [5],
+      "acceptedNeighbors": {
+        "acceptsSideListMap": {
+          "LEFT": [
+            "GRASS_2D",
+            "WFC_LEFT",
+            "WFC_LEFT_UP",
+            "WFC_LEFT_DOWN",
+            "WFC_RIGHT",
+            "WFC_RIGHT_UP",
+            "WFC_RIGHT_DOWN"
+          ],
+          "UP": [
+            "GRASS_2D",
+            "WFC_LEFT_UP",
+            "WFC_LEFT_DOWN",
+            "WFC_RIGHT_UP",
+            "WFC_RIGHT_DOWN",
+            "WFC_UP",
+            "WFC_DOWN"
+          ],
+          "RIGHT": [
+            "GRASS_2D",
+            "WFC_LEFT",
+            "WFC_LEFT_UP",
+            "WFC_LEFT_DOWN",
+            "WFC_RIGHT",
+            "WFC_RIGHT_UP",
+            "WFC_RIGHT_DOWN"
+          ],
+          "DOWN": [
+            "GRASS_2D",
+            "WFC_LEFT_UP",
+            "WFC_LEFT_DOWN",
+            "WFC_RIGHT_UP",
+            "WFC_RIGHT_DOWN",
+            "WFC_UP",
+            "WFC_DOWN"
+          ]
+        }
+      }
+    },
+    {
+      "label": "DIRT_2D",
+      "chance": 0.5,
+      "floors": [0, 1, 2, 3, 4],
+      "acceptedNeighbors": {
+        "acceptsSideListMap": {
+          "LEFT": [
+            "MINE",
+            "DIRT_2D"
+          ],
+          "UP": [
+            "MINE",
+            "DIRT_2D"
+          ],
+          "RIGHT": [
+            "MINE",
+            "DIRT_2D"
+          ],
+          "DOWN": [
+            "MINE",
+            "DIRT_2D"
+          ]
+        }
+      }
+    },
+    {
+      "label": "MINE",
+      "chance": 0.5,
+      "floors": [0, 1, 2, 3, 4],
+      "acceptedNeighbors": {
+        "acceptsSideListMap": {
+          "LEFT": [
+            "DIRT_2D",
+            "MINE"
+          ],
+          "UP": [
+            "DIRT_2D",
+            "MINE"
+          ],
+          "RIGHT": [
+            "DIRT_2D",
+            "MINE"
+          ],
+          "DOWN": [
+            "DIRT_2D",
+            "MINE"
+          ]
+        }
+      }
+    }
+  ]
+}

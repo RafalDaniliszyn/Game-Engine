@@ -19,13 +19,28 @@ public class RawModel {
     private final float[] vertices;
 
     public RawModel() {
-        float tileSize = WorldSettings.getTileSize();
+        float tileSize = WorldSettings.getTileSizeTemp();
         vertices = new float[] {
                 0.0f, tileSize, 0.0f, 1.0f,
                 0.0f, 0.0f, 0.0f, 0.0f,
                 tileSize, tileSize, 1.0f, 1.0f,
                 tileSize, 0.0f, 1.0f, 0.0f
         };
+        create();
+    }
+
+    public RawModel(int tWidth, int tHeight) {
+        vertices = new float[] {
+                0.0f, tHeight, 0.0f, 1.0f,
+                0.0f, 0.0f, 0.0f, 0.0f,
+                tWidth, tHeight, 1.0f, 1.0f,
+                tWidth, 0.0f, 1.0f, 0.0f
+        };
+        create();
+    }
+
+    public RawModel(float[] vertices) {
+        this.vertices = vertices;
         create();
     }
 

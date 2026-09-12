@@ -1,13 +1,18 @@
 package org.game.ui.system;
 
 import org.game.GameData;
+import org.game.GraphicsDisplay;
 import org.game.mouse.MouseInput;
 import org.game.system.BaseSystem;
 import org.game.ui.component.UiComponent;
 
+import static org.lwjgl.glfw.GLFW.glfwSetCursorPosCallback;
+
 public class UiSystem extends BaseSystem {
     public UiSystem(GameData gameData) {
         super(gameData);
+
+
     }
 
     @Override

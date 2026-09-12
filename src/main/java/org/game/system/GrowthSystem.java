@@ -63,7 +63,7 @@ public class GrowthSystem extends BaseSystem {
                     growth.setLastUpdate(now);
                     Long meshId = growth.getMeshId(growth.getStage());
                     MeshComponent meshComponent =null; //getGameData().getMeshManager().getMeshComponent(meshId);
-                    entity.changeComponent(meshComponent, MeshComponent.class);
+                    //entity.changeComponent(meshComponent, MeshComponent.class);
 //                    Vector3f scale = positionComponent.getScale();
 //                    scale.x += 0.5f;
 //                    scale.y += 0.5f;

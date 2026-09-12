@@ -1,0 +1,12 @@
+﻿/target/
+/out/
+.idea/
+*.iml
+config/config.yml
+docker/docker-compose.yml
+/data/
+
+# Dokumentacja projektu - prywatna, nie publikowac
+CLAUDE.md
+src/main/java/org/barneys/game/diag.puml
+src/main/java/org/barneys/game/diagram.puml

@@ -2,8 +2,9 @@ package org.game.isometric.system;
 
 import org.game.GameData;
 import org.game.GraphicsDisplay;
-import org.game.Key;
-import org.game.editWindow.Panel;
+import org.game.isometric.event.EventPublisher;
+import org.game.isometric.event.MouseClickEvent;
+import org.game.key.Key;
 import org.game.entity.Entity;
 import org.game.isometric.Camera2D;
 import org.game.isometric.GameState;
@@ -15,9 +16,9 @@ import org.game.mouse.MouseInput;
 import org.game.mouse.MouseState;
 import org.game.system.BaseSystem;
 import org.joml.Vector2f;
-import java.util.Deque;
-import java.util.Optional;
 
+import static org.game.GraphicsDisplay.BASE_WIDTH;
+import static org.game.GraphicsDisplay.WIDTH;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_LEFT_SHIFT;
 
 public class DragSystem extends BaseSystem {
@@ -29,6 +30,10 @@ public class DragSystem extends BaseSystem {
     public DragSystem(GameData gameData) {
         super(gameData);
         this.activeEntity = null;
+        GameObjectClickInspector clickInspector = new GameObjectClickInspector();
+        EventPublisher.getInstance().addListener(MouseClickEvent.class, clickInspector);
+//        MouseClickEventHandler mouseClickEventHandler = new MouseClickEventHandler();
+//        EventPublisher.getInstance().addListener(MouseClickEvent.class, mouseClickEventHandler);
     }
 
     @Override
@@ -46,10 +51,13 @@ public class DragSystem extends BaseSystem {
         this.worldMapData = getGameData().getWorldMapData();
     }
 
+
     private void drag() {
         double camX = Camera2D.getCameraPosition().x;
         double camY = Camera2D.getCameraPosition().y;
-        float tileSize = WorldSettings.getTileSize();
+        float scale = (float) WIDTH / (float) BASE_WIDTH;
+
+        float tileSize = WorldSettings.getTileSizeTemp() * scale;
         float tileSizeHalf = tileSize / 2.0f;
         if (MouseInput.RELEASE && activeEntity != null) {
             PositionComponent2D positionComponent = activeEntity.getComponent(PositionComponent2D.class);
@@ -89,19 +97,6 @@ public class DragSystem extends BaseSystem {
             int floor = GameState.getCurrentFloor();
             double mouseX = (MouseInput.x - (GraphicsDisplay.WIDTH / 2.0f)) + camX;
             double mouseY = ((GraphicsDisplay.HEIGHT / 2.0f) - MouseInput.y) + camY;
-
-            //
-            Optional<Deque<Long>> entitiesOnTile = worldMapData.getEntitiesOnTile(floor, (int) (mouseX / tileSize), (int) (mouseY / tileSize));
-            if (entitiesOnTile.isPresent()) {
-                Panel.clearDescription();
-                entitiesOnTile.get().forEach(id -> {
-                    Entity entity = getGameData().getEntity(id);
-                    if (entity != null) {
-                        Panel.addDescription("entity id: " + entity.getId(), "label: " + entity.getProperties().getLabel(), "quantity: " + entity.getProperties().getQuantity());
-                    }
-                });
-            }
-            //
 
             Long firstEntityIdFromTile = worldMapData.getTopEntityIdFromTile(floor, (int) (mouseX / tileSize), (int) (mouseY / tileSize));
             if (firstEntityIdFromTile != null) {

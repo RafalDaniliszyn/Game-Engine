@@ -39,7 +39,7 @@ public class RenderSystem extends BaseRenderer {
 
     public RenderSystem(GameData gameData) {
         super(gameData);
-        this.projection = Projection.getPerspectiveProjection(0.1f, 2500.0f, 60.0f);
+        this.projection = Projection.getPerspectiveProjection(0.1f, 250.0f, 60.0f);
     }
     public ShaderEnum currentShader;
     private final Matrix4f projection;

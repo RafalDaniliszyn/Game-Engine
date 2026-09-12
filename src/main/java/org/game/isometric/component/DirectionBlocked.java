@@ -1,6 +1,6 @@
 package org.game.isometric.component;
 
-public class DirectionBlocked {
+public class  DirectionBlocked {
     private boolean rightBlocked;
     private boolean leftBlocked;
     private boolean upBlocked;

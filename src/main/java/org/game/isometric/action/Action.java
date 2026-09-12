@@ -1,11 +1,12 @@
 package org.game.isometric.action;
 
 import org.game.GameData;
-import org.game.component.Component;
 import org.game.entity.Entity;
 
-public abstract class Action extends Component {
-    private boolean removeEntityAfter;
+public abstract class Action {
+
+    private final boolean removeEntityAfter;
+    private boolean remove;
     private boolean removeActionAfter;
     private final Invoke invoke;
 
@@ -13,18 +14,23 @@ public abstract class Action extends Component {
         this.removeEntityAfter = removeEntityAfter;
         this.removeActionAfter = removeActionAfter;
         this.invoke = invoke;
+        this.remove = false;
     }
+
+    public abstract ActionEnum getActionType();
 
     public abstract void processAction(Entity entity);
 
     public void processActions(Entity entity, GameData gameData) {}
 
-    public boolean isRemoveEntityAfter() {
-        return removeEntityAfter;
+    public boolean isRemove() {
+        return remove;
     }
 
-    public void setRemoveEntityAfter(boolean removeEntityAfter) {
-        this.removeEntityAfter = removeEntityAfter;
+    public void setRemove(boolean remove) {
+        if (this.removeEntityAfter) {
+            this.remove = remove;
+        }
     }
 
     public boolean isRemoveActionAfter() {
@@ -33,6 +39,10 @@ public abstract class Action extends Component {
 
     public void setRemoveActionAfter(boolean removeActionAfter) {
         this.removeActionAfter = removeActionAfter;
+    }
+
+    public boolean isRemoveEntityAfter() {
+        return removeEntityAfter;
     }
 
     public Invoke getInvoke() {

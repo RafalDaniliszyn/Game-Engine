@@ -2,31 +2,29 @@ package org.game.isometric.entity;
 
 import org.game.entity.Entity;
 import org.game.entity.EntityProperties;
+import org.game.entity.EntityType;
 import org.game.isometric.WorldSettings;
 import org.game.isometric.blockLoader.Side;
-import org.game.isometric.component.AnimationComponent2D;
-import org.game.isometric.component.CollisionComponent2D;
-import org.game.isometric.component.MeshComponent2D;
-import org.game.isometric.component.MoveComponent2D;
-import org.game.isometric.component.PlayerComponent2D;
-import org.game.isometric.component.PositionComponent2D;
+import org.game.isometric.component.*;
 import org.game.isometric.texture2D.TextureManager2D;
 import org.joml.Vector2f;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class PlayerEntity2D extends Entity {
 
-    public PlayerEntity2D(int textureID, int positionX, int positionY) {
-        super(new EntityProperties.EntityPropertiesBuilder()
+    private UUID userUuid;
+
+    public PlayerEntity2D(long sessionEntityId, int textureID, int positionX, int positionY, int floor, EntityType entityType) {
+        super(sessionEntityId, new EntityProperties.EntityPropertiesBuilder()
                 .setCollidable(true)
                 .setDraggable(false)
                 .setLabel("player")
                 .setStackable(false)
                 .setQuantity(1)
                 .setDepth(-0.1f)
-                .build());
-
+                .build(), entityType);
         float tileSize = WorldSettings.TILE_SIZE - WorldSettings.TILE_OVERLAP_LENGTH;
         int x = (int) (positionX * tileSize);
         int y = (int) (positionY * tileSize);
@@ -34,7 +32,7 @@ public class PlayerEntity2D extends Entity {
         Vector2f position = new Vector2f(x, y);
 
         PlayerComponent2D playerComponent2D = new PlayerComponent2D();
-        PositionComponent2D positionComponent2D = new PositionComponent2D(position);
+        PositionComponent2D positionComponent2D = new PositionComponent2D(position, floor);
         MeshComponent2D meshComponent2D = new MeshComponent2D(textureID, new Vector2f(1.0f, 1.0f));
         MoveComponent2D moveComponent2D = new MoveComponent2D(250.0f);
         CollisionComponent2D collisionComponent2D = new CollisionComponent2D();
@@ -96,25 +94,31 @@ public class PlayerEntity2D extends Entity {
         AnimationComponent2D animationComponentRight = new AnimationComponent2D(animationRight, 500, "RIGHT");
         addComponent(animationComponentRight);
 
-//        Integer player1 = TextureManager2D.getTextureIdByLabel("player1");
-//        Integer player2 = TextureManager2D.getTextureIdByLabel("player2");
-//        Integer player3 = TextureManager2D.getTextureIdByLabel("player3");
-//        Integer player4 = TextureManager2D.getTextureIdByLabel("player4");
-//        Integer player5 = TextureManager2D.getTextureIdByLabel("player5");
-//        Integer player6 = TextureManager2D.getTextureIdByLabel("player6");
-//        Map<Integer, Integer> animation = new HashMap<>();
-//        animation.put(1, player1);
-//        animation.put(2, player2);
-//        animation.put(3, player3);
-//        animation.put(4, player4);
-//        animation.put(5, player5);
-//        animation.put(6, player6);
-//        AnimationComponent2D animationComponent2D = new AnimationComponent2D(animation, 300, "");
-        addComponent(playerComponent2D);
+        if (EntityType.LOCAL.equals(entityType)) {
+            addComponent(playerComponent2D);
+            addComponent(collisionComponent2D);
+        } else if (EntityType.NETWORK.equals(entityType)) {
+            addComponent(new ServerPlayerComponent2D());
+        }
+
+        addComponent(moveComponent2D);
         addComponent(positionComponent2D);
         addComponent(meshComponent2D);
-        addComponent(moveComponent2D);
-        addComponent(collisionComponent2D);
-  //      addComponent(animationComponent2D);
+
+    }
+
+    public UUID getUserUuid() {
+        return userUuid;
+    }
+
+    public void setUserUuid(UUID userUuid) {
+        this.userUuid = userUuid;
+    }
+
+    @Override
+    public String toString() {
+        return "PlayerEntity2D{" +
+                "userUuid=" + userUuid +
+                "} " + super.toString();
     }
 }
