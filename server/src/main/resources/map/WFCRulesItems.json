@@ -1,0 +1,380 @@
+{
+  "type": "Rules",
+  "tileRules": [
+    {
+      "label": "FENCE_BLANK_2D",
+      "chance": 0.1,
+      "floors": [5],
+      "acceptedNeighbors": {
+        "acceptsSideListMap": {
+          "LEFT": [
+            "FENCE_BLANK_2D",
+            "FENCE_SIDE_2D",
+            "FENCE_RIGHT_DOWN_2D",
+            "FENCE_RIGHT_UP_2D",
+            "WATER_WELL",
+            "BRICK_WALL_VL",
+            "BRICK_WALL_VR",
+            "BRICK_WALL_RE"
+          ],
+          "UP": [
+            "FENCE_BLANK_2D",
+            "FENCE_2D",
+            "FENCE_LEFT_DOWN_2D",
+            "FENCE_RIGHT_DOWN_2D",
+            "WATER_WELL",
+            "BRICK_WALL_H",
+            "BRICK_WALL_LE"
+          ],
+          "RIGHT": [
+            "FENCE_BLANK_2D",
+            "FENCE_LEFT_UP_2D",
+            "FENCE_SIDE_2D",
+            "FENCE_LEFT_DOWN_2D",
+            "WATER_WELL",
+            "BRICK_WALL_VL",
+            "BRICK_WALL_VR",
+            "BRICK_WALL_LE"
+          ],
+          "DOWN": [
+            "FENCE_BLANK_2D",
+            "FENCE_2D",
+            "FENCE_LEFT_UP_2D",
+            "FENCE_RIGHT_UP_2D",
+            "WATER_WELL",
+            "BRICK_WALL_H",
+            "BRICK_WALL_RE"
+          ]
+        }
+      }
+    },
+    {
+      "label": "FENCE_2D",
+      "chance": 0.1,
+      "floors": [5],
+      "acceptedNeighbors": {
+        "acceptsSideListMap": {
+          "LEFT": [
+            "FENCE_2D",
+            "FENCE_LEFT_UP_2D",
+            "FENCE_LEFT_DOWN_2D"
+          ],
+          "UP": [
+            "FENCE_BLANK_2D",
+            "FENCE_2D",
+            "FENCE_LEFT_DOWN_2D",
+            "FENCE_RIGHT_DOWN_2D"
+          ],
+          "RIGHT": [
+            "FENCE_2D",
+            "FENCE_RIGHT_DOWN_2D",
+            "FENCE_RIGHT_UP_2D"
+          ],
+          "DOWN": [
+            "FENCE_BLANK_2D",
+            "FENCE_2D",
+            "FENCE_LEFT_UP_2D",
+            "FENCE_RIGHT_UP_2D"
+          ]
+        }
+      }
+    },
+    {
+      "label": "FENCE_SIDE_2D",
+      "chance": 0.2,
+      "floors": [5],
+      "acceptedNeighbors": {
+        "acceptsSideListMap": {
+          "LEFT": [
+            "FENCE_BLANK_2D",
+            "FENCE_SIDE_2D",
+            "FENCE_RIGHT_DOWN_2D",
+            "FENCE_RIGHT_UP_2D"
+          ],
+          "UP": [
+            "FENCE_LEFT_UP_2D",
+            "FENCE_SIDE_2D",
+            "FENCE_RIGHT_UP_2D"
+          ],
+          "RIGHT": [
+            "FENCE_BLANK_2D",
+            "FENCE_LEFT_UP_2D",
+            "FENCE_SIDE_2D",
+            "FENCE_LEFT_DOWN_2D"
+          ],
+          "DOWN": [
+            "FENCE_SIDE_2D",
+            "FENCE_LEFT_DOWN_2D",
+            "FENCE_RIGHT_DOWN_2D"
+          ]
+        }
+      }
+    },
+    {
+      "label": "FENCE_RIGHT_DOWN_2D",
+      "chance": 0.12,
+      "floors": [5],
+      "acceptedNeighbors": {
+        "acceptsSideListMap": {
+          "LEFT": [
+            "FENCE_2D",
+            "FENCE_LEFT_UP_2D",
+            "FENCE_LEFT_DOWN_2D"
+          ],
+          "UP": [
+            "FENCE_LEFT_UP_2D",
+            "FENCE_SIDE_2D",
+            "FENCE_RIGHT_UP_2D"
+          ],
+          "RIGHT": [
+            "FENCE_BLANK_2D",
+            "FENCE_LEFT_UP_2D",
+            "FENCE_SIDE_2D",
+            "FENCE_LEFT_DOWN_2D"
+          ],
+          "DOWN": [
+            "FENCE_BLANK_2D",
+            "FENCE_2D",
+            "FENCE_LEFT_UP_2D",
+            "FENCE_RIGHT_UP_2D"
+          ]
+        }
+      }
+    },
+    {
+      "label": "FENCE_LEFT_DOWN_2D",
+      "chance": 0.21,
+      "floors": [5],
+      "acceptedNeighbors": {
+        "acceptsSideListMap": {
+          "LEFT": [
+            "FENCE_BLANK_2D",
+            "FENCE_SIDE_2D",
+            "FENCE_RIGHT_DOWN_2D",
+            "FENCE_RIGHT_UP_2D"
+          ],
+          "UP": [
+            "FENCE_LEFT_UP_2D",
+            "FENCE_SIDE_2D",
+            "FENCE_RIGHT_UP_2D"
+          ],
+          "RIGHT": [
+            "FENCE_2D",
+            "FENCE_RIGHT_DOWN_2D",
+            "FENCE_RIGHT_UP_2D"
+          ],
+          "DOWN": [
+            "FENCE_BLANK_2D",
+            "FENCE_2D",
+            "FENCE_LEFT_UP_2D",
+            "FENCE_RIGHT_UP_2D"
+          ]
+        }
+      }
+    },
+    {
+      "label": "FENCE_LEFT_UP_2D",
+      "chance": 0.01,
+      "floors": [5],
+      "acceptedNeighbors": {
+        "acceptsSideListMap": {
+          "LEFT": [
+            "FENCE_BLANK_2D",
+            "FENCE_SIDE_2D",
+            "FENCE_RIGHT_DOWN_2D",
+            "FENCE_RIGHT_UP_2D"
+          ],
+          "UP": [
+            "FENCE_BLANK_2D",
+            "FENCE_2D",
+            "FENCE_LEFT_DOWN_2D",
+            "FENCE_RIGHT_DOWN_2D"
+          ],
+          "RIGHT": [
+            "FENCE_2D",
+            "FENCE_RIGHT_DOWN_2D",
+            "FENCE_RIGHT_UP_2D"
+          ],
+          "DOWN": [
+            "FENCE_SIDE_2D",
+            "FENCE_LEFT_DOWN_2D",
+            "FENCE_RIGHT_DOWN_2D"
+          ]
+        }
+      }
+    },
+    {
+      "label": "FENCE_RIGHT_UP_2D",
+      "chance": 0.1,
+      "floors": [5],
+      "acceptedNeighbors": {
+        "acceptsSideListMap": {
+          "LEFT": [
+            "FENCE_2D",
+            "FENCE_LEFT_UP_2D",
+            "FENCE_LEFT_DOWN_2D"
+          ],
+          "UP": [
+            "FENCE_BLANK_2D",
+            "FENCE_2D",
+            "FENCE_LEFT_DOWN_2D",
+            "FENCE_RIGHT_DOWN_2D"
+          ],
+          "RIGHT": [
+            "FENCE_BLANK_2D",
+            "FENCE_LEFT_UP_2D",
+            "FENCE_SIDE_2D",
+            "FENCE_LEFT_DOWN_2D"
+          ],
+          "DOWN": [
+            "FENCE_SIDE_2D",
+            "FENCE_LEFT_DOWN_2D",
+            "FENCE_RIGHT_DOWN_2D"
+          ]
+        }
+      }
+    },
+    {
+      "label": "WATER_WELL",
+      "chance": 1.101,
+      "floors": [5],
+      "acceptedNeighbors": {
+        "acceptsSideListMap": {
+          "LEFT": [
+            "FENCE_BLANK_2D",
+            "FENCE_LEFT_DOWN_2D",
+            "FENCE_RIGHT_DOWN_2D"
+          ],
+          "UP": [
+            "FENCE_BLANK_2D",
+            "FENCE_LEFT_DOWN_2D",
+            "FENCE_RIGHT_DOWN_2D"
+          ],
+          "RIGHT": [
+            "FENCE_BLANK_2D",
+            "FENCE_LEFT_DOWN_2D",
+            "FENCE_RIGHT_DOWN_2D"
+          ],
+          "DOWN": [
+            "FENCE_BLANK_2D",
+            "FENCE_LEFT_DOWN_2D",
+            "FENCE_RIGHT_DOWN_2D"
+          ]
+        }
+      }
+    },
+    {
+      "label": "BRICK_WALL_H",
+      "chance": 1.21,
+      "floors": [5],
+      "acceptedNeighbors": {
+        "acceptsSideListMap": {
+          "LEFT": [
+            "BRICK_WALL_H",
+            "BRICK_WALL_LE"
+          ],
+          "UP": [
+            "FENCE_BLANK_2D"
+          ],
+          "RIGHT": [
+            "BRICK_WALL_H",
+            "BRICK_WALL_RE"
+          ],
+          "DOWN": [
+            "FENCE_BLANK_2D"
+          ]
+        }
+      }
+    },
+    {
+      "label": "BRICK_WALL_VL",
+      "chance": 1.22,
+      "floors": [5],
+      "acceptedNeighbors": {
+        "acceptsSideListMap": {
+          "LEFT": [
+            "FENCE_BLANK_2D"
+          ],
+          "UP": [
+            "BRICK_WALL_VL",
+            "BRICK_WALL_LE"
+          ],
+          "RIGHT": [
+            "FENCE_BLANK_2D"
+          ],
+          "DOWN": [
+            "BRICK_WALL_VL",
+            "BRICK_WALL_LE"
+          ]
+        }
+      }
+    },
+    {
+      "label": "BRICK_WALL_VR",
+      "chance": 1.024,
+      "floors": [5],
+      "acceptedNeighbors": {
+        "acceptsSideListMap": {
+          "LEFT": [
+            "FENCE_BLANK_2D"
+          ],
+          "UP": [
+            "BRICK_WALL_VR",
+            "BRICK_WALL_RE"
+          ],
+          "RIGHT": [
+            "FENCE_BLANK_2D"
+          ],
+          "DOWN": [
+            "BRICK_WALL_VR",
+            "BRICK_WALL_RE"
+          ]
+        }
+      }
+    },
+    {
+      "label": "BRICK_WALL_RE",
+      "chance": 1.141,
+      "floors": [5],
+      "acceptedNeighbors": {
+        "acceptsSideListMap": {
+          "LEFT": [
+            "BRICK_WALL_H"
+          ],
+          "UP": [
+            "BRICK_WALL_VR",
+            "FENCE_BLANK_2D"
+          ],
+          "RIGHT": [
+            "FENCE_BLANK_2D"
+          ],
+          "DOWN": [
+            "BRICK_WALL_VR"
+          ]
+        }
+      }
+    },
+    {
+      "label": "BRICK_WALL_LE",
+      "chance": 1.127,
+      "floors": [5],
+      "acceptedNeighbors": {
+        "acceptsSideListMap": {
+          "LEFT": [
+            "FENCE_BLANK_2D"
+          ],
+          "UP": [
+            "BRICK_WALL_VL"
+          ],
+          "RIGHT": [
+            "BRICK_WALL_H"
+          ],
+          "DOWN": [
+            "BRICK_WALL_VL",
+            "FENCE_BLANK_2D"
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,10 +1,12 @@
 package org.game.entity;
 
+import org.game.isometric.blockLoader.EntityMapper;
 import org.game.isometric.blockLoader.Side;
 import org.game.isometric.action.Action;
 import org.game.isometric.model.Stackable;
 import org.game.system.shader.ShaderEnum;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +15,7 @@ public class EntityProperties {
     private ShaderEnum shaderType;
 
     private boolean collidable;
+    private boolean[][] collisionZone;
     private boolean draggable;
     private boolean stackable;
     private String label;
@@ -22,13 +25,37 @@ public class EntityProperties {
     private float depth;
     private boolean replaceableEdges;
     private Map<Side, Integer> replaceableTextureIdMap;
+    private Map<Side, Long> replaceableEdgeEntityIdMap;
+    private Map<Long, Integer> rotatedEntityIdMap;
     private List<Action> actionListToDo;
     private List<Action> actionList;
+
+    public EntityProperties(EntityProperties clone) {
+        this.shaderType =                   clone.shaderType;
+        this.collidable =                   clone.collidable;
+        this.collisionZone =                clone.collisionZone;
+        this.draggable =                    clone.draggable;
+        this.stackable =                    clone.stackable;
+        this.label =                        clone.label;
+        this.quantity =                     clone.quantity;
+        this.stack =                        clone.stack;
+        this.type =                         clone.type;
+        this.depth =                        clone.depth;
+        this.replaceableEdges =             clone.replaceableEdges;
+
+        this.replaceableTextureIdMap =      clone.replaceableTextureIdMap;
+        this.replaceableEdgeEntityIdMap =   clone.replaceableEdgeEntityIdMap;
+        this.rotatedEntityIdMap =           clone.rotatedEntityIdMap;
+        this.actionListToDo =               EntityMapper.toActionList(clone.actionListToDo);
+        this.actionList =                   EntityMapper.toActionList(clone.actionList);
+    }
 
     public EntityProperties() {
         this.shaderType = ShaderEnum.DEFAULT;
         this.actionListToDo = new ArrayList<>();
         this.actionList = new ArrayList<>();
+        this.replaceableEdgeEntityIdMap = new HashMap<>();
+        this.rotatedEntityIdMap = new HashMap<>();
     }
 
     public EntityProperties(boolean collidable, boolean draggable, boolean stackable, String label,
@@ -43,6 +70,8 @@ public class EntityProperties {
         this.replaceableTextureIdMap = replaceableTextureIdMap;
         this.actionListToDo = new ArrayList<>();
         this.actionList = new ArrayList<>();
+        this.replaceableEdgeEntityIdMap = new HashMap<>();
+        this.rotatedEntityIdMap = new HashMap<>();
     }
 
     public EntityProperties(ShaderEnum shaderType) {
@@ -63,6 +92,14 @@ public class EntityProperties {
 
     public void setCollidable(boolean collidable) {
         this.collidable = collidable;
+    }
+
+    public boolean[][] getCollisionZone() {
+        return collisionZone;
+    }
+
+    public void setCollisionZone(boolean[][] collisionZone) {
+        this.collisionZone = collisionZone;
     }
 
     public boolean isDraggable() {
@@ -137,6 +174,14 @@ public class EntityProperties {
         this.replaceableTextureIdMap = replaceableTextureIdMap;
     }
 
+    public Map<Side, Long> getReplaceableEdgeEntityIdMap() {
+        return replaceableEdgeEntityIdMap;
+    }
+
+    public void setReplaceableEdgeEntityIdMap(Map<Side, Long> replaceableEdgeEntityIdMap) {
+        this.replaceableEdgeEntityIdMap = replaceableEdgeEntityIdMap;
+    }
+
     public void setActionComponentList(List<Action> actionList) {
         this.actionListToDo = actionList;
     }
@@ -180,6 +225,11 @@ public class EntityProperties {
 
         public EntityPropertiesBuilder setCollidable(boolean collidable) {
             entityProperties.setCollidable(collidable);
+            return this;
+        }
+
+        public EntityPropertiesBuilder setCollisionZone(boolean[][] collisionZone) {
+            entityProperties.setCollisionZone(collisionZone);
             return this;
         }
 
@@ -230,7 +280,7 @@ public class EntityProperties {
 
         public EntityPropertiesBuilder setActionList(List<Action> actionList) {
             if (actionList == null) {
-                this.setActionList(new ArrayList<>());
+                this.entityProperties.setActionList(new ArrayList<>());
                 return this;
             }
             this.entityProperties.setActionList(actionList);
@@ -245,5 +295,9 @@ public class EntityProperties {
             this.entityProperties.setActionListToDo(actionListToDo);
             return this;
         }
+    }
+
+    public Map<Long, Integer> getRotatedEntityIdMap() {
+        return rotatedEntityIdMap;
     }
 }

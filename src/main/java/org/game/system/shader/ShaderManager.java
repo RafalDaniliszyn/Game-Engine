@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ShaderManager {
-    private Map<ShaderEnum, ShaderProgram> shaderProgramMap;
+    private final Map<ShaderEnum, ShaderProgram> shaderProgramMap;
 
     public ShaderManager() {
         shaderProgramMap = new HashMap<>();
@@ -31,36 +31,53 @@ public class ShaderManager {
     }
 
     private void loadShaders() {
-        // TODO: 5/9/2024 Change this test paths
         DefaultShader defaultShader = new DefaultShader(
-                "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\vertex.glsl",
-                "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\alphaFragment.glsl");
+                "/vertex.glsl",
+                "/alphaFragment.glsl");
         defaultShader.create();
         shaderProgramMap.put(ShaderEnum.DEFAULT, defaultShader);
 
         WindShader windShader = new WindShader(
-                "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\vertexWind.glsl",
-                "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\fragmentWind.glsl");
+                "/vertexWind.glsl",
+                "/fragmentWind.glsl");
         windShader.create();
         shaderProgramMap.put(ShaderEnum.WIND, windShader);
 
         WaterShader waterShader = new WaterShader(
-                "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\vertexWater.glsl",
-                "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\fragmentWater.glsl");
+                "/vertexWater.glsl",
+                "/fragmentWater.glsl");
         waterShader.create();
         shaderProgramMap.put(ShaderEnum.WATER, waterShader);
 
         UiShader uiShader = new UiShader(
-                "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\vertexUI.glsl",
-                "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\fragmentUI.glsl");
+                "/vertexUI.glsl",
+                "/fragmentUI.glsl");
         uiShader.create();
         shaderProgramMap.put(ShaderEnum.UI, uiShader);
 
         OrthoShader orthoShader = new OrthoShader(
-                "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\vertexOrtho.glsl",
-                "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\fragmentOrtho.glsl");
+                "/vertexOrtho.glsl",
+                "/fragmentOrtho.glsl");
         orthoShader.create();
         shaderProgramMap.put(ShaderEnum.ORTHO, orthoShader);
+
+        OrthoShader finalShader = new OrthoShader(
+                "/finalVertexOrtho.glsl",
+                "/finalFragmentOrtho.glsl");
+        finalShader.create();
+        shaderProgramMap.put(ShaderEnum.FINAL_ORTHO, finalShader);
+
+        OrthoShader lightOrthoShader = new OrthoShader(
+                "/lightVertexOrtho.glsl",
+                "/lightFragmentOrtho.glsl");
+        lightOrthoShader.create();
+        shaderProgramMap.put(ShaderEnum.LIGHT_ORTHO, lightOrthoShader);
+
+        OrthoShader windShader2D = new OrthoShader(
+                "/vertexOrthoWind.glsl",
+                "/fragmentOrtho.glsl");
+        windShader2D.create();
+        shaderProgramMap.put(ShaderEnum.WIND_ORTHO, windShader2D);
     }
 
 }

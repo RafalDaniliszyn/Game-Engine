@@ -10,6 +10,8 @@ import java.util.Map;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
+import static org.lwjgl.opengl.GL13.glActiveTexture;
 import static org.lwjgl.opengl.GL14.GL_MIRRORED_REPEAT;
 import static org.lwjgl.opengl.GL30.glGenerateMipmap;
 
@@ -25,6 +27,7 @@ public class TextureManager {
         String path = textureEnum.getPath();
         STBImage.stbi_set_flip_vertically_on_load(flip == 1);
         int texID = glGenTextures();
+        glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, texID);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, textureEnum.getParam());
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, textureEnum.getParam());
@@ -58,6 +61,7 @@ public class TextureManager {
             STBImage.stbi_set_flip_vertically_on_load(values[i].getFlip() == 1);
 
             int texID = glGenTextures();
+            glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, texID);
 
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);

@@ -1,0 +1,126 @@
+{
+  "type": "Rules",
+  "tileRules": [
+    {
+      "label": "GRASS_2D",
+      "chance": 0.34,
+      "floors": [1],
+      "connectorMap": {
+        "0": { "plug": "green", "sockets": ["green", "yellow", "path"] },
+        "1": { "plug": "green", "sockets": ["green", "yellow", "path"] },
+        "2": { "plug": "green", "sockets": ["green", "yellow", "path"] },
+        "3": { "plug": "green", "sockets": ["green", "yellow", "path"] }
+      }
+    },
+    {
+      "label": "GRASS_BORDER_2D",
+      "chance": 0.08,
+      "floors": [1],
+      "connectorMap": {
+        "0": { "plug": "green", "sockets": ["yellow", "path", "green"] },
+        "1": { "plug": "green", "sockets": ["green"] },
+        "2": { "plug": "green", "sockets": ["green"] },
+        "3": { "plug": "green", "sockets": ["green"] }
+      }
+    },
+    {
+      "label": "SAND_2D",
+      "chance": 0.18,
+      "floors": [1],
+      "connectorMap": {
+        "0": { "plug": "yellow", "sockets": ["yellow", "green", "blue", "path"] },
+        "1": { "plug": "yellow", "sockets": ["yellow", "green", "blue", "path"] },
+        "2": { "plug": "yellow", "sockets": ["yellow", "green", "blue", "path"] },
+        "3": { "plug": "yellow", "sockets": ["yellow", "green", "blue", "path"] }
+      }
+    },
+    {
+      "label": "SAND_BORDER_2D",
+      "chance": 0.06,
+      "floors": [1],
+      "connectorMap": {
+        "0": { "plug": "yellow", "sockets": ["green", "blue", "path", "yellow"] },
+        "1": { "plug": "yellow", "sockets": ["yellow"] },
+        "2": { "plug": "yellow", "sockets": ["yellow"] },
+        "3": { "plug": "yellow", "sockets": ["yellow"] }
+      }
+    },
+    {
+      "label": "WATER_2D",
+      "chance": 0.10,
+      "floors": [1],
+      "connectorMap": {
+        "0": { "plug": "blue", "sockets": ["blue", "yellow"] },
+        "1": { "plug": "blue", "sockets": ["blue", "yellow"] },
+        "2": { "plug": "blue", "sockets": ["blue", "yellow"] },
+        "3": { "plug": "blue", "sockets": ["blue", "yellow"] }
+      }
+    },
+    {
+      "label": "WATER_BORDER_2D",
+      "chance": 0.04,
+      "floors": [1],
+      "connectorMap": {
+        "0": { "plug": "blue", "sockets": ["yellow", "blue"] },
+        "1": { "plug": "blue", "sockets": ["blue"] },
+        "2": { "plug": "blue", "sockets": ["blue"] },
+        "3": { "plug": "blue", "sockets": ["blue"] }
+      }
+    },
+    {
+      "label": "PATH_2D",
+      "chance": 0.20,
+      "floors": [1],
+      "connectorMap": {
+        "0": { "plug": "path", "sockets": ["path", "green", "yellow"] },
+        "1": { "plug": "path", "sockets": ["path", "green", "yellow"] },
+        "2": { "plug": "path", "sockets": ["path", "green", "yellow"] },
+        "3": { "plug": "path", "sockets": ["path", "green", "yellow"] }
+      }
+    },
+    {
+      "label": "DIRT_2D",
+      "chance": 0.45,
+      "floors": [0],
+      "connectorMap": {
+        "0": { "plug": "gray", "sockets": ["gray", "graym"] },
+        "1": { "plug": "gray", "sockets": ["gray", "graym"] },
+        "2": { "plug": "gray", "sockets": ["gray", "graym"] },
+        "3": { "plug": "gray", "sockets": ["gray", "graym"] }
+      }
+    },
+    {
+      "label": "MINE_2D",
+      "chance": 0.30,
+      "floors": [0],
+      "connectorMap": {
+        "0": { "plug": "graym", "sockets": ["graym", "gray"] },
+        "1": { "plug": "graym", "sockets": ["graym", "gray"] },
+        "2": { "plug": "graym", "sockets": ["graym", "gray"] },
+        "3": { "plug": "graym", "sockets": ["graym", "gray"] }
+      }
+    },
+    {
+      "label": "DIRT_BORDER_2D",
+      "chance": 0.15,
+      "floors": [0],
+      "connectorMap": {
+        "0": { "plug": "gray", "sockets": ["graym", "gray"] },
+        "1": { "plug": "gray", "sockets": ["gray"] },
+        "2": { "plug": "gray", "sockets": ["gray"] },
+        "3": { "plug": "gray", "sockets": ["gray"] }
+      }
+    },
+    {
+      "label": "MINE_BORDER_2D",
+      "chance": 0.10,
+      "floors": [0],
+      "connectorMap": {
+        "0": { "plug": "graym", "sockets": ["gray", "graym"] },
+        "1": { "plug": "graym", "sockets": ["graym"] },
+        "2": { "plug": "graym", "sockets": ["graym"] },
+        "3": { "plug": "graym", "sockets": ["graym"] }
+      }
+    }
+  ]
+}

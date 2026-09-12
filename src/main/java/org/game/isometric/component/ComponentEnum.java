@@ -3,6 +3,7 @@ package org.game.isometric.component;
 public enum ComponentEnum {
     PositionComponent2D,
     PlayerComponent2D,
+    ServerPlayerComponent2D,
     MoveComponent2D,
     MeshComponent2D,
     DragComponent2D,

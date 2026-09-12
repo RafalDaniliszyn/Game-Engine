@@ -1,0 +1,212 @@
+{
+  "type": "Rules",
+  "tileRules": [
+    {
+      "label": "JOINT",
+      "chance": 0.1666664566667,
+      "floors": [5],
+      "connectorMap": {
+        "0": {
+          "plug": "green",
+          "sockets": ["green", "gray"]
+        },
+        "1": {
+          "plug": "green",
+          "sockets": ["green", "gray"]
+        },
+        "2": {
+          "plug": "green",
+          "sockets": ["green", "gray"]
+        },
+        "3": {
+          "plug": "blank",
+          "sockets": ["blank"]
+        }
+      }
+    },
+    {
+      "label": "CONNECTOR",
+      "chance": 0.11664665,
+      "floors": [5],
+      "connectorMap": {
+        "0": {
+          "plug": "green",
+          "sockets": ["green"]
+        },
+        "1": {
+          "plug": "blank",
+          "sockets": ["blank"]
+        },
+        "2": {
+          "plug": "gray",
+          "sockets": ["gray"]
+        },
+        "3": {
+          "plug": "blank",
+          "sockets": ["blank"]
+        }
+      }
+    },
+    {
+      "label": "BLANK",
+      "chance": 0.26616665,
+      "floors": [5],
+      "connectorMap": {
+        "0": {
+          "plug": "blank",
+          "sockets": ["blank"]
+        },
+        "1": {
+          "plug": "blank",
+          "sockets": ["blank"]
+        },
+        "2": {
+          "plug": "blank",
+          "sockets": ["blank"]
+        },
+        "3": {
+          "plug": "blank",
+          "sockets": ["blank"]
+        }
+      }
+    },
+    {
+      "label": "END",
+      "chance": 0.16666665,
+      "floors": [5],
+      "connectorMap": {
+        "0": {
+          "plug": "blank",
+          "sockets": ["blank"]
+        },
+        "1": {
+          "plug": "blank",
+          "sockets": ["blank"]
+        },
+        "2": {
+          "plug": "green",
+          "sockets": ["green", "gray"]
+        },
+        "3": {
+          "plug": "blank",
+          "sockets": ["blank"]
+        }
+      }
+    },
+    {
+      "label": "TERMINAL",
+      "chance": 0.036566665,
+      "floors": [5],
+      "connectorMap": {
+        "0": {
+          "plug": "yellow",
+          "sockets": ["black"]
+        },
+        "1": {
+          "plug": "blank",
+          "sockets": ["blank"]
+        },
+        "2": {
+          "plug": "green",
+          "sockets": ["green"]
+        },
+        "3": {
+          "plug": "blank",
+          "sockets": ["blank"]
+        }
+      }
+    },
+    {
+      "label": "BOARD",
+      "chance": 0.12666665,
+      "floors": [5],
+      "connectorMap": {
+        "0": {
+          "plug": "black",
+          "sockets": ["yellow", "black"]
+        },
+        "1": {
+          "plug": "black",
+          "sockets": ["yellow", "black"]
+        },
+        "2": {
+          "plug": "black",
+          "sockets": ["yellow", "black"]
+        },
+        "3": {
+          "plug": "black",
+          "sockets": ["yellow", "black"]
+        }
+      }
+    },
+    {
+      "label": "INTERSECTION",
+      "chance": 0.1666365,
+      "floors": [5],
+      "connectorMap": {
+        "0": {
+          "plug": "green",
+          "sockets": ["green", "gray"]
+        },
+        "1": {
+          "plug": "gray",
+          "sockets": ["gray", "green"]
+        },
+        "2": {
+          "plug": "green",
+          "sockets": ["green", "gray"]
+        },
+        "3": {
+          "plug": "gray",
+          "sockets": ["gray", "green"]
+        }
+      }
+    },
+    {
+      "label": "PIPE",
+      "chance": 0.0666365,
+      "floors": [5],
+      "connectorMap": {
+        "0": {
+          "plug": "green",
+          "sockets": ["green"]
+        },
+        "1": {
+          "plug": "blank",
+          "sockets": ["blank"]
+        },
+        "2": {
+          "plug": "green",
+          "sockets": ["green"]
+        },
+        "3": {
+          "plug": "blank",
+          "sockets": ["blank"]
+        }
+      }
+    },
+    {
+      "label": "BRIDGE",
+      "chance": 0.016365,
+      "floors": [5],
+      "connectorMap": {
+        "0": {
+          "plug": "blank",
+          "sockets": ["blank", "green", "gray"]
+        },
+        "1": {
+          "plug": "gray",
+          "sockets": ["gray", "green"]
+        },
+        "2": {
+          "plug": "blank",
+          "sockets": ["blank", "green", "gray"]
+        },
+        "3": {
+          "plug": "green",
+          "sockets": ["green", "gray"]
+        }
+      }
+    }
+  ]
+}

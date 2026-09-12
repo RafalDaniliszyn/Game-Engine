@@ -1,6 +1,8 @@
 package org.game.ui.component;
 
+import org.game.isometric.texture2D.TextureManager2D;
 import org.game.system.shader.ShaderEnum;
+import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.lwjgl.BufferUtils;
 import java.nio.FloatBuffer;
@@ -11,9 +13,8 @@ import static org.lwjgl.opengl.GL15.glBindBuffer;
 import static org.lwjgl.opengl.GL15.glBufferData;
 import static org.lwjgl.opengl.GL15.glDeleteBuffers;
 import static org.lwjgl.opengl.GL15.glGenBuffers;
-import static org.lwjgl.opengl.GL30.glBindVertexArray;
-import static org.lwjgl.opengl.GL30.glDeleteVertexArrays;
-import static org.lwjgl.opengl.GL30.glGenVertexArrays;
+import static org.lwjgl.opengl.GL30.*;
+import static org.lwjgl.opengl.GL30.GL_FRAMEBUFFER;
 
 public class RawUiModel {
 
@@ -24,18 +25,33 @@ public class RawUiModel {
     private Vector3f position;
     private int textureID;
 
-    private final float[] vertices = {
-           -1.0f, 1.0f, 0.0f, 1.0f,
-           -1.0f,-1.0f, 0.0f, 0.0f,
-            1.0f, 1.0f, 1.0f, 1.0f,
-            1.0f,-1.0f, 1.0f, 0.0f
-    };
+    private final float[] vertices;
 
-    public RawUiModel(Vector3f scale, Vector3f position, int textureID) {
+    public RawUiModel(Vector3f scale, Vector3f position, float width, float height) {
+        this.vertices = new float[]{
+                0.0f, height, 0.0f, 1.0f,
+                0.0f, 0.0f, 0.0f, 0.0f,
+                width, height, 1.0f, 1.0f,
+                width, 0.0f, 1.0f, 0.0f
+        };
         this.shaderType = ShaderEnum.UI;
         this.scale = scale;
         this.position = position;
-        this.textureID = textureID;
+        this.textureID = TextureManager2D.loadTexture("/textures/2D/ui/uiBackground.png", "uiBackground");
+        create();
+    }
+
+    public RawUiModel(Vector3f position, float width, float height, Vector2f uv1, Vector2f uv2, Vector2f uv3, Vector2f uv4) {
+        this.vertices = new float[] {
+                0.0f, height, uv1.x, uv1.y,
+                0.0f, 0.0f, uv2.x, uv2.y,
+                width, height, uv3.x, uv3.y,
+                width, 0.0f, uv4.x, uv4.y
+        };
+        this.shaderType = ShaderEnum.UI;
+        this.scale = new Vector3f(1.0f, 1.0f, 0.0f);
+        this.position = position;
+        this.textureID = TextureManager2D.loadTexture("/textures/2D/ui/uiBackground.png", "uiBackground");
         create();
     }
 

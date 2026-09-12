@@ -1,7 +1,7 @@
 package org.game.system;
 
 import org.game.GameData;
-import org.game.Key;
+import org.game.key.Key;
 import org.game.mouse.MouseInput;
 import org.game.component.MoveComponent;
 import org.game.component.PositionComponent;

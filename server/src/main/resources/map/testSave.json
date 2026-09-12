@@ -1,0 +1,579 @@
+{
+  "type" : "Rules",
+  "tileRules" : [ {
+    "label" : "GRASS_2D",
+    "chance" : 0.333,
+    "floors" : [ 0, 1 ],
+    "acceptedNeighbors" : null,
+    "connectorMap" : {
+      "0" : {
+        "plug" : "GRASS_2D",
+        "sockets" : [ "GRASS_2D" ]
+      },
+      "1" : {
+        "plug" : "GRASS_2D",
+        "sockets" : [ "SAND_2D" ]
+      },
+      "2" : {
+        "plug" : "GRASS_2D",
+        "sockets" : [ "SAND_2D" ]
+      },
+      "3" : {
+        "plug" : "GRASS_2D",
+        "sockets" : [ "GRASS_2D" ]
+      }
+    }
+  }, {
+    "label" : "SAND_2D",
+    "chance" : 0.333,
+    "floors" : [ 0, 1 ],
+    "acceptedNeighbors" : null,
+    "connectorMap" : {
+      "0" : {
+        "plug" : "SAND_2D",
+        "sockets" : [ "SAND_2D" ]
+      },
+      "1" : {
+        "plug" : "SAND_2D",
+        "sockets" : [ "WATER_2D" ]
+      },
+      "2" : {
+        "plug" : "SAND_2D",
+        "sockets" : [ "SAND_2D" ]
+      },
+      "3" : {
+        "plug" : "SAND_2D",
+        "sockets" : [ "GRASS_2D" ]
+      }
+    }
+  }, {
+    "label" : "WATER_2D",
+    "chance" : 0.333,
+    "floors" : [ 0, 1 ],
+    "acceptedNeighbors" : null,
+    "connectorMap" : {
+      "0" : {
+        "plug" : "WATER_2D",
+        "sockets" : [ "WATER_2D" ]
+      },
+      "1" : {
+        "plug" : "WATER_2D",
+        "sockets" : [ "WATER_2D" ]
+      },
+      "2" : {
+        "plug" : "WATER_2D",
+        "sockets" : [ "WATER_2D" ]
+      },
+      "3" : {
+        "plug" : "WATER_2D",
+        "sockets" : [ "SAND_2D" ]
+      }
+    }
+  }, {
+    "label" : "WATER_2D",
+    "chance" : 0.333,
+    "floors" : [ 0, 1 ],
+    "acceptedNeighbors" : null,
+    "connectorMap" : {
+      "0" : {
+        "plug" : "WATER_2D",
+        "sockets" : [ "WATER_2D" ]
+      },
+      "1" : {
+        "plug" : "WATER_2D",
+        "sockets" : [ "GRASS_2D" ]
+      },
+      "2" : {
+        "plug" : "WATER_2D",
+        "sockets" : [ "WATER_2D" ]
+      },
+      "3" : {
+        "plug" : "WATER_2D",
+        "sockets" : [ "WATER_2D" ]
+      }
+    }
+  }, {
+    "label" : "GRASS_2D",
+    "chance" : 0.333,
+    "floors" : [ 0, 1 ],
+    "acceptedNeighbors" : null,
+    "connectorMap" : {
+      "0" : {
+        "plug" : "GRASS_2D",
+        "sockets" : [ "GRASS_2D" ]
+      },
+      "1" : {
+        "plug" : "GRASS_2D",
+        "sockets" : [ "GRASS_2D" ]
+      },
+      "2" : {
+        "plug" : "GRASS_2D",
+        "sockets" : [ "SAND_2D" ]
+      },
+      "3" : {
+        "plug" : "GRASS_2D",
+        "sockets" : [ "WATER_2D" ]
+      }
+    }
+  }, {
+    "label" : "SAND_2D",
+    "chance" : 0.333,
+    "floors" : [ 0, 1 ],
+    "acceptedNeighbors" : null,
+    "connectorMap" : {
+      "0" : {
+        "plug" : "SAND_2D",
+        "sockets" : [ "GRASS_2D" ]
+      },
+      "1" : {
+        "plug" : "SAND_2D",
+        "sockets" : [ "SAND_2D" ]
+      },
+      "2" : {
+        "plug" : "SAND_2D",
+        "sockets" : [ "WATER_2D" ]
+      },
+      "3" : {
+        "plug" : "SAND_2D",
+        "sockets" : [ "SAND_2D" ]
+      }
+    }
+  }, {
+    "label" : "SAND_2D",
+    "chance" : 0.333,
+    "floors" : [ 0, 1 ],
+    "acceptedNeighbors" : null,
+    "connectorMap" : {
+      "0" : {
+        "plug" : "SAND_2D",
+        "sockets" : [ "SAND_2D" ]
+      },
+      "1" : {
+        "plug" : "SAND_2D",
+        "sockets" : [ "WATER_2D" ]
+      },
+      "2" : {
+        "plug" : "SAND_2D",
+        "sockets" : [ "SAND_2D" ]
+      },
+      "3" : {
+        "plug" : "SAND_2D",
+        "sockets" : [ "SAND_2D" ]
+      }
+    }
+  }, {
+    "label" : "WATER_2D",
+    "chance" : 0.333,
+    "floors" : [ 0, 1 ],
+    "acceptedNeighbors" : null,
+    "connectorMap" : {
+      "0" : {
+        "plug" : "WATER_2D",
+        "sockets" : [ "WATER_2D" ]
+      },
+      "1" : {
+        "plug" : "WATER_2D",
+        "sockets" : [ "WATER_2D" ]
+      },
+      "2" : {
+        "plug" : "WATER_2D",
+        "sockets" : [ "WATER_2D" ]
+      },
+      "3" : {
+        "plug" : "WATER_2D",
+        "sockets" : [ "SAND_2D" ]
+      }
+    }
+  }, {
+    "label" : "WATER_2D",
+    "chance" : 0.333,
+    "floors" : [ 0, 1 ],
+    "acceptedNeighbors" : null,
+    "connectorMap" : {
+      "0" : {
+        "plug" : "WATER_2D",
+        "sockets" : [ "WATER_2D" ]
+      },
+      "1" : {
+        "plug" : "WATER_2D",
+        "sockets" : [ "SAND_2D" ]
+      },
+      "2" : {
+        "plug" : "WATER_2D",
+        "sockets" : [ "WATER_2D" ]
+      },
+      "3" : {
+        "plug" : "WATER_2D",
+        "sockets" : [ "WATER_2D" ]
+      }
+    }
+  }, {
+    "label" : "SAND_2D",
+    "chance" : 0.333,
+    "floors" : [ 0, 1 ],
+    "acceptedNeighbors" : null,
+    "connectorMap" : {
+      "0" : {
+        "plug" : "SAND_2D",
+        "sockets" : [ "GRASS_2D" ]
+      },
+      "1" : {
+        "plug" : "SAND_2D",
+        "sockets" : [ "SAND_2D" ]
+      },
+      "2" : {
+        "plug" : "SAND_2D",
+        "sockets" : [ "GRASS_2D" ]
+      },
+      "3" : {
+        "plug" : "SAND_2D",
+        "sockets" : [ "WATER_2D" ]
+      }
+    }
+  }, {
+    "label" : "WATER_2D",
+    "chance" : 0.333,
+    "floors" : [ 0, 1 ],
+    "acceptedNeighbors" : null,
+    "connectorMap" : {
+      "0" : {
+        "plug" : "WATER_2D",
+        "sockets" : [ "SAND_2D" ]
+      },
+      "1" : {
+        "plug" : "WATER_2D",
+        "sockets" : [ "SAND_2D" ]
+      },
+      "2" : {
+        "plug" : "WATER_2D",
+        "sockets" : [ "SAND_2D" ]
+      },
+      "3" : {
+        "plug" : "WATER_2D",
+        "sockets" : [ "WATER_2D" ]
+      }
+    }
+  }, {
+    "label" : "SAND_2D",
+    "chance" : 0.333,
+    "floors" : [ 0, 1 ],
+    "acceptedNeighbors" : null,
+    "connectorMap" : {
+      "0" : {
+        "plug" : "SAND_2D",
+        "sockets" : [ "SAND_2D" ]
+      },
+      "1" : {
+        "plug" : "SAND_2D",
+        "sockets" : [ "WATER_2D" ]
+      },
+      "2" : {
+        "plug" : "SAND_2D",
+        "sockets" : [ "WATER_2D" ]
+      },
+      "3" : {
+        "plug" : "SAND_2D",
+        "sockets" : [ "WATER_2D" ]
+      }
+    }
+  }, {
+    "label" : "WATER_2D",
+    "chance" : 0.333,
+    "floors" : [ 0, 1 ],
+    "acceptedNeighbors" : null,
+    "connectorMap" : {
+      "0" : {
+        "plug" : "WATER_2D",
+        "sockets" : [ "WATER_2D" ]
+      },
+      "1" : {
+        "plug" : "WATER_2D",
+        "sockets" : [ "WATER_2D" ]
+      },
+      "2" : {
+        "plug" : "WATER_2D",
+        "sockets" : [ "WATER_2D" ]
+      },
+      "3" : {
+        "plug" : "WATER_2D",
+        "sockets" : [ "SAND_2D" ]
+      }
+    }
+  }, {
+    "label" : "WATER_2D",
+    "chance" : 0.333,
+    "floors" : [ 0, 1 ],
+    "acceptedNeighbors" : null,
+    "connectorMap" : {
+      "0" : {
+        "plug" : "WATER_2D",
+        "sockets" : [ "WATER_2D" ]
+      },
+      "1" : {
+        "plug" : "WATER_2D",
+        "sockets" : [ "GRASS_2D" ]
+      },
+      "2" : {
+        "plug" : "WATER_2D",
+        "sockets" : [ "GRASS_2D" ]
+      },
+      "3" : {
+        "plug" : "WATER_2D",
+        "sockets" : [ "WATER_2D" ]
+      }
+    }
+  }, {
+    "label" : "GRASS_2D",
+    "chance" : 0.333,
+    "floors" : [ 0, 1 ],
+    "acceptedNeighbors" : null,
+    "connectorMap" : {
+      "0" : {
+        "plug" : "GRASS_2D",
+        "sockets" : [ "SAND_2D" ]
+      },
+      "1" : {
+        "plug" : "GRASS_2D",
+        "sockets" : [ "GRASS_2D" ]
+      },
+      "2" : {
+        "plug" : "GRASS_2D",
+        "sockets" : [ "WATER_2D" ]
+      },
+      "3" : {
+        "plug" : "GRASS_2D",
+        "sockets" : [ "WATER_2D" ]
+      }
+    }
+  }, {
+    "label" : "SAND_2D",
+    "chance" : 0.333,
+    "floors" : [ 0, 1 ],
+    "acceptedNeighbors" : null,
+    "connectorMap" : {
+      "0" : {
+        "plug" : "SAND_2D",
+        "sockets" : [ "WATER_2D" ]
+      },
+      "1" : {
+        "plug" : "SAND_2D",
+        "sockets" : [ "WATER_2D" ]
+      },
+      "2" : {
+        "plug" : "SAND_2D",
+        "sockets" : [ "GRASS_2D" ]
+      },
+      "3" : {
+        "plug" : "SAND_2D",
+        "sockets" : [ "SAND_2D" ]
+      }
+    }
+  }, {
+    "label" : "WATER_2D",
+    "chance" : 0.333,
+    "floors" : [ 0, 1 ],
+    "acceptedNeighbors" : null,
+    "connectorMap" : {
+      "0" : {
+        "plug" : "WATER_2D",
+        "sockets" : [ "SAND_2D" ]
+      },
+      "1" : {
+        "plug" : "WATER_2D",
+        "sockets" : [ "WATER_2D" ]
+      },
+      "2" : {
+        "plug" : "WATER_2D",
+        "sockets" : [ "SAND_2D" ]
+      },
+      "3" : {
+        "plug" : "WATER_2D",
+        "sockets" : [ "SAND_2D" ]
+      }
+    }
+  }, {
+    "label" : "WATER_2D",
+    "chance" : 0.333,
+    "floors" : [ 0, 1 ],
+    "acceptedNeighbors" : null,
+    "connectorMap" : {
+      "0" : {
+        "plug" : "WATER_2D",
+        "sockets" : [ "WATER_2D" ]
+      },
+      "1" : {
+        "plug" : "WATER_2D",
+        "sockets" : [ "GRASS_2D" ]
+      },
+      "2" : {
+        "plug" : "WATER_2D",
+        "sockets" : [ "SAND_2D" ]
+      },
+      "3" : {
+        "plug" : "WATER_2D",
+        "sockets" : [ "WATER_2D" ]
+      }
+    }
+  }, {
+    "label" : "GRASS_2D",
+    "chance" : 0.333,
+    "floors" : [ 0, 1 ],
+    "acceptedNeighbors" : null,
+    "connectorMap" : {
+      "0" : {
+        "plug" : "GRASS_2D",
+        "sockets" : [ "WATER_2D" ]
+      },
+      "1" : {
+        "plug" : "GRASS_2D",
+        "sockets" : [ "WATER_2D" ]
+      },
+      "2" : {
+        "plug" : "GRASS_2D",
+        "sockets" : [ "WATER_2D" ]
+      },
+      "3" : {
+        "plug" : "GRASS_2D",
+        "sockets" : [ "WATER_2D" ]
+      }
+    }
+  }, {
+    "label" : "WATER_2D",
+    "chance" : 0.333,
+    "floors" : [ 0, 1 ],
+    "acceptedNeighbors" : null,
+    "connectorMap" : {
+      "0" : {
+        "plug" : "WATER_2D",
+        "sockets" : [ "GRASS_2D" ]
+      },
+      "1" : {
+        "plug" : "WATER_2D",
+        "sockets" : [ "WATER_2D" ]
+      },
+      "2" : {
+        "plug" : "WATER_2D",
+        "sockets" : [ "GRASS_2D" ]
+      },
+      "3" : {
+        "plug" : "WATER_2D",
+        "sockets" : [ "GRASS_2D" ]
+      }
+    }
+  }, {
+    "label" : "GRASS_2D",
+    "chance" : 0.333,
+    "floors" : [ 0, 1 ],
+    "acceptedNeighbors" : null,
+    "connectorMap" : {
+      "0" : {
+        "plug" : "GRASS_2D",
+        "sockets" : [ "SAND_2D" ]
+      },
+      "1" : {
+        "plug" : "GRASS_2D",
+        "sockets" : [ "SAND_2D" ]
+      },
+      "2" : {
+        "plug" : "GRASS_2D",
+        "sockets" : [ "GRASS_2D" ]
+      },
+      "3" : {
+        "plug" : "GRASS_2D",
+        "sockets" : [ "GRASS_2D" ]
+      }
+    }
+  }, {
+    "label" : "SAND_2D",
+    "chance" : 0.333,
+    "floors" : [ 0, 1 ],
+    "acceptedNeighbors" : null,
+    "connectorMap" : {
+      "0" : {
+        "plug" : "SAND_2D",
+        "sockets" : [ "WATER_2D" ]
+      },
+      "1" : {
+        "plug" : "SAND_2D",
+        "sockets" : [ "SAND_2D" ]
+      },
+      "2" : {
+        "plug" : "SAND_2D",
+        "sockets" : [ "SAND_2D" ]
+      },
+      "3" : {
+        "plug" : "SAND_2D",
+        "sockets" : [ "GRASS_2D" ]
+      }
+    }
+  }, {
+    "label" : "SAND_2D",
+    "chance" : 0.333,
+    "floors" : [ 0, 1 ],
+    "acceptedNeighbors" : null,
+    "connectorMap" : {
+      "0" : {
+        "plug" : "SAND_2D",
+        "sockets" : [ "WATER_2D" ]
+      },
+      "1" : {
+        "plug" : "SAND_2D",
+        "sockets" : [ "WATER_2D" ]
+      },
+      "2" : {
+        "plug" : "SAND_2D",
+        "sockets" : [ "SAND_2D" ]
+      },
+      "3" : {
+        "plug" : "SAND_2D",
+        "sockets" : [ "SAND_2D" ]
+      }
+    }
+  }, {
+    "label" : "WATER_2D",
+    "chance" : 0.333,
+    "floors" : [ 0, 1 ],
+    "acceptedNeighbors" : null,
+    "connectorMap" : {
+      "0" : {
+        "plug" : "WATER_2D",
+        "sockets" : [ "GRASS_2D" ]
+      },
+      "1" : {
+        "plug" : "WATER_2D",
+        "sockets" : [ "GRASS_2D" ]
+      },
+      "2" : {
+        "plug" : "WATER_2D",
+        "sockets" : [ "WATER_2D" ]
+      },
+      "3" : {
+        "plug" : "WATER_2D",
+        "sockets" : [ "SAND_2D" ]
+      }
+    }
+  }, {
+    "label" : "GRASS_2D",
+    "chance" : 0.333,
+    "floors" : [ 0, 1 ],
+    "acceptedNeighbors" : null,
+    "connectorMap" : {
+      "0" : {
+        "plug" : "GRASS_2D",
+        "sockets" : [ "WATER_2D" ]
+      },
+      "1" : {
+        "plug" : "GRASS_2D",
+        "sockets" : [ "GRASS_2D" ]
+      },
+      "2" : {
+        "plug" : "GRASS_2D",
+        "sockets" : [ "GRASS_2D" ]
+      },
+      "3" : {
+        "plug" : "GRASS_2D",
+        "sockets" : [ "WATER_2D" ]
+      }
+    }
+  } ]
+}

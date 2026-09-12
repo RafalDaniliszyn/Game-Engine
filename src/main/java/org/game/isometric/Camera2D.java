@@ -13,9 +13,15 @@ public class Camera2D {
         }
         Vector2f cameraPos = cameraPosition;
         viewMatrix.identity();
+        long time = System.currentTimeMillis();
+        //viewMatrix.rotateY((float) Math.toRadians(-70.0));
+        //viewMatrix.rotateX((float) Math.toRadians(-10.0));
+
+        //viewMatrix.translate(-cameraPos.x, -cameraPos.y, -500.0f);
         viewMatrix.translate(-cameraPos.x, -cameraPos.y, 0.0f);
         return viewMatrix;
     }
+
 
     public static Vector2f getCameraPosition() {
         return cameraPosition;

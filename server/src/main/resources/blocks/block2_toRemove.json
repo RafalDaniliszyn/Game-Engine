@@ -1,0 +1,252 @@
+{
+  "type": "ChannelActiveModel",
+  "entityDto":
+[
+  {
+    "entityType": "terrain",
+    "textureLabel": "SAND_2D",
+    "texturePath": "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\main\\resources\\textures\\2D\\sand2D.png",
+    "depth": -2.0,
+    "stackable": false,
+    "stack": null,
+    "label": "SAND_2D",
+    "quantity": 1,
+    "replaceableEdges": false,
+    "destroyable": true,
+    "destructionDifficulty": 300.0,
+    "afterDestroyTexturePath": "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\main\\resources\\textures\\2D\\underground\\mine.png",
+    "afterDestroyLabel": "SAND_2D_DESTROYED",
+    "components": [
+      "MeshComponent2D"
+    ]
+  },
+  {
+    "entityType": "terrain",
+    "textureLabel": "DIRT_2D",
+    "texturePath": "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\main\\resources\\textures\\2D\\dirt.png",
+    "depth": -2.0,
+    "stackable": false,
+    "stack": null,
+    "label": "DIRT_2D",
+    "quantity": 1,
+    "replaceableEdges": true,
+    "replaceableTexture": {
+      "LEFT": "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\main\\resources\\textures\\2D\\underground\\mineLeft.png",
+      "RIGHT": "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\main\\resources\\textures\\2D\\underground\\mineRight.png",
+      "UP": "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\main\\resources\\textures\\2D\\underground\\mineUp.png",
+      "DOWN": "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\main\\resources\\textures\\2D\\underground\\mineDown.png",
+      "UP_LEFT": "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\main\\resources\\textures\\2D\\underground\\mineUpLeft.png",
+      "UP_RIGHT": "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\main\\resources\\textures\\2D\\underground\\mineUpRight.png",
+      "DOWN_LEFT": "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\main\\resources\\textures\\2D\\underground\\mineDownLeft.png",
+      "DOWN_RIGHT": "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\main\\resources\\textures\\2D\\underground\\mineDownRight.png",
+      "CENTER": "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\main\\resources\\textures\\2D\\underground\\mineCenter.png"
+    },
+    "destroyable": true,
+    "destructionDifficulty": 300.0,
+    "afterDestroyTexturePath": "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\main\\resources\\textures\\2D\\underground\\mine.png",
+    "afterDestroyLabel": "DIRT_2D_DESTROYED",
+    "drop": {
+      "IRON_ORE": 5,
+      "GOLD_ORE": 2,
+      "DIAMOND_ORE": 1
+    },
+    "components": [
+      "MeshComponent2D",
+      "CollisionComponent2D"
+    ]
+  },
+  {
+    "entityType": "terrain",
+    "textureLabel": "WATER_2D",
+    "texturePath": "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\main\\resources\\textures\\2D\\water\\water.png",
+    "depth": -2.0,
+    "stackable": false,
+    "stack": null,
+    "label": "WATER_2D",
+    "quantity": 1,
+    "replaceableEdges": true,
+    "replaceableTexture": {
+      "LEFT": "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\main\\resources\\textures\\2D\\water\\waterLeftGround.png",
+      "RIGHT": "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\main\\resources\\textures\\2D\\water\\waterRightGround.png",
+      "UP": "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\main\\resources\\textures\\2D\\water\\waterUpGround.png",
+      "DOWN": "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\main\\resources\\textures\\2D\\water\\waterDownGround.png",
+      "UP_LEFT": "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\main\\resources\\textures\\2D\\water\\waterUpLeft.png",
+      "UP_RIGHT": "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\main\\resources\\textures\\2D\\water\\waterUpRight.png",
+      "DOWN_LEFT": "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\main\\resources\\textures\\2D\\water\\waterDownLeft.png",
+      "DOWN_RIGHT": "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\main\\resources\\textures\\2D\\water\\waterDownRight.png"
+    },
+    "components": [
+      "MeshComponent2D",
+      "CollisionComponent2D"
+    ]
+  },
+  {
+    "entityType": "terrain",
+    "textureLabel": "GRASS_2D",
+    "texturePath": "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\main\\resources\\textures\\2D\\grass\\grass.png",
+    "depth": -2.0,
+    "stackable": false,
+    "stack": null,
+    "label": "GRASS_2D",
+    "quantity": 1,
+    "replaceableEdges": true,
+    "replaceableTexture": {
+      "LEFT": "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\main\\resources\\textures\\2D\\grass\\grassLeft.png",
+      "RIGHT": "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\main\\resources\\textures\\2D\\grass\\grassRight.png",
+      "UP": "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\main\\resources\\textures\\2D\\grass\\grassUp.png",
+      "DOWN": "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\main\\resources\\textures\\2D\\grass\\grassDown.png",
+      "UP_LEFT": "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\main\\resources\\textures\\2D\\grass\\grassUpLeft.png",
+      "UP_RIGHT": "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\main\\resources\\textures\\2D\\grass\\grassUpRight.png",
+      "DOWN_LEFT": "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\main\\resources\\textures\\2D\\grass\\grassDownLeft.png",
+      "DOWN_RIGHT": "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\main\\resources\\textures\\2D\\grass\\grassDownRight.png"
+    },
+    "components": [
+      "MeshComponent2D"
+    ]
+  },
+  {
+    "entityType": "terrain",
+    "textureLabel": "BRICK_2D",
+    "texturePath": "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\main\\resources\\textures\\2D\\brick.png",
+    "depth": -2.0,
+    "stackable": false,
+    "stack": null,
+    "label": "brick",
+    "quantity": 1,
+    "components": [
+      "MeshComponent2D"
+    ]
+  },
+  {
+    "entityType": "terrain",
+    "textureLabel": "HOLE_DOWN_2D",
+    "texturePath": "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\main\\resources\\textures\\2D\\holeDown2D.png",
+    "depth": -2.0,
+    "stackable": false,
+    "stack": null,
+    "label": "HOLE_DOWN_2D",
+    "quantity": 1,
+    "components": [
+      "MeshComponent2D"
+    ]
+  },
+  {
+    "entityType": "terrain",
+    "textureLabel": "HOLE_UP_2D",
+    "texturePath": "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\main\\resources\\textures\\2D\\holeUp2D.png",
+    "depth": -2.0,
+    "stackable": false,
+    "stack": null,
+    "label": "HOLE_UP_2D",
+    "quantity": 1,
+    "components": [
+      "MeshComponent2D"
+    ]
+  },
+  {
+    "entityType": "terrain",
+    "textureLabel": "MINE_2D",
+    "texturePath": "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\main\\resources\\textures\\2D\\underground\\mine.png",
+    "depth": -2.0,
+    "stackable": false,
+    "stack": null,
+    "label": "MINE",
+    "quantity": 1,
+    "components": [
+      "MeshComponent2D"
+    ]
+  },
+  {
+    "entityType": "terrain",
+    "textureLabel": "PATH_2D",
+    "texturePath": "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\main\\resources\\textures\\2D\\dirt\\path.png",
+    "depth": -2.0,
+    "stackable": false,
+    "stack": null,
+    "label": "PATH_2D",
+    "quantity": 1,
+    "components": [
+      "MeshComponent2D"
+    ]
+  },
+  {
+    "entityType": "item",
+    "textureLabel": "GOLD_2D",
+    "texturePath": "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\main\\resources\\textures\\2D\\gold2D.png",
+    "depth": -1.9,
+    "stackable": false,
+    "stack": null,
+    "label": "GOLD_2D",
+    "quantity": 1,
+    "components": [
+      "MeshComponent2D"
+    ]
+  },
+  {
+    "entityType": "item",
+    "textureLabel": "IRON_ORE",
+    "texturePath": "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\main\\resources\\textures\\2D\\ironOre.png",
+    "depth": -1.9,
+    "stackable": false,
+    "stack": null,
+    "label": "IRON_ORE",
+    "quantity": 1,
+    "components": [
+      "MeshComponent2D"
+    ]
+  },
+  {
+    "entityType": "item",
+    "textureLabel": "GOLD_ORE",
+    "texturePath": "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\main\\resources\\textures\\2D\\goldOre.png",
+    "depth": -1.9,
+    "stackable": false,
+    "stack": null,
+    "label": "GOLD_ORE",
+    "quantity": 1,
+    "components": [
+      "MeshComponent2D"
+    ]
+  },
+  {
+    "entityType": "item",
+    "textureLabel": "DIAMOND_ORE",
+    "texturePath": "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\main\\resources\\textures\\2D\\diamondOre.png",
+    "depth": -1.9,
+    "stackable": false,
+    "stack": null,
+    "label": "DIAMOND_ORE",
+    "quantity": 1,
+    "components": [
+      "MeshComponent2D"
+    ]
+  },
+  {
+    "entityType": "item",
+    "textureLabel": "DYNAMITE",
+    "texturePath": "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\main\\resources\\textures\\2D\\dynamite.png",
+    "depth": -1.3,
+    "stackable": false,
+    "stack": null,
+    "label": "DYNAMITE",
+    "destroyable": true,
+    "destructionDifficulty": 300.0,
+    "afterDestroyTexturePath": "C:\\Users\\Rafal\\Desktop\\lwjglApp\\lwjglApp\\src\\main\\resources\\textures\\2D\\underground\\mine.png",
+    "afterDestroyLabel": "DYNAMITE_DESTROYED",
+    "actionList": [
+      {
+        "type": "explosionActionDto",
+        "action": "ExplosionAction",
+        "explosionRange": 6,
+        "removeEntityAfter": false,
+        "removeActionAfter": false,
+        "invoke": "ON_PUT"
+      }
+    ],
+    "quantity": 1,
+    "components": [
+      "MeshComponent2D"
+    ]
+  }
+]
+}

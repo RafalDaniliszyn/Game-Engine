@@ -1,16 +1,13 @@
 package org.game.isometric.component;
 
 import org.game.component.Component;
+import org.game.isometric.utils.PositionUtils;
+import org.game.isometric.utils.PositionUtils.AbsoluteTilePosition;
 import org.joml.Vector2f;
 
 public class PositionComponent2D extends Component {
     private Vector2f position;
     private int floor;
-
-    public PositionComponent2D(Vector2f position) {
-        this.position = position;
-        this.floor = 0;
-    }
 
     public PositionComponent2D(Vector2f position, int floor) {
         this.position = position;
@@ -31,6 +28,10 @@ public class PositionComponent2D extends Component {
 
     public void setFloor(int floor) {
         this.floor = floor;
+    }
+
+    public AbsoluteTilePosition getAbsoluteTilePosition() {
+        return PositionUtils.getAbsoluteTilePositionFromWorldSpace(this.position);
     }
 
     @Override

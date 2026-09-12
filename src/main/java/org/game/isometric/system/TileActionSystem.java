@@ -7,6 +7,7 @@ import org.game.isometric.action.Action;
 import org.game.isometric.component.AnimationComponent2D;
 import org.game.isometric.component.PositionComponent2D;
 import org.game.isometric.utils.PositionUtils;
+import org.game.isometric.utils.PositionUtils.AbsoluteTilePosition;
 import org.game.system.BaseSystem;
 import org.joml.Vector2f;
 import java.util.Iterator;
@@ -39,7 +40,7 @@ public class TileActionSystem extends BaseSystem {
                 Action nextAction = action.next();
                 nextAction.processAction(entity);
                 nextAction.processActions(entity, gameData);
-                if (nextAction.isRemoveEntityAfter()) {
+                if (nextAction.isRemove()) {
                     remove = true;
                 }
                 if (nextAction.isRemoveActionAfter()) {
@@ -52,7 +53,7 @@ public class TileActionSystem extends BaseSystem {
                     return;
                 }
                 Vector2f position = positionComponent.getPosition();
-                PositionUtils.AbsoluteTilePosition absoluteTilePosition = PositionUtils.getAbsoluteTilePositionFromWorldSpace(position);
+                AbsoluteTilePosition absoluteTilePosition = PositionUtils.getAbsoluteTilePositionFromWorldSpace(position);
                 gameData.getWorldMapData().removeEntityFromTile(positionComponent.getFloor(), absoluteTilePosition.x(), absoluteTilePosition.y(), entity.getId());
                 gameData.removeEntity(entity.getId());
             }

@@ -1,1 +1,13 @@
-/target/
+﻿/target/
+.idea/
+/out/
+hs_err_pid*.log
+replay_pid*.log
+
+# Za duze / niesprawdzone tekstury - do przejrzenia, ktore sa faktycznie potrzebne
+src/main/resources/textures/background/sky.png
+src/main/resources/textures/water.png
+src/main/resources/textures/ground.png
+
+# Dokumentacja projektu - prywatna, nie publikowac
+/docs/

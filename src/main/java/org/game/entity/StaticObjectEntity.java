@@ -26,7 +26,7 @@ public class StaticObjectEntity extends Entity {
 
     public StaticObjectEntity(MeshManager meshManager, String meshName, Vector3f position,
                               Vector3f rotation, Vector3f scale, boolean lines, EntityProperties properties) {
-        super(properties);
+        super(properties, EntityType.LOCAL);
         PositionComponent positionComponent = new PositionComponent(position, rotation.x, rotation.y, rotation.z, scale);
         CollisionComponent collisionComponent = new CollisionComponent();
         List<MeshComponent> meshComponent = meshManager.getMeshComponent(meshName, rotation.y);

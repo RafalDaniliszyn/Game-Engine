@@ -11,10 +11,30 @@ public class DestroyComponent2D extends Component {
     private double elapsedTime;
     private double lastUpdateTime;
     private final boolean destroyNow;
+    private int x;
+    private int y;
+    private int floor;
+
+    public DestroyComponent2D(double destructionDifficulty, boolean destroyNow, int x, int y, int floor) {
+        this.destructionDelay = destructionDifficulty;
+        this.destroyNow = destroyNow;
+        this.x = x;
+        this.y = y;
+        this.floor = floor;
+    }
 
     public DestroyComponent2D(double destructionDifficulty, boolean destroyNow) {
         this.destructionDelay = destructionDifficulty;
         this.destroyNow = destroyNow;
+    }
+
+    public DestroyComponent2D(double destructionDifficulty, boolean destroyNow, ComponentSource source, int x, int y, int floor) {
+        super(source);
+        this.destructionDelay = destructionDifficulty;
+        this.destroyNow = destroyNow;
+        this.x = x;
+        this.y = y;
+        this.floor = floor;
     }
 
     public double getDestructionDelay() {
@@ -43,6 +63,30 @@ public class DestroyComponent2D extends Component {
 
     public boolean isDestroyNow() {
         return destroyNow;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public int getFloor() {
+        return floor;
+    }
+
+    public void setFloor(int floor) {
+        this.floor = floor;
     }
 
     @Override

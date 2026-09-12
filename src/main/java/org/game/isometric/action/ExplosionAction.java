@@ -3,20 +3,11 @@ package org.game.isometric.action;
 import org.game.GameData;
 import org.game.entity.Entity;
 import org.game.isometric.component.AnimationComponent2D;
-import org.game.isometric.component.ComponentEnum;
-import org.game.isometric.component.DestroyComponent2D;
 import org.game.isometric.component.MeshComponent2D;
-import org.game.isometric.component.PositionComponent2D;
 import org.game.isometric.texture2D.TextureManager2D;
-import org.game.isometric.worldMap.WorldMapData;
 import org.joml.Vector2f;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
-
-import static org.game.entity.Entity.State.DESTROYED;
-import static org.game.isometric.utils.PositionUtils.AbsoluteTilePosition;
-import static org.game.isometric.utils.PositionUtils.getAbsoluteTilePositionFromWorldSpace;
 
 public class ExplosionAction extends Action {
 
@@ -25,8 +16,9 @@ public class ExplosionAction extends Action {
     private boolean animationStarted;
     private final AnimationComponent2D explosionAnimation;
     private boolean explosionAnimationStarted;
+    private final long duration;
 
-    public ExplosionAction(int explosionRange, boolean removeEntityAfter, boolean removeActionAfter, Invoke invoke) {
+    public ExplosionAction(int explosionRange, boolean removeEntityAfter, boolean removeActionAfter, Invoke invoke, long duration) {
         super(removeEntityAfter, removeActionAfter, invoke);
         this.explosionRange = explosionRange;
 
@@ -67,10 +59,16 @@ public class ExplosionAction extends Action {
         textures.put(23, dynamite_animation_9);
         textures.put(24, dynamite_animation_10);
 
-        this.animationComponent = new AnimationComponent2D(textures , 3000, "DYNAMITE");
+        this.duration = duration;
+        this.animationComponent = new AnimationComponent2D(textures , duration, "DYNAMITE");
         this.animationStarted = false;
         this.explosionAnimation = getExplosionAnimation();
         this.explosionAnimationStarted = false;
+    }
+
+    @Override
+    public ActionEnum getActionType() {
+        return ActionEnum.ExplosionAction;
     }
 
     @Override
@@ -95,45 +93,11 @@ public class ExplosionAction extends Action {
             explosionAnimation.setActive(true);
         }
 
-        PositionComponent2D positionComponent = entity.getComponent(PositionComponent2D.class);
-        Vector2f position = positionComponent.getPosition();
-        AbsoluteTilePosition tilePosition = getAbsoluteTilePositionFromWorldSpace(position);
-        int floor = positionComponent.getFloor();
-        WorldMapData worldMapData = gameData.getWorldMapData();
-        destroyInRange(gameData, tilePosition, floor, worldMapData);
-
         if (explosionAnimation.isActive()) {
             return;
         }
-
         this.setRemoveActionAfter(true);
-        this.setRemoveEntityAfter(true);
-    }
-
-    private void destroyInRange(GameData gameData, AbsoluteTilePosition tilePosition, int floor, WorldMapData worldMapData) {
-        Random random = new Random();
-        int rangeOnSide = explosionRange / 2;
-        for (int i = -(rangeOnSide); i < rangeOnSide; i++) {
-            for (int j = -(rangeOnSide); j < rangeOnSide; j++) {
-                double distanceX = rangeOnSide - Math.abs(i);
-                double distanceY = rangeOnSide - Math.abs(j);
-                if (distanceX < explosionRange / 2.0 || distanceY < explosionRange / 3.0) {
-                    int randomNumber = random.nextInt(100);
-                    if (randomNumber > 30) {
-                        continue;
-                    }
-                }
-                Long entityId = worldMapData.getBottomEntityIdFromTile(floor, tilePosition.x() + i, tilePosition.y() + j);
-                Entity entityToDestroy = gameData.getEntity(entityId);
-                addDestroyComponent(entityToDestroy);
-            }
-        }
-    }
-
-    private void addDestroyComponent(Entity entityToDestroy) {
-        if (entityToDestroy != null && !DESTROYED.equals(entityToDestroy.getState())) {
-            entityToDestroy.addComponent(new DestroyComponent2D(0, true));
-        }
+        this.setRemove(true);
     }
 
     private AnimationComponent2D getExplosionAnimation() {
@@ -157,8 +121,11 @@ public class ExplosionAction extends Action {
         return new AnimationComponent2D(explosionAnimation, 1000, "EXPLOSION_ANIMATION");
     }
 
-    @Override
-    public ComponentEnum getType() {
-        return null;
+    public int getExplosionRange() {
+        return explosionRange;
+    }
+
+    public long getDuration() {
+        return duration;
     }
 }

@@ -188,6 +188,10 @@ public class MeshComponent extends Component {
         return cullFace;
     }
 
+    public Vector3f getScale() {
+        return scale;
+    }
+
     public void setCullFace(boolean cullFace) {
         this.cullFace = cullFace;
     }

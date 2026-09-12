@@ -5,65 +5,90 @@ import org.game.component.Component;
 import org.game.isometric.component.ComponentEnum;
 import org.game.isometric.component.StateChangedComponent2D;
 import org.game.system.shader.ShaderEnum;
-import java.util.ArrayList;
-import java.util.List;
+
+import java.util.*;
 
 public abstract class Entity {
-    private final long id;
+    private long id;
     private State state;
-    private List<Component> componentList;
-    private final List<ComponentEnum> componentEnumList;
+    private final List<Component> componentList;
+    private final Set<ComponentEnum> componentEnumSet;
     private EntityProperties properties;
+    private EntityType entityType;
+    private Map<State, Long> entityByState;
 
     public Entity() {
-        this.componentList = new ArrayList<>();
-        this.id = IdGenerator.getNextId();
+        this.componentList = Collections.synchronizedList(new ArrayList<>());
+        //this.id = IdGenerator.getNextId();
+        this.id = -1;
         this.state = State.NEW;
         this.properties = new EntityProperties(ShaderEnum.DEFAULT);
-        this.componentEnumList = new ArrayList<>();
+        this.componentEnumSet = new HashSet<>();
+        this.entityByState = new HashMap<>();
     }
 
-    public Entity(EntityProperties properties) {
-        this.componentList = new ArrayList<>();
-        this.id = IdGenerator.getNextId();
+    public Entity(EntityProperties properties, EntityType entityType) {
+        this.componentList = Collections.synchronizedList(new ArrayList<>());
+        //this.id = IdGenerator.getNextId();
+        this.id = -1;
         this.state = State.NEW;
         this.properties = properties;
-        this.componentEnumList = new ArrayList<>();
+        this.componentEnumSet = new HashSet<>();
+        this.entityType = entityType;
+        this.entityByState = new HashMap<>();
+    }
+
+    public Entity(long sessionEntityId, EntityProperties properties, EntityType entityType) {
+        this.componentList = Collections.synchronizedList(new ArrayList<>());
+        this.id = sessionEntityId;
+        this.state = State.NEW;
+        this.properties = properties;
+        this.componentEnumSet = new HashSet<>();
+        this.entityType = entityType;
+        this.entityByState = new HashMap<>();
     }
 
     public void addComponents(List<? extends Component> component) {
         componentList.addAll(component);
         component.forEach(comp -> {
-            componentEnumList.add(comp.getType());
+            componentEnumSet.add(comp.getType());
         });
         markStateChangedComponent();
     }
 
     public void addComponent(Component component) {
         componentList.add(component);
-        componentEnumList.add(component.getType());
+        componentEnumSet.add(component.getType());
         markStateChangedComponent();
     }
 
-    public <T extends Component> void changeComponent(Component newComponent, Class<T> toChange) {
-        for (int i = 0; i < componentList.size(); i++) {
-            if (toChange.isAssignableFrom(componentList.get(i).getClass())) {
-                Component removed = componentList.remove(i);
-                componentEnumList.remove(removed.getType());
-                addComponent(newComponent);
-                markStateChangedComponent();
-                return;
+    public <T extends Component> void removeComponent(Class<T> toRemove) {
+        synchronized (componentList) {
+            for (int i = 0; i < componentList.size(); i++) {
+                if (toRemove.isAssignableFrom(componentList.get(i).getClass())) {
+                    Component removed = componentList.remove(i);
+                    componentEnumSet.remove(removed.getType());
+                    markStateChangedComponent();
+                    return;
+                }
             }
         }
     }
 
-    public <T extends Component> void removeComponent(Class<T> toRemove) {
-        for (int i = 0; i < componentList.size(); i++) {
-            if (toRemove.isAssignableFrom(componentList.get(i).getClass())) {
-                Component removed = componentList.remove(i);
-                componentEnumList.remove(removed.getType());
+    public <T extends Component> void removeComponents(Class<T> toRemove) {
+        synchronized (componentList) {
+            List<Component> removed = new ArrayList<>();
+            for (int i = 0; i < componentList.size(); i++) {
+                if (toRemove.isAssignableFrom(componentList.get(i).getClass())) {
+                    Component removedComponent = componentList.remove(i);
+                    if (removedComponent != null) {
+                        removed.add(removedComponent);
+                    }
+                }
+            }
+            if (removed.size() != 0) {
+                componentEnumSet.remove(removed.get(0).getType());
                 markStateChangedComponent();
-                return;
             }
         }
     }
@@ -72,12 +97,14 @@ public abstract class Entity {
      * This method is to prevent infinite loops and StackOverflowException.
      * Note: it should not be used outside the StateChangedSystem2D class.
      */
-    public void removeStateChangedComponent() {
-        for (int i = 0; i < componentList.size(); i++) {
-            if (StateChangedComponent2D.class.isAssignableFrom(componentList.get(i).getClass())) {
-                componentList.remove(i);
-                componentEnumList.remove(ComponentEnum.StateChangedComponent2D);
-                return;
+    public synchronized void removeStateChangedComponent() {
+        synchronized (componentList) {
+            for (Iterator<Component> iterator = componentList.iterator(); iterator.hasNext(); ) {
+                Component component = iterator.next();
+                if (StateChangedComponent2D.class.isAssignableFrom(component.getClass())) {
+                    iterator.remove();
+                    componentEnumSet.remove(ComponentEnum.StateChangedComponent2D);
+                }
             }
         }
     }
@@ -101,14 +128,37 @@ public abstract class Entity {
         return null;
     }
 
+    public void addToEntityByState(long id, State state) {
+        this.entityByState.put(state, id);
+    }
+
+    public Long getEntityIdByState(State state) {
+        if (!entityByState.containsKey(state)) {
+            return null;
+        }
+        return entityByState.get(state);
+    }
+
+    public Map<State, Long> getEntityByState() {
+        return entityByState;
+    }
+
+    public void setEntityByState(Map<State, Long> entityByState) {
+        this.entityByState = entityByState;
+    }
+
     private void markStateChangedComponent() {
         StateChangedComponent2D stateChangedComponent = new StateChangedComponent2D();
         this.componentList.add(stateChangedComponent);
-        this.componentEnumList.add(ComponentEnum.StateChangedComponent2D);
+        this.componentEnumSet.add(ComponentEnum.StateChangedComponent2D);
     }
 
     public long getId() {
         return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public State getState() {
@@ -123,9 +173,6 @@ public abstract class Entity {
         return componentList;
     }
 
-    public void setComponentList(List<Component> componentList) {
-        this.componentList = componentList;
-    }
 
     public EntityProperties getProperties() {
         return properties;
@@ -135,22 +182,35 @@ public abstract class Entity {
         this.properties = properties;
     }
 
-    public List<ComponentEnum> getComponentEnumList() {
-        return componentEnumList;
+    public Set<ComponentEnum> getComponentEnumSet() {
+        return componentEnumSet;
     }
+
+    public EntityType getEntityType() {
+        return entityType;
+    }
+
+    public void setEntityType(EntityType entityType) {
+        this.entityType = entityType;
+    }
+
 
     @Override
     public String toString() {
         return "Entity{" +
                 "id=" + id +
+                ", state=" + state +
                 ", componentList=" + componentList +
+                ", componentEnumList=" + componentEnumSet +
                 ", properties=" + properties +
+                ", entityType=" + entityType +
                 '}';
     }
 
     public enum State {
         NEW,
         ACTIVE,
-        DESTROYED
+        DESTROYED,
+        REPLACED_EDGE
     }
 }

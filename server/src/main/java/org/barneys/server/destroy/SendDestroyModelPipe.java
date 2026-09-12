@@ -1,0 +1,26 @@
+package org.barneys.server.destroy;
+
+import org.barneys.processData.inputPipeline.Pipe;
+import org.barneys.server.handler.SimpleServerHandler;
+import org.barneys.server.modelHandler.DestroyModel;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+
+public class SendDestroyModelPipe implements Pipe<DestroyDto, DestroyDto> {
+
+    @Override
+    public DestroyDto process(DestroyDto destroyDto) {
+        List<DestroyModel> destroyed = destroyDto.getDestroyed();
+
+        Timer timer = new java.util.Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                destroyed.forEach(SimpleServerHandler::send);
+            }
+        }, destroyDto.getDuration());
+
+        return destroyDto;
+    }
+}

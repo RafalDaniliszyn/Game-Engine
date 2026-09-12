@@ -4,7 +4,7 @@ import org.game.GameData;
 import org.game.isometric.component.ComponentEnum;
 import org.game.isometric.component.StateChangedComponent2D;
 import org.game.system.BaseSystem;
-import java.util.HashSet;
+
 import java.util.List;
 import java.util.Set;
 
@@ -30,8 +30,8 @@ public class StateChangedSystem2D extends BaseSystem {
             gameData.getSystems().forEach((systemName, system) -> {
                 List<ComponentEnum> requiredComponents = system.getRequiredComponents();
                     Set<Long> entitiesToProcess = system.getEntitiesToProcess();
-                    List<ComponentEnum> componentEnumList = entity.getComponentEnumList();
-                    if (new HashSet<>(componentEnumList).containsAll(requiredComponents)) {
+                    Set<ComponentEnum> componentEnumSet = entity.getComponentEnumSet();
+                    if (componentEnumSet.containsAll(requiredComponents)) {
                         system.addEntityToProcess(id);
                     } else {
                         entitiesToProcess.remove(id);

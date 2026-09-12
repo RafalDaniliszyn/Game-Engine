@@ -2,6 +2,7 @@ package org.game.ui.entity;
 
 import org.game.GraphicsDisplay;
 import org.game.entity.EntityProperties;
+import org.game.entity.EntityType;
 import org.game.system.shader.ShaderEnum;
 import org.game.ui.component.RawUiModel;
 import org.game.ui.component.UiComponent;
@@ -17,7 +18,7 @@ public class UiEntity extends Entity {
     private final RawUiModel rawUiModel;
 
     public UiEntity(long itemId, RawUiModel rawUiModel) {
-        super(new EntityProperties(ShaderEnum.UI));
+        super(new EntityProperties(ShaderEnum.UI), EntityType.LOCAL);
         this.rawUiModel = rawUiModel;
         this.eventManager = new EquipmentEventManager();
 
